@@ -2,6 +2,16 @@
 
 Ecommerce app
 
+### Project Resources
+
+#### Screenshots
+
+[View all app screenshots](https://drive.google.com/drive/folders/18KV7zYGxBgkXxCLA_sJJjNdZYmJlHCVL?usp=sharing)
+
+#### Requirements File
+
+[View requirements document](https://drive.google.com/file/d/17eGqp234L7gWxarrzBVePJ9ttY2BxjW6/view?usp=sharing)
+
 ## Screens (To-Do List)
 
 ### Phase 1: Authentication & Onboarding (7 Screens)
