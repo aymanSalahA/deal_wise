@@ -4,7 +4,7 @@ Ecommerce app
 
 ## Screens (To-Do List)
 
-### Phase 1: Authentication & Onboarding
+### Phase 1: Authentication & Onboarding (7 Screens)
 
 -   [ ] Splash Screen
 -   [ ] Onboarding Screen
@@ -14,7 +14,7 @@ Ecommerce app
 -   [ ] Forgot Password Screen
 -   [ ] Reset Password Screen
 
-### Phase 2: Core E-commerce
+### Phase 2: Core E-commerce (5 Screens)
 
 ---
 
@@ -26,12 +26,10 @@ Ecommerce app
 
 ---
 
-### Phase 3: User Profile & Settings
+### Phase 3: User Profile & Settings (5 Screens)
 
--   [ ] Profile Screen
--   [ ] Logout Option
--   [ ] Settings Screen
+-   [ ] Profile/Settings Screen with Logout Option
 -   [ ] Change Password Screen
 -   [ ] Privacy & Policy Screen
 -   [ ] About Us Screen
--   [ ] # Contact Us Screen
+-   [ ] Contact Us Screen
