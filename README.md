@@ -12,6 +12,10 @@ Ecommerce app
 
 [View requirements document](https://drive.google.com/file/d/17eGqp234L7gWxarrzBVePJ9ttY2BxjW6/view?usp=sharing)
 
+#### All Tasks needed to be done
+
+[View All Tasks](documentation/TASKS.md)
+
 ## Screens (To-Do List)
 
 ### Phase 1: Authentication & Onboarding (7 Screens)
