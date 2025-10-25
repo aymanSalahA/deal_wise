@@ -1,4 +1,4 @@
-# deal_wise
+# DealWise
 
 Ecommerce app
 
@@ -25,16 +25,20 @@ Ecommerce app
 | <img src="documentation/phase1/register_screen.png" width="150" /> | <img src="documentation/phase1/otp_verification_screen.png" width="150" /> | <img src="documentation/phase1/forgot_password_screen.png" width="150" /> | <img src="documentation/phase1/reset_password_screen.png" width="150" /> |
 
 ### Phase 2: Core E-commerce (5 Screens)
+- [ ] Home Screen
+- [ ] Products Filtered by Category Screen
+- [ ] Product Details Screen
+- [ ] Cart Screen
+- [ ] Product Management Screen
 
----
+#### Screens Preview
+| Home Screen | Products Filtered by Category Screen | Product Details Screen |
+|-------------|---------------------------------------|------------------------|
+| <img src="documentation/phase2/home_screen.png" width="150" /> | <img src="documentation/phase2/products_by_category_screen.png" width="150" /> | <img src="documentation/phase2/product_details_screen.png" width="150" /> |
 
--   [ ] Home Screen
--   [ ] Products Filtered by Category Screen
--   [ ] Product Details Screen
--   [ ] Cart Screen
--   [ ] Product Management Screen
-
----
+| Cart Screen | Product Management Screen | Confirmation Modal |
+|-------------|---------------------------|--------------------|
+| <img src="documentation/phase2/cart_screen.png" width="150" /> | <img src="documentation/phase2/add_product.png" width="150" /> | <img src="documentation/phase2/modal.png" width="150" /> |
 
 ### Phase 3: User Profile & Settings (5 Screens)
 
