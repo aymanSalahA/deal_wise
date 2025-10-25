@@ -14,7 +14,7 @@ Ecommerce app
 -   [ ] Forgot Password Screen
 -   [ ] Reset Password Screen
 
-#### Screens Preview (Some Images will be replaced later)
+#### Screens Preview (Some Images might be replaced later)
 
 | Splash Screen                                                    | Onboarding Screen                                                    | Login Screen                                                    |
 | ---------------------------------------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------- |
@@ -25,19 +25,21 @@ Ecommerce app
 | <img src="documentation/phase1/register_screen.png" width="150" /> | <img src="documentation/phase1/otp_verification_screen.png" width="150" /> | <img src="documentation/phase1/forgot_password_screen.png" width="150" /> | <img src="documentation/phase1/reset_password_screen.png" width="150" /> |
 
 ### Phase 2: Core E-commerce (5 Screens)
-- [ ] Home Screen
-- [ ] Products Filtered by Category Screen
-- [ ] Product Details Screen
-- [ ] Cart Screen
-- [ ] Product Management Screen
 
-#### Screens Preview
-| Home Screen | Products Filtered by Category Screen | Product Details Screen |
-|-------------|---------------------------------------|------------------------|
+-   [ ] Home Screen
+-   [ ] Products Filtered by Category Screen
+-   [ ] Product Details Screen
+-   [ ] Cart Screen
+-   [ ] Product Management Screen
+
+#### Screens Preview (Some Images might be replaced later)
+
+| Home Screen                                                    | Products Filtered by Category Screen                                           | Product Details Screen                                                    |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------- |
 | <img src="documentation/phase2/home_screen.png" width="150" /> | <img src="documentation/phase2/products_by_category_screen.png" width="150" /> | <img src="documentation/phase2/product_details_screen.png" width="150" /> |
 
-| Cart Screen | Product Management Screen | Confirmation Modal |
-|-------------|---------------------------|--------------------|
+| Cart Screen                                                    | Product Management Screen                                      | Confirmation Modal                                       |
+| -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------- |
 | <img src="documentation/phase2/cart_screen.png" width="150" /> | <img src="documentation/phase2/add_product.png" width="150" /> | <img src="documentation/phase2/modal.png" width="150" /> |
 
 ### Phase 3: User Profile & Settings (5 Screens)
@@ -47,3 +49,13 @@ Ecommerce app
 -   [ ] Privacy & Policy Screen
 -   [ ] About Us Screen
 -   [ ] Contact Us Screen
+
+#### Screens Preview
+
+| Profile/Settings Screen                                                    | Change Password Screen                                                    | Privacy & Policy Screen                                                  |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| <img src="documentation/phase3/profile_settings_screen.png" width="150" /> | <img src="documentation/phase3/change_password_screen.png" width="150" /> | <img src="documentation/phase3/privacy_policy_screen.png" width="150" /> |
+
+| About Us Screen                                                    | Contact Us Screen                                                    |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------- |
+| <img src="documentation/phase3/about_us_screen.png" width="150" /> | <img src="documentation/phase3/contact_us_screen.png" width="150" /> |
