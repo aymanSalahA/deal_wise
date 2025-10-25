@@ -4,9 +4,9 @@ Ecommerce app
 
 ### Project Resources
 
-#### Screenshots
+#### Screens
 
-[View all app screenshots](https://drive.google.com/drive/folders/18KV7zYGxBgkXxCLA_sJJjNdZYmJlHCVL?usp=sharing)
+[View all app Screens](https://drive.google.com/drive/folders/18KV7zYGxBgkXxCLA_sJJjNdZYmJlHCVL?usp=sharing)
 
 #### Requirements File
 
