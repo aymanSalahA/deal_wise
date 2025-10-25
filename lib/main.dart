@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Deal Wise',
       debugShowCheckedModeBanner: false,
-      home: Scaffold(body: Center(child: Text("Start Ecommerce"))),
+      home: Scaffold(body: Center(child: Text("Start Working"))),
     );
   }
 }
