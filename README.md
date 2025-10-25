@@ -4,15 +4,15 @@ Ecommerce app
 
 ### Project Resources
 
-#### Screens
+##### Screens
 
 [View all app Screens](https://drive.google.com/drive/folders/18KV7zYGxBgkXxCLA_sJJjNdZYmJlHCVL?usp=sharing)
 
-#### Requirements File
+##### Requirements File
 
 [View requirements document](https://drive.google.com/file/d/17eGqp234L7gWxarrzBVePJ9ttY2BxjW6/view?usp=sharing)
 
-#### All Tasks needed to be done
+## ❗ All Tasks Needed to Be Done ❗
 
 [View All Tasks](documentation/TASKS.md)
 
