@@ -5,14 +5,23 @@ Ecommerce app
 ## Screens (To-Do List)
 
 ### Phase 1: Authentication & Onboarding (7 Screens)
+- [ ] Splash Screen
+- [ ] Onboarding Screen
+- [ ] Login Screen
+- [ ] Register Screen
+- [ ] OTP Verification Screen
+- [ ] Forgot Password Screen
+- [ ] Reset Password Screen
 
--   [ ] Splash Screen
--   [ ] Onboarding Screen
--   [ ] Login Screen
--   [ ] Register Screen
--   [ ] OTP Verification Screen
--   [ ] Forgot Password Screen
--   [ ] Reset Password Screen
+#### Screens Preview
+| Splash Screen | Onboarding Screen | Login Screen |
+|---------------|-------------------|--------------|
+| <img src="documentation/phase1/splash_screen.png" width="150" /> | <img src="documentation/phase1/onboarding_screen.png" width="150" /> | <img src="documentation/phase1/login_screen.png" width="150" /> |
+
+| Register Screen | OTP Verification Screen | Forgot Password Screen | Reset Password Screen |
+|-----------------|-------------------------|------------------------|-----------------------|
+| <img src="documentation/phase1/register_screen.png" width="150" /> | <img src="documentation/phase1/otp_verification_screen.png" width="150" /> | <img src="documentation/phase1/forgot_password_screen.png" width="150" /> | <img src="documentation/phase1/reset_password_screen.png" width="150" /> |
+
 
 ### Phase 2: Core E-commerce (5 Screens)
 
