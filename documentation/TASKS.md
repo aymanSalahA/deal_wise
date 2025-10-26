@@ -16,7 +16,7 @@
     -   [ ] `shared_preferences`
     -   [ ] `dio`
     -   [ ] `flutter_secure_storage`
--   [ ] wise-4: Creating all features folders / The Colors folder for themeing
+-   [ ] wise-4: Creating all features folders / The Colors folder for themeing / Screen files placeholders
 -   [ ] wise-5: Define Routes
 -   [ ] wise-6: Define base URL and app constants in `lib/core/constants.dart`
 
