@@ -17,7 +17,7 @@
     -   [x] ~~`dio`~~
     -   [x] ~~`http` optional~~
     -   [x] ~~`flutter_secure_storage`~~
--   [x] wise-4: Creating all features folders / Screen files placeholders
+-   [x] ~~wise-4: Creating all features folders / Screen files placeholders~~
 -   [ ] The Colors folder for themeing
 -   [ ] wise-5: Define Routes
 -   [ ] wise-6: Define base URL and app constants in `lib/core/constants.dart`
