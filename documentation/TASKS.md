@@ -17,7 +17,7 @@
     -   `dio`
     -   `flutter_secure_storage`
 -   [ ] Creating all features folders / The Colors folder for themeing
--   [ ] Define Routes 
+-   [ ] Define Routes
 -   [ ] wise-4: Define base URL and app constants in `lib/core/constants.dart`
 
 ---
@@ -32,7 +32,7 @@
 -   [ ] wise-10: Implement Forgot Password Screen (email input)
 -   [ ] wise-11: Implement Reset Password Screen (new password + confirm)
 -   [ ] wise-12: Create `AuthCubit` with states for all auth flows (initial, loading, success, error)
--   [ ] wise-13: Integrate authentication APIs (login, register, OTP, forgot/reset password)
+-   [ ] wise-13: Making Screens First , Then The usable Shared widgets && refactor
 
 ---
 
@@ -45,7 +45,7 @@
 -   [ ] wise-18: Implement Product Management Screen (form to add new product; delete button on product card)
 -   [ ] wise-19: Create `ProductCubit` for fetching and managing products
 -   [ ] wise-20: Create `CartCubit` for adding/removing/updating cart items
--   [ ] wise-21: Integrate Product and Cart APIs (CRUD operations)
+-   [ ] wise-21: Making Screens First , Then The usable Shared widgets && refactor
 
 ---
 
@@ -56,7 +56,7 @@
 -   [ ] wise-24: Implement Privacy & Policy Screen (static text from requirements)
 -   [ ] wise-25: Implement About Us Screen (app info, version, team credits)
 -   [ ] wise-26: Implement Contact Us Screen (email, phone, support form)
--   [ ] wise-27: Persist login state and theme preference using `shared_preferences`
+-   [ ] wise-27: Making Screens First , Then The usable Shared widgets && refactor
 
 ---
 
@@ -65,3 +65,4 @@
 -   [ ] wise-28: Set up app-wide navigation (authenticated vs unauthenticated routes)
 -   [ ] wise-29: Test all user flows (onboarding → auth → browse → cart → profile → logout)
 -   [ ] wise-30: Final code review, remove dead code, ensure MVVM structure is clean
+-   [ ] wise-31: Shared widgets && refactor
