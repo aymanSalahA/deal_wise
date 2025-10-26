@@ -24,27 +24,27 @@
 
 ### **Phase 1: Authentication & Onboarding**
 
+-   [ ] wise-14: Create `AuthCubit` with states for all auth flows (initial, loading, success, error)
 -   [ ] wise-7: Implement Splash Screen (logo + 2s delay → auth/home)
 -   [ ] wise-8: Implement Onboarding Screen (single page, skip button, mark seen via `shared_preferences`)
--   [ ] wise-9: Implement Login Screen (email/password + navigate to home on success)
 -   [ ] wise-10: Implement Register Screen (name/email/password + validation)
+-   [ ] wise-9: Implement Login Screen (email/password + navigate to home on success)
 -   [ ] wise-11: Implement OTP Verification Screen (6-digit input, resend option)
 -   [ ] wise-12: Implement Forgot Password Screen (email input)
 -   [ ] wise-13: Implement Reset Password Screen (new password + confirm)
--   [ ] wise-14: Create `AuthCubit` with states for all auth flows (initial, loading, success, error)
 -   [ ] wise-15: Making Screens First , Then The usable Shared widgets && refactor
 
 ---
 
 ### **Phase 2: Core E-commerce Features**
 
+-   [ ] wise-21: Create `ProductCubit` for fetching and managing products
+-   [ ] wise-22: Create `CartCubit` for adding/removing/updating cart items
 -   [ ] wise-16: Implement Home Screen (offers carousel, categories list, product grid)
 -   [ ] wise-17: Implement Products by Category Screen (fetch & display filtered products)
 -   [ ] wise-18: Implement Product Details Screen (image, price, description, reviews section, "Add to Cart" button)
 -   [ ] wise-19: Implement Cart Screen (list items, update quantity, remove item, total price)
 -   [ ] wise-20: Implement Product Management Screen (form to add new product; delete button on product card)
--   [ ] wise-21: Create `ProductCubit` for fetching and managing products
--   [ ] wise-22: Create `CartCubit` for adding/removing/updating cart items
 -   [ ] wise-23: Making Screens First , Then The usable Shared widgets && refactor
 
 ---
