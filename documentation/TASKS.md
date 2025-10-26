@@ -10,12 +10,13 @@
 
 -   [x] ~~wise-0: Create GitHub repository and add collaborators~~
 -   [x] ~~wise-1: Initialize Flutter project named `dealwise` and push initial commit~~
--   [ ] wise-2: Configure app name ("DealWise") and launcher icon / Icon for the app
--   [ ] wise-3: Add essential dependencies to `pubspec.yaml`:
-    -   [ ] `flutter_bloc`
-    -   [ ] `shared_preferences`
-    -   [ ] `dio`
-    -   [ ] `flutter_secure_storage`
+-   [x] ~~wise-2: Configure app name ("DealWise") and launcher icon / Icon for the app~~
+-   [x] ~~wise-3: Add essential dependencies to `pubspec.yaml`:~~
+    -   [x] ~~`flutter_bloc`~~
+    -   [x] ~~`shared_preferences`~~
+    -   [x] ~~`dio`~~
+    -   [x] ~~`http` optional~~
+    -   [x] ~~`flutter_secure_storage`~~
 -   [ ] wise-4: Creating all features folders / The Colors folder for themeing / Screen files placeholders
 -   [ ] wise-5: Define Routes
 -   [ ] wise-6: Define base URL and app constants in `lib/core/constants.dart`
