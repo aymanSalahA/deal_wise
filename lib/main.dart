@@ -1,5 +1,6 @@
 import 'package:deal_wise/features/auth/data/models/auth_view_model.dart';
-import 'package:deal_wise/features/splash/presentation/splash_screen.dart';
+import 'package:deal_wise/features/auth/presentation/screens/forgot_password_screen.dart';
+// import 'package:deal_wise/features/splash/presentation/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './features/auth/presentation/screens/reset_password.dart';
@@ -13,7 +14,6 @@ void main() {
     ),
   );
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
@@ -21,10 +21,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Deal Wise',
-      home: const SplashScreen(),
+      // home: const SplashScreen(),
+          home: const ForgotPasswordScreen(),
       routes: {
         '/resetPassword': (context) => ResetPasswordScreen(),
         '/dummy': (context) => const DummyScreen(),
+        // '/forgotPassword': (context) =>  ForgotPasswordScreen(),
       },
     );
   }
