@@ -20,7 +20,7 @@
 -   [x] ~~wise-4: Creating all features folders / Screen files placeholders~~
 -   [ ] The Colors folder for themeing
 -   [x] ~~wise-5: Define Routes~~
--   [ ] wise-6: Define base URL and app constants in `lib/core/constants.dart`
+-   [x] ~~wise-6: Define base URL and app constants in `lib/core/utils/`  >> NEED for each feature~~
 
 ---
 
