@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'features/auth/presentation/screens/reset_password.dart';
+import 'features/auth/presentation/screens/dummy_screen.dart';
+import '';
 
 void main() {
   runApp(const MyApp());
@@ -13,12 +15,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Deal Wise',
       debugShowCheckedModeBanner: false,
-      // home: Scaffold(body: Center(child: Text("Start Working"))),
-      initialRoute: '/',
+      initialRoute: '/reset-password',
       routes: {
-        '/': (_) => ResetPasswordScreen(),
-        // '/screen-one': (_) => const ScreenOne(),
-        // '/screen-one': (context) => ScreenTwo(),
+        '/': (_) => const DummyScreen(),
+        '/reset-password': (context) => ResetPasswordScreen(),
+        // '/screen-one': (context) => ScreenOne(),
       },
     );
   }

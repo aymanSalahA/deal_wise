@@ -1,149 +1,187 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../cubit/reset_password_cubit.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
-  ResetPasswordScreen({super.key});
-
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  final Dio _dio = Dio();
 
-  Future<void> _resetPassword(BuildContext context) async {
-    if (_newPasswordController.text != _confirmPasswordController.text) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Passwords do not match.")));
-      return;
-    }
-
-    try {
-      final response = await _dio.post(
-        'https://accessories-eshop.runasp.net/api/auth/reset-password',
-        data: {
-          'newPassword': _newPasswordController.text,
-          // Add other required fields (e.g., token, email) if needed
-        },
-      );
-
-      if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Password reset successfully!")),
-        );
-        // Navigate to login or home screen
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Failed to reset password: ${response.data}")),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Error: $e")));
-    }
-  }
+  ResetPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    bool obscureNewPassword = true;
-    bool obscureConfirmPassword = true;
-
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => NewPasswordVisibilityCubit()),
+        BlocProvider(create: (context) => ConfirmPasswordVisibilityCubit()),
+      ],
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF6F7F8),
+        appBar: AppBar(
+          backgroundColor: const Color(0xFFF6F7F8),
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          title: const Text(
+            'Reset Password',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          centerTitle: true,
         ),
-        title: const Text('Reset Password'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            const Text(
-              'Create new password',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Your new password must be different from previous passwords.',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 30),
-            // New Password Field
-            StatefulBuilder(
-              builder: (context, setState) {
-                return TextField(
-                  controller: _newPasswordController,
-                  obscureText: obscureNewPassword,
-                  decoration: InputDecoration(
-                    labelText: 'New Password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        obscureNewPassword
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                      ),
-                      onPressed: () => setState(
-                        () => obscureNewPassword = !obscureNewPassword,
-                      ),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Must be at least 8 characters.',
-              style: TextStyle(fontSize: 12, color: Colors.grey),
-            ),
-            const SizedBox(height: 20),
-            // Confirm Password Field
-            StatefulBuilder(
-              builder: (context, setState) {
-                return TextField(
-                  controller: _confirmPasswordController,
-                  obscureText: obscureConfirmPassword,
-                  decoration: InputDecoration(
-                    labelText: 'Confirm New Password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        obscureConfirmPassword
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                      ),
-                      onPressed: () => setState(
-                        () => obscureConfirmPassword = !obscureConfirmPassword,
-                      ),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 30),
-            // Reset Password Button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => _resetPassword(context),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 20),
+                const Text(
+                  'Create new password',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
                 ),
-                child: const Text('Reset Password'),
-              ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Your new password must be different from previous passwords.',
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+                const SizedBox(height: 30),
+                // New Password Field
+                BlocBuilder<NewPasswordVisibilityCubit, bool>(
+                  builder: (context, obscureNewPassword) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'New Password',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: _newPasswordController,
+                          obscureText: obscureNewPassword,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'Enter new password',
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                obscureNewPassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: Colors.grey,
+                              ),
+                              onPressed: () => context
+                                  .read<NewPasswordVisibilityCubit>()
+                                  .toggleVisibility(),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 14,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        const Text(
+                          'Must be at least 8 characters.',
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                // Confirm Password Field
+                BlocBuilder<ConfirmPasswordVisibilityCubit, bool>(
+                  builder: (context, obscureConfirmPassword) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Confirm New Password',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: _confirmPasswordController,
+                          obscureText: obscureConfirmPassword,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'Confirm new password',
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                obscureConfirmPassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: Colors.grey,
+                              ),
+                              onPressed: () => context
+                                  .read<ConfirmPasswordVisibilityCubit>()
+                                  .toggleVisibility(),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 14,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                const SizedBox(height: 30),
+                // Reset Password Button
+                ElevatedButton(
+                  onPressed: () {
+                    print('\x1B[1;42m Reset Password Pressed \x1B[0m');
+                    //
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF13A4EC),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text(
+                    'Reset Password',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
