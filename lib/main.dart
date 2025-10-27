@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'features/auth/presentation/screens/reset_password.dart';
-import 'features/auth/presentation/screens/dummy_screen.dart';
-import '';
+import './features/auth/presentation/screens/reset_password.dart';
+import './features/auth/presentation/screens/dummy_screen.dart';
 
 void main() {
   runApp(const MyApp());

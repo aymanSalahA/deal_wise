@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/reset_password_cubit.dart';
+import '../../data/api_service/reset_password_service.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   final TextEditingController _newPasswordController = TextEditingController();
@@ -15,6 +16,9 @@ class ResetPasswordScreen extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => NewPasswordVisibilityCubit()),
         BlocProvider(create: (context) => ConfirmPasswordVisibilityCubit()),
+        BlocProvider(
+          create: (context) => ResetPasswordCubit(ResetPasswordService()),
+        ),
       ],
       child: Scaffold(
         backgroundColor: const Color(0xFFF6F7F8),
@@ -56,7 +60,6 @@ class ResetPasswordScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 const SizedBox(height: 30),
-                // New Password Field
                 BlocBuilder<NewPasswordVisibilityCubit, bool>(
                   builder: (context, obscureNewPassword) {
                     return Column(
@@ -109,7 +112,6 @@ class ResetPasswordScreen extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 20),
-                // Confirm Password Field
                 BlocBuilder<ConfirmPasswordVisibilityCubit, bool>(
                   builder: (context, obscureConfirmPassword) {
                     return Column(
@@ -157,27 +159,39 @@ class ResetPasswordScreen extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 30),
-                // Reset Password Button
-                ElevatedButton(
-                  onPressed: () {
-                    print('\x1B[1;42m Reset Password Pressed \x1B[0m');
-                    //
+                BlocBuilder<ResetPasswordCubit, ResetPasswordState>(
+                  builder: (context, state) {
+                    if (state is ResetPasswordLoading) {
+                      return ElevatedButton(
+                        onPressed: null,
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return ElevatedButton(
+                      onPressed: () {
+                        context.read<ResetPasswordCubit>().resetPassword(
+                          email: "SENT_BY_NAV@gmail.com",
+                          otp: "SENT_BY_NAV",
+                          newPassword: _newPasswordController.text,
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF13A4EC),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text(
+                        'Reset Password',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    );
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF13A4EC),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: const Text(
-                    'Reset Password',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
                 ),
               ],
             ),
