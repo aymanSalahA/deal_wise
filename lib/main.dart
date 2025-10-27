@@ -9,9 +9,7 @@ import './features/auth/presentation/screens/dummy_screen.dart';
 void main() {
   runApp(
     MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthViewModel()),
-      ],
+      providers: [ChangeNotifierProvider(create: (_) => AuthViewModel())],
       child: const MyApp(),
     ),
   );
@@ -28,7 +26,6 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (_) => const DummyScreen(),
         '/reset-password': (context) => ResetPasswordScreen(),
-        // '/screen-one': (context) => ScreenOne(),
       },
     );
   }
