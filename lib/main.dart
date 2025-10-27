@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
       title: 'Deal Wise',
       initialRoute: '/dummy',
       routes: {
-        '/resetPassword': (context) => ResetPasswordScreen(),
         '/dummy': (context) => const DummyScreen(),
         '/forgot-password': (context) => ForgotPasswordScreen(),
         '/reset-password': (context) => ResetPasswordScreen(),
