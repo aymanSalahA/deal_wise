@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/resetPassword': (context) => ResetPasswordScreen(),
         '/dummy': (context) => const DummyScreen(),
-        '/forgotPassword': (context) => ForgotPasswordScreen(),
+        '/forgot-password': (context) => ForgotPasswordScreen(),
         '/reset-password': (context) => ResetPasswordScreen(),
       },
     );
