@@ -16,14 +16,8 @@ class ResetPasswordService {
 
     final response = await _dio.post(
       url,
-      data: {
-        'email': email,
-        'otp': otp,
-        'newPassword': newPassword,
-      },
-      options: Options(
-        headers: {'Content-Type': 'application/json'},
-      ),
+      data: {'email': email, 'otp': otp, 'newPassword': newPassword},
+      options: Options(headers: {'Content-Type': 'application/json'}),
     );
 
     log('✅ Response status: ${response.statusCode}');
