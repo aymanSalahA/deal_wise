@@ -1,9 +1,20 @@
+import 'package:deal_wise/features/auth/data/models/auth_view_model.dart';
+import 'package:deal_wise/features/auth/presentation/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import './features/auth/presentation/screens/reset_password.dart';
 import './features/auth/presentation/screens/dummy_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthViewModel()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,7 +23,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Deal Wise',
       debugShowCheckedModeBanner: false,
       initialRoute: '/reset-password',
       routes: {
