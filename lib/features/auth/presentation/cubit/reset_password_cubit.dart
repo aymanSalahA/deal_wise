@@ -1,4 +1,5 @@
 // reset_password_cubit.dart
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/api_service/reset_password_service.dart';
 
@@ -21,6 +22,8 @@ class ResetPasswordCubit extends Cubit<ResetPasswordState> {
         newPassword: newPassword,
       );
       emit(ResetPasswordSuccess());
+    } on DioException catch (e) {
+      emit(ResetPasswordError('Network error: ${e.message}'));
     } catch (e) {
       emit(ResetPasswordError(e.toString()));
     }
