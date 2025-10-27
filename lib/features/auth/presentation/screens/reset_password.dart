@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/visibility_password_cubit.dart';
+import '../cubit/reset_password_cubit.dart';
+import '../../data/api_service/reset_password_service.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   final TextEditingController _newPasswordController = TextEditingController();
@@ -15,6 +17,9 @@ class ResetPasswordScreen extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => NewPasswordVisibilityCubit()),
         BlocProvider(create: (context) => ConfirmPasswordVisibilityCubit()),
+        BlocProvider(
+          create: (context) => ResetPasswordCubit(ResetPasswordService()),
+        ),
       ],
       child: Scaffold(
         backgroundColor: const Color(0xFFF6F7F8),
