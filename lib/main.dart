@@ -10,11 +10,11 @@ void main() {
   runApp(
     MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => AuthViewModel())],
-      providers: [ChangeNotifierProvider(create: (_) => AuthViewModel())],
       child: const MyApp(),
     ),
   );
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
@@ -22,12 +22,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Deal Wise',
-      // home: const SplashScreen(),
-          home: const ForgotPasswordScreen(),
+      initialRoute: '/dummy',
       routes: {
         '/resetPassword': (context) => ResetPasswordScreen(),
         '/dummy': (context) => const DummyScreen(),
-        // '/forgotPassword': (context) =>  ForgotPasswordScreen(),
+        '/forgotPassword': (context) => ForgotPasswordScreen(),
+        '/reset-password': (context) => ResetPasswordScreen(),
       },
     );
   }
