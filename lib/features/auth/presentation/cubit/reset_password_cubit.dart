@@ -25,6 +25,11 @@ class ResetPasswordCubit extends Cubit<ResetPasswordState> {
       emit(ResetPasswordError(e.toString()));
     }
   }
+
+  // Add this helper method to avoid the warning
+  void showValidationError(String message) {
+    emit(ResetPasswordError(message));
+  }
 }
 
 // States
