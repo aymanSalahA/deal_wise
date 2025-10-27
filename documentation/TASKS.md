@@ -20,13 +20,12 @@
 -   [x] ~~wise-4: Creating all features folders / Screen files placeholders~~
 -   [ ] The Colors folder for themeing
 -   [x] ~~wise-5: Define Routes~~
--   [x] ~~wise-6: Define base URL and app constants in `lib/core/utils/`  >> NEED for each feature~~
+-   [x] ~~wise-6: Define base URL and app constants in `lib/core/utils/` >> NEED for each feature~~
 
 ---
 
 ### **Phase 1: Authentication & Onboarding**
 
--   [ ] wise-14: Create `AuthCubit` with states for all auth flows (initial, loading, success, error)
 -   [ ] wise-7: Implement Splash Screen (logo + 2s delay → auth/home)
 -   [ ] wise-8: Implement Onboarding Screen (single page, skip button, mark seen via `shared_preferences`)
 -   [ ] wise-10: Implement Register Screen (name/email/password + validation)
