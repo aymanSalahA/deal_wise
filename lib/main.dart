@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Deal Wise',
       // home: const SplashScreen(),
-          home: const ForgotPasswordScreen(),
+          home:  ForgotPasswordScreen(),
       routes: {
         '/resetPassword': (context) => ResetPasswordScreen(),
         '/dummy': (context) => const DummyScreen(),
