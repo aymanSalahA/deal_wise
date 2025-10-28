@@ -47,7 +47,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
     // Navigate to login screen
     if (mounted) {
-      Navigator.pushReplacementNamed(context, AppRoutes.dummy);
+      Navigator.pushReplacementNamed(context, AppRoutes.login);
       // TODO
     }
   }
