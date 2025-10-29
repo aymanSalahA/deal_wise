@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:dio/dio.dart';
 import '../../../../core/utils/api_constants.dart';
 
@@ -9,13 +10,17 @@ class ResetPasswordService {
     required String otp,
     required String newPassword,
   }) async {
-    try {
-      await _dio.post(
-        '${ApiConstants.baseUrl}reset-password',
-        data: {'email': email, 'otp': otp, 'newPassword': newPassword},
-      );
-    } catch (e) {
-      throw Exception('Failed to reset password: $e');
-    }
+    final url = '${ApiConstants.baseUrl}reset-password';
+    log('🌍 POST $url');
+    log('📦 Sending: {email: $email, otp: $otp, newPassword: $newPassword}');
+
+    final response = await _dio.post(
+      url,
+      data: {'email': email, 'otp': otp, 'newPassword': newPassword},
+      options: Options(headers: {'Content-Type': 'application/json'}),
+    );
+
+    log('✅ Response status: ${response.statusCode}');
+    log('✅ Response data: ${response.data}');
   }
 }

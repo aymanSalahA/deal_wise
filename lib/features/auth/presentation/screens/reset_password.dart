@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../cubit/visibility_password_cubit.dart';
 import '../cubit/reset_password_cubit.dart';
 import '../../data/api_service/reset_password_service.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
+  final String email;
+  final String otp;
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
-  ResetPasswordScreen({super.key});
+  ResetPasswordScreen({
+    super.key,
+    this.email = 'fake@example.com',
+    this.otp = 'wrong123',
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +67,7 @@ class ResetPasswordScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 const SizedBox(height: 30),
+                // New Password Field
                 BlocBuilder<NewPasswordVisibilityCubit, bool>(
                   builder: (context, obscureNewPassword) {
                     return Column(
@@ -158,23 +166,102 @@ class ResetPasswordScreen extends StatelessWidget {
                     );
                   },
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
+                // Error Message Display
                 BlocBuilder<ResetPasswordCubit, ResetPasswordState>(
                   builder: (context, state) {
-                    if (state is ResetPasswordLoading) {
-                      return ElevatedButton(
-                        onPressed: null,
-                        child: CircularProgressIndicator(),
+                    if (state is ResetPasswordError) {
+                      return Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.red.shade50,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.red.shade200),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.error_outline,
+                              color: Colors.red.shade700,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                state.message,
+                                style: TextStyle(
+                                  color: Colors.red.shade700,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       );
                     }
+                    if (state is ResetPasswordSuccess) {
+                      return Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade50,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.green.shade200),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.check_circle_outline,
+                              color: Colors.green.shade700,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                'Password reset successfully!',
+                                style: TextStyle(
+                                  color: Colors.green.shade700,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+                const SizedBox(height: 10),
+                // Reset Password Button
+                BlocBuilder<ResetPasswordCubit, ResetPasswordState>(
+                  builder: (context, state) {
                     return ElevatedButton(
-                      onPressed: () {
-                        context.read<ResetPasswordCubit>().resetPassword(
-                          email: "SENT_BY_NAV@gmail.com",
-                          otp: "SENT_BY_NAV",
-                          newPassword: _newPasswordController.text,
-                        );
-                      },
+                      onPressed: state is ResetPasswordLoading
+                          ? null
+                          : () {
+                              // Validate password match
+                              if (_newPasswordController.text.isEmpty ||
+                                  _confirmPasswordController.text.isEmpty) {
+                                return;
+                              }
+
+                              if (_newPasswordController.text !=
+                                  _confirmPasswordController.text) {
+                                // Show mismatch error using a temporary variable
+                                final cubit = context
+                                    .read<ResetPasswordCubit>();
+                                cubit.showValidationError(
+                                  'Passwords do not match!',
+                                );
+                                return;
+                              }
+
+                              context.read<ResetPasswordCubit>().resetPassword(
+                                email: email,
+                                otp: otp,
+                                newPassword: _newPasswordController.text,
+                              );
+                            },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF13A4EC),
                         padding: const EdgeInsets.symmetric(vertical: 16),
@@ -182,14 +269,16 @@ class ResetPasswordScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text(
-                        'Reset Password',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                      ),
+                      child: state is ResetPasswordLoading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text(
+                              'Reset Password',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
                     );
                   },
                 ),

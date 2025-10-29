@@ -1,4 +1,6 @@
 import 'package:deal_wise/features/auth/presentation/cubit/forgot_password_cubit.dart';
+import 'package:deal_wise/features/auth/presentation/cubit/forgot_password_state.dart';
+import 'package:deal_wise/features/auth/presentation/screens/otp_verification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/api_service/forgot_password_service.dart';
@@ -69,7 +71,10 @@ class ForgotPasswordScreen extends StatelessWidget {
                       color: Colors.grey,
                     ),
                     hintText: "Enter your email address",
-                    hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
+                    hintStyle: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 14,
+                    ),
                     labelText: "Email Address",
                     labelStyle: const TextStyle(
                       color: Colors.black87,
@@ -92,12 +97,19 @@ class ForgotPasswordScreen extends StatelessWidget {
                 BlocConsumer<ForgotPasswordCubit, ForgotPasswordState>(
                   listener: (context, state) {
                     if (state is ForgotPasswordSuccess) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Reset link sent successfully")),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OtpVerificationScreen(
+                            verificationTarget: state.email,
+                          ),
+                        ),
                       );
                     } else if (state is ForgotPasswordFailure) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Failed to send reset link")),
+                        const SnackBar(
+                          content: Text("Failed to send reset link"),
+                        ),
                       );
                     }
                   },
@@ -111,10 +123,14 @@ class ForgotPasswordScreen extends StatelessWidget {
                             : () {
                                 final email = emailController.text.trim();
                                 if (email.isNotEmpty) {
-                                  context.read<ForgotPasswordCubit>().sendResetLink(email);
+                                  context
+                                      .read<ForgotPasswordCubit>()
+                                      .sendResetLink(email);
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text("Please enter email")),
+                                    const SnackBar(
+                                      content: Text("Please enter email"),
+                                    ),
                                   );
                                 }
                               },
@@ -125,7 +141,9 @@ class ForgotPasswordScreen extends StatelessWidget {
                           ),
                         ),
                         child: state is ForgotPasswordLoading
-                            ? const CircularProgressIndicator(color: Colors.white)
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
                             : const Text(
                                 "Send Reset Link",
                                 style: TextStyle(
