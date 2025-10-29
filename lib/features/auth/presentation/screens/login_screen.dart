@@ -70,8 +70,8 @@ class _LoginViewState extends State<_LoginView> {
             MaterialPageRoute(
               builder: (context) => OtpVerificationScreen(
                 email: state.email,
-                otp: '',  
-                verificationTarget: state.email,  
+                otp: '',
+                verificationTarget: state.email,
               ),
             ),
           );
@@ -154,7 +154,7 @@ class _LoginViewState extends State<_LoginView> {
                               isLoading // Forgot Password
                               ? null
                               : () {
-                                  Navigator.pushReplacementNamed(
+                                  Navigator.pushNamed(
                                     context,
                                     AppRoutes.forgotPassword,
                                   );
