@@ -89,7 +89,7 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
               ),
             );
 
-            Navigator.of(context).pushReplacement(
+            Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (_) => ResetPasswordScreen(
                   email: cubit.email,
