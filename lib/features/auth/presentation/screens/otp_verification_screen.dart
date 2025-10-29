@@ -1,5 +1,6 @@
 import 'package:deal_wise/features/auth/presentation/cubit/otp_verification_cubit.dart';
 import 'package:deal_wise/features/auth/presentation/cubit/otp_verification_state.dart';
+import 'package:deal_wise/features/auth/presentation/screens/reset_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -87,7 +88,15 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
                 backgroundColor: Colors.green,
               ),
             );
-            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) => ResetPasswordScreen(
+                  email: cubit.email,
+                  otp: getEnteredOtp(),
+                ),
+              ),
+            );
           } else if (state is OtpVerificationFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
