@@ -1,3 +1,4 @@
+import 'package:deal_wise/features/auth/presentation/cubit/forgot_password_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/api_service/forgot_password_service.dart';
 
@@ -8,17 +9,11 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
 
   Future<void> sendResetLink(String email) async {
     emit(ForgotPasswordLoading());
-    await _service.sendResetLink(email);
-    emit(ForgotPasswordSuccess());
+    try {
+      await _service.sendResetLink(email);
+      emit(ForgotPasswordSuccess(email)); 
+    } catch (e) {
+      emit(ForgotPasswordFailure());
+    }
   }
 }
-
-abstract class ForgotPasswordState {}
-
-class ForgotPasswordInitial extends ForgotPasswordState {}
-
-class ForgotPasswordLoading extends ForgotPasswordState {}
-
-class ForgotPasswordSuccess extends ForgotPasswordState {}
-
-class ForgotPasswordFailure extends ForgotPasswordState {}

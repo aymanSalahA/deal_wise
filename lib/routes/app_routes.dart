@@ -18,7 +18,7 @@ class AppRoutes {
     splash: (context) => SplashScreen(),
     onBoarding: (context) => const OnboardingScreen(),
     login: (context) => const LoginScreen(),
-    forgotPassword: (context) => const ForgotPasswordScreen(),
+    forgotPassword: (context) => ForgotPasswordScreen(),
     resetPassword: (context) => ResetPasswordScreen(),
     dummy: (context) => const DummyScreen(),
   };

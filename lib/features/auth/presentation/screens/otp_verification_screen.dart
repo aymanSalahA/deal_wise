@@ -15,7 +15,7 @@ class OtpVerificationScreen extends StatefulWidget {
 
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   late List<TextEditingController> otpControllers;
-  late Timer _timer;
+  Timer? _timer; 
   int _start = 60;
   bool _canResend = false;
 
@@ -28,13 +28,14 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   }
 
   void startTimer() {
-    if (mounted) {
-      if (_timer.isActive) {
-        _timer.cancel();
-      }
+    // ✅ حماية من الخطأ
+    if (_timer != null && _timer!.isActive) {
+      _timer!.cancel();
     }
+
     _start = 60;
     _canResend = false;
+
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!mounted) {
         timer.cancel();
@@ -54,9 +55,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   }
 
   void _verifyOtp(AuthViewModel authVM) async {
-    String enteredOtp = otpControllers
-        .map((controller) => controller.text)
-        .join();
+    String enteredOtp = otpControllers.map((controller) => controller.text).join();
 
     if (enteredOtp.length == 6) {
       bool success = await authVM.validateOtp(
@@ -65,7 +64,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       );
 
       if (success) {
-        _timer.cancel();
+        _timer?.cancel();
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Verification successful!'),
@@ -113,7 +112,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel(); // ✅ تم التعديل هنا
     for (var controller in otpControllers) {
       controller.dispose();
     }
@@ -140,7 +139,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         ),
         centerTitle: true,
       ),
-
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
@@ -202,9 +200,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     authVM.isLoading
                         ? const CircularProgressIndicator(strokeWidth: 2)
                         : TextButton(
-                            onPressed: _canResend
-                                ? () => _resendCode(authVM)
-                                : null,
+                            onPressed: _canResend ? () => _resendCode(authVM) : null,
                             child: Text(
                               'Resend',
                               style: TextStyle(
