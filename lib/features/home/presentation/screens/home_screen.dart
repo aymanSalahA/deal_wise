@@ -2,6 +2,7 @@ import 'package:deal_wise/features/home/data/services/offer_service.dart';
 import 'package:deal_wise/features/home/presentation/cubit/offer_cubit.dart';
 import 'package:deal_wise/features/home/presentation/widgets/custom_app_bar.dart';
 import 'package:deal_wise/features/home/presentation/widgets/offers_section.dart';
+import 'package:deal_wise/features/home/presentation/widgets/product_section.dart';
 import 'package:deal_wise/features/home/presentation/widgets/search_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +17,16 @@ class HomeScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: const CustomAppBar(),
-        body: Column(children: [SearchInputField(), OffersSection()]),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SearchInputField(),
+              OffersSection(),
+              SizedBox(height: 20),
+              ProductSection(),
+            ],
+          ),
+        ),
       ),
     );
   }

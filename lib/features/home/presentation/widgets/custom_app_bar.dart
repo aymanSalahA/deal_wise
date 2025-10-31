@@ -7,6 +7,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      elevation: 0,
+      scrolledUnderElevation: 0,
       backgroundColor: Colors.white,
       leading: Padding(
         padding: const EdgeInsets.only(left: 8.0),
