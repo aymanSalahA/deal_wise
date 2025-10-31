@@ -1,23 +1,22 @@
 import 'package:deal_wise/core/utils/validators.dart';
+import 'package:deal_wise/features/auth/data/api_service/login_service.dart';
 import 'package:deal_wise/features/auth/presentation/cubit/login_cubit.dart';
 import 'package:deal_wise/features/auth/presentation/cubit/login_state.dart';
 import 'package:deal_wise/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import '../widgets/social_button.dart';
 import 'otp_verification_screen.dart';
-import 'package:deal_wise/features/auth/data/models/auth_view_model.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final authVM = Provider.of<AuthViewModel>(context, listen: false);
+    final loginService = LoginService();  
 
     return BlocProvider(
-      create: (context) => LoginCubit(authVM: authVM),
+      create: (context) => LoginCubit(service: loginService),  
       child: const _LoginView(),
     );
   }
@@ -46,7 +45,6 @@ class _LoginViewState extends State<_LoginView> {
     if (_formKey.currentState!.validate()) {
       final email = emailController.text.trim();
       final password = passwordController.text.trim();
-
       context.read<LoginCubit>().login(email, password);
     }
   }
@@ -84,7 +82,6 @@ class _LoginViewState extends State<_LoginView> {
           );
         }
       },
-
       child: Scaffold(
         body: Center(
           child: SingleChildScrollView(
@@ -97,24 +94,20 @@ class _LoginViewState extends State<_LoginView> {
 
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      const Icon(
-                        Icons.shopping_bag_outlined,
-                        size: 60,
-                        color: Colors.blue,
-                      ),
+                      const Icon(Icons.shopping_bag_outlined,
+                          size: 60, color: Colors.blue),
                       const SizedBox(height: 20),
                       const Text(
                         'Welcome Back!',
                         style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
                       ),
                       const SizedBox(height: 40),
 
+                      // Email Field
                       TextFormField(
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
@@ -122,13 +115,14 @@ class _LoginViewState extends State<_LoginView> {
                           labelText: 'Email',
                           hintText: 'you@example.com',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                          ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8))),
                           prefixIcon: Icon(Icons.email_outlined),
                         ),
                         validator: (value) => Validator.validateEmail(value!),
                       ),
                       const SizedBox(height: 20),
+
                       // Password Field
                       TextFormField(
                         controller: passwordController,
@@ -137,8 +131,8 @@ class _LoginViewState extends State<_LoginView> {
                           labelText: 'Password',
                           hintText: 'Enter your password',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                          ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8))),
                           prefixIcon: Icon(Icons.lock_outline),
                           suffixIcon: Icon(Icons.visibility_off),
                         ),
@@ -150,8 +144,7 @@ class _LoginViewState extends State<_LoginView> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                          onPressed:
-                              isLoading // Forgot Password
+                          onPressed: isLoading
                               ? null
                               : () {
                                   Navigator.pushNamed(
@@ -186,26 +179,23 @@ class _LoginViewState extends State<_LoginView> {
                                 child: const Text(
                                   'Login',
                                   style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.white,
-                                  ),
+                                      fontSize: 18, color: Colors.white),
                                 ),
                               ),
                             ),
                       const SizedBox(height: 30),
 
-                      const Text(
-                        'or continue with',
-                        style: TextStyle(color: Colors.grey),
-                      ),
+                      const Text('or continue with',
+                          style: TextStyle(color: Colors.grey)),
                       const SizedBox(height: 20),
-                      Row(
+
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           SocialButton(icon: Icons.g_mobiledata),
-                          const SizedBox(width: 20),
+                          SizedBox(width: 20),
                           SocialButton(icon: Icons.facebook),
-                          const SizedBox(width: 20),
+                          SizedBox(width: 20),
                           SocialButton(icon: Icons.apple),
                         ],
                       ),
@@ -214,13 +204,11 @@ class _LoginViewState extends State<_LoginView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          const Text(
-                            "Don't have an account?",
-                            style: TextStyle(color: Colors.grey),
-                          ),
+                          const Text("Don't have an account?",
+                              style: TextStyle(color: Colors.grey)),
                           TextButton(
                             onPressed: () {
-                              /* Navigation to Sign Up screen */
+                              // navigate to SignUp
                             },
                             child: const Text(
                               'Sign Up',

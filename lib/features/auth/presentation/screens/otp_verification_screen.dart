@@ -1,30 +1,32 @@
+import 'package:deal_wise/features/auth/data/api_service/otp_service.dart';
 import 'package:deal_wise/features/auth/presentation/cubit/otp_verification_cubit.dart';
 import 'package:deal_wise/features/auth/presentation/cubit/otp_verification_state.dart';
 import 'package:deal_wise/features/auth/presentation/screens/reset_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import '../widgets/otp_input_field.dart';
-import 'package:deal_wise/features/auth/data/models/auth_view_model.dart';
 
 class OtpVerificationScreen extends StatelessWidget {
   final String email;
   final String otp;
+  final String verificationTarget;
 
   const OtpVerificationScreen({
     super.key,
     required this.email,
     required this.otp,
-    required String verificationTarget,
+    required this.verificationTarget,
   });
 
   @override
   Widget build(BuildContext context) {
-    final authVM = Provider.of<AuthViewModel>(context, listen: false);
-
     return BlocProvider(
-      create: (context) =>
-          OtpVerificationCubit(email: email, otp: otp, authVM: authVM),
+      create: (context) => OtpVerificationCubit(
+        email: email,
+        otp: otp,
+        verificationTarget: verificationTarget,
+        service: OtpService(),
+      ),
       child: const _OtpVerificationView(),
     );
   }
@@ -76,7 +78,6 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
         ),
         centerTitle: true,
       ),
-
       body: BlocListener<OtpVerificationCubit, OtpVerificationState>(
         listener: (context, state) {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -89,14 +90,16 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
               ),
             );
 
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => ResetPasswordScreen(
-                  email: cubit.email,
-                  otp: getEnteredOtp(),
+            if (cubit.verificationTarget == 'reset') {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => ResetPasswordScreen(
+                    email: cubit.email,
+                    otp: getEnteredOtp(),
+                  ),
                 ),
-              ),
-            );
+              );
+            }
           } else if (state is OtpVerificationFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -106,7 +109,6 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
             );
           }
         },
-
         child: BlocBuilder<OtpVerificationCubit, OtpVerificationState>(
           builder: (context, state) {
             final String timerText =
