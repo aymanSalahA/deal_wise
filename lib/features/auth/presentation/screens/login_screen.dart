@@ -1,6 +1,7 @@
 import 'package:deal_wise/core/utils/validators.dart';
 import 'package:deal_wise/features/auth/presentation/cubit/login_cubit.dart';
 import 'package:deal_wise/features/auth/presentation/cubit/login_state.dart';
+import 'package:deal_wise/features/auth/presentation/screens/register_screen.dart';
 import 'package:deal_wise/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -129,7 +130,7 @@ class _LoginViewState extends State<_LoginView> {
                         validator: (value) => Validator.validateEmail(value!),
                       ),
                       const SizedBox(height: 20),
-                      // Password Field
+
                       TextFormField(
                         controller: passwordController,
                         obscureText: true,
@@ -150,8 +151,7 @@ class _LoginViewState extends State<_LoginView> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                          onPressed:
-                              isLoading // Forgot Password
+                          onPressed: isLoading
                               ? null
                               : () {
                                   Navigator.pushNamed(
@@ -167,7 +167,6 @@ class _LoginViewState extends State<_LoginView> {
                       ),
                       const SizedBox(height: 20),
 
-                      // Login Button
                       isLoading
                           ? const CircularProgressIndicator()
                           : SizedBox(
@@ -220,7 +219,14 @@ class _LoginViewState extends State<_LoginView> {
                           ),
                           TextButton(
                             onPressed: () {
-                              /* Navigation to Sign Up screen */
+                              // ✅ التنقل لصفحة الريجيستر
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const RegisterAccountScreen(),
+                                ),
+                              );
                             },
                             child: const Text(
                               'Sign Up',
