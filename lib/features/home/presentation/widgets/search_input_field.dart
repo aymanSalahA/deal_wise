@@ -9,23 +9,23 @@ class SearchInputField extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: TextField(
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.search, color: Color(0xff5E6F88), size: 26),
+          prefixIcon: Icon(Icons.search, color: Colors.white, size: 26),
           hintText: 'Search of Products...',
           hintStyle: TextStyle(
-            color: Color(0xff7B8A9E),
+            color: Colors.white,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
-          suffixIcon: Icon(Icons.tune, color: Color(0xff7E8B9F), size: 26),
+          suffixIcon: Icon(Icons.tune, color: Colors.white, size: 26),
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(10),
           ),
-          fillColor: const Color(0xffE2E8F0),
+          fillColor: const Color(0xFF72C9F8),
           filled: true,
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Color(0xff27AAED)),
+            borderSide: BorderSide.none,
           ),
         ),
         style: const TextStyle(

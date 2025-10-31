@@ -83,6 +83,30 @@ class ProductCardWidget extends StatelessWidget {
                   fontSize: 18,
                 ),
               ),
+              const SizedBox(height: 6),
+              Row(
+                children: [
+                  Row(
+                    children: List.generate(5, (index) {
+                      return Icon(
+                        index < product.rating ? Icons.star : Icons.star_border,
+                        color: Colors.amber,
+                        size: 16,
+                      );
+                    }),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    '(${product.reviewsCount})',
+                    style: GoogleFonts.cairo(
+                      fontSize: 14,
+                      color: Colors.indigo,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+
               const Spacer(),
             ],
           ),
@@ -95,7 +119,7 @@ class ProductCardWidget extends StatelessWidget {
               child: FloatingActionButton(
                 heroTag: product.id,
                 onPressed: () {},
-                backgroundColor: Colors.blue,
+                backgroundColor: Color(0xFF5BC2FA),
                 child: const Icon(Icons.add, color: Colors.white, size: 24),
               ),
             ),

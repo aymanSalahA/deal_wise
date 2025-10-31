@@ -1,5 +1,6 @@
 import 'package:deal_wise/features/home/data/services/offer_service.dart';
 import 'package:deal_wise/features/home/presentation/cubit/offer_cubit.dart';
+import 'package:deal_wise/features/home/presentation/widgets/categories_section.dart';
 import 'package:deal_wise/features/home/presentation/widgets/custom_app_bar.dart';
 import 'package:deal_wise/features/home/presentation/widgets/offers_section.dart';
 import 'package:deal_wise/features/home/presentation/widgets/product_section.dart';
@@ -22,7 +23,9 @@ class HomeScreen extends StatelessWidget {
             children: [
               SearchInputField(),
               OffersSection(),
-              SizedBox(height: 20),
+              SizedBox(height: 15),
+              CategoriesSection(),
+              SizedBox(height: 10),
               ProductSection(),
             ],
           ),
