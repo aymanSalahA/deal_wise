@@ -2,6 +2,7 @@ import 'package:deal_wise/features/auth/data/models/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'routes/app_routes.dart';
+
 void main() async {
   runApp(
     MultiProvider(
