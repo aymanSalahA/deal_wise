@@ -31,7 +31,7 @@ class _OffersSectionState extends State<OffersSection> {
             padding: const EdgeInsets.only(top: 50.0),
             child: Center(
               child: LoadingAnimationWidget.staggeredDotsWave(
-                color: const Color(0xFF003366),
+                color: const Color.fromARGB(255, 4, 112, 219),
                 size: 40,
               ),
             ),

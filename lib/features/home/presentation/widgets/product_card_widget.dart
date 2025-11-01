@@ -59,19 +59,12 @@ class ProductCardWidget extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  product.arabicName.isNotEmpty
-                      ? product.arabicName
-                      : product.name,
-                  textAlign: TextAlign.right,
-                  style: GoogleFonts.cairo(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
-                  maxLines: 1,
+              Text(
+                product.name,
+                style: GoogleFonts.cairo(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
                 ),
               ),
               const SizedBox(height: 8),
@@ -80,10 +73,10 @@ class ProductCardWidget extends StatelessWidget {
                 style: GoogleFonts.caladea(
                   color: const Color(0xFF003366),
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 16,
                 ),
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 8),
               Row(
                 children: [
                   Row(
@@ -106,16 +99,14 @@ class ProductCardWidget extends StatelessWidget {
                   ),
                 ],
               ),
-
-              const Spacer(),
             ],
           ),
           Positioned(
             bottom: 0,
             right: 0,
             child: SizedBox(
-              width: 45,
-              height: 45,
+              width: 42,
+              height: 42,
               child: FloatingActionButton(
                 heroTag: product.id,
                 onPressed: () {},
