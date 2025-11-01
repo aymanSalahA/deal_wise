@@ -19,12 +19,12 @@ class AppRoutes {
   static const String mainlayout = '/mainlayout';
 
   static Map<String, WidgetBuilder> routes = {
-    // splash: (context) => SplashScreen(),
-    // onBoarding: (context) => const OnboardingScreen(),
-    // login: (context) => const LoginScreen(),
-    // forgotPassword: (context) => ForgotPasswordScreen(),
-    // resetPassword: (context) => ResetPasswordScreen(),
-    // dummy: (context) => const DummyScreen(),
+    splash: (context) => SplashScreen(),
+    onBoarding: (context) => const OnboardingScreen(),
+    login: (context) => const LoginScreen(),
+    forgotPassword: (context) => ForgotPasswordScreen(),
+    resetPassword: (context) => ResetPasswordScreen(),
+    dummy: (context) => const DummyScreen(),
     // home: (context) => const HomeScreen(),
     home: (context) => const MainLayout(),
   };

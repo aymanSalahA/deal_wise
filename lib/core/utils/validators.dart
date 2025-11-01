@@ -7,11 +7,11 @@ class Validator {
     } else if (!email.split("@")[0].contains(RegExp(r'^.{6,}$'))) {
       return AppStrings.emailMinLength;
     } else if (!regex.hasMatch(email)) {
-      if (!email.contains("@gmail.com")) {
-        return AppStrings.emailMustEndGmail;
-      } else {
-        return AppStrings.emailInvalidFormat;
-      }
+      // if (!email.contains("@gmail.com") || !email.contains("@zohomail.com")) {
+      //   return AppStrings.emailMustEndGmail;
+      // } else {
+      //   return AppStrings.emailInvalidFormat;
+      // }
     }
     return null;
   }

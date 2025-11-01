@@ -1,5 +1,6 @@
 import 'package:deal_wise/features/auth/data/api_service/api_service.dart';
 import 'package:flutter/material.dart';
+import '../../../../routes/app_routes.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -216,7 +217,7 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushReplacementNamed(context, '/login');
+                      Navigator.pushReplacementNamed(context, AppRoutes.login);
                     },
                     child: const Text(
                       "Login",
