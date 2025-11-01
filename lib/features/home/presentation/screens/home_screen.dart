@@ -7,7 +7,6 @@ import 'package:deal_wise/features/home/presentation/widgets/product_section.dar
 import 'package:deal_wise/features/home/presentation/widgets/search_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 

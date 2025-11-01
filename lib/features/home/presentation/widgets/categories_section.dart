@@ -75,7 +75,7 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                     ),
                     selected: isSelected,
                     selectedColor: const Color(0xffC8E6F5),
-                    backgroundColor: const Color(0xFFE2E8F0),
+                    backgroundColor: const Color(0xffFEEBE7),
                     side: BorderSide.none,
                     onSelected: (selected) {
                       setState(() {
