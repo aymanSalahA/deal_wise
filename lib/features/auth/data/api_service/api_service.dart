@@ -4,10 +4,10 @@ import 'package:dio/dio.dart';
 class ApiService {
   final Dio _dio;
 
-  // 🔹 رابط الـ API الأساسي
+  
   static const String _baseUrl = 'https://accessories-eshop.runasp.net/api';
   static const String _registerEndpoint = '/auth/register';
-  static const String _loginEndpoint = '/auth/login'; // ✅ أضفنا اللوجين هنا
+  static const String _loginEndpoint = '/auth/login'; 
 
   ApiService()
     : _dio = Dio(
@@ -19,7 +19,7 @@ class ApiService {
         ),
       );
 
-  // ✅ تسجيل حساب جديد
+ 
   Future<Map<String, dynamic>> registerUser({
     required String firstName,
     required String lastName,
@@ -63,7 +63,7 @@ class ApiService {
     }
   }
 
-  // ✅ تسجيل الدخول
+ 
   Future<Map<String, dynamic>> loginUser({
     required String email,
     required String password,

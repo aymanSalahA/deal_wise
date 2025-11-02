@@ -216,7 +216,10 @@ class _LoginViewState extends State<_LoginView> {
                           ),
                           TextButton(
                             onPressed: () {
-                              /* Navigation to Sign Up screen */
+                              Navigator.pushNamed(
+                                context,
+                                AppRoutes.signup,
+                              );
                             },
                             child: const Text(
                               'Sign Up',
