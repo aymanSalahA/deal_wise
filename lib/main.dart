@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'routes/app_routes.dart'; 
+import 'package:deal_wise/routes/app_routes.dart';
 import 'package:deal_wise/features/auth/data/api_service/login_service.dart';
-import 'package:deal_wise/features/auth/data/api_service/otp_service.dart'; 
+import 'package:deal_wise/features/auth/data/api_service/otp_service.dart';
 import 'package:deal_wise/features/auth/presentation/cubit/login_cubit.dart';
 import 'package:deal_wise/features/auth/presentation/cubit/otp_verification_cubit.dart';
 
@@ -19,18 +19,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        
-        BlocProvider(
-          create: (_) => LoginCubit(service: LoginService()),
-        ),
-
-         
+        BlocProvider(create: (_) => LoginCubit(service: LoginService())),
         BlocProvider(
           create: (_) => OtpVerificationCubit(
             email: '',
             otp: '',
-            service: OtpService(), verificationTarget: '',
-            
+            verificationTarget: '',
+            service: OtpService(),
           ),
         ),
       ],

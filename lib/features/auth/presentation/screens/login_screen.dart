@@ -13,10 +13,10 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final loginService = LoginService();  
+    final loginService = LoginService();
 
     return BlocProvider(
-      create: (context) => LoginCubit(service: loginService),  
+      create: (context) => LoginCubit(service: loginService),
       child: const _LoginView(),
     );
   }
@@ -95,15 +95,19 @@ class _LoginViewState extends State<_LoginView> {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      const Icon(Icons.shopping_bag_outlined,
-                          size: 60, color: Colors.blue),
+                      const Icon(
+                        Icons.shopping_bag_outlined,
+                        size: 60,
+                        color: Colors.blue,
+                      ),
                       const SizedBox(height: 20),
                       const Text(
                         'Welcome Back!',
                         style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
                       ),
                       const SizedBox(height: 40),
 
@@ -115,14 +119,13 @@ class _LoginViewState extends State<_LoginView> {
                           labelText: 'Email',
                           hintText: 'you@example.com',
                           border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8))),
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                          ),
                           prefixIcon: Icon(Icons.email_outlined),
                         ),
                         validator: (value) => Validator.validateEmail(value!),
                       ),
                       const SizedBox(height: 20),
-
                       // Password Field
                       TextFormField(
                         controller: passwordController,
@@ -131,8 +134,8 @@ class _LoginViewState extends State<_LoginView> {
                           labelText: 'Password',
                           hintText: 'Enter your password',
                           border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8))),
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                          ),
                           prefixIcon: Icon(Icons.lock_outline),
                           suffixIcon: Icon(Icons.visibility_off),
                         ),
@@ -160,7 +163,6 @@ class _LoginViewState extends State<_LoginView> {
                       ),
                       const SizedBox(height: 20),
 
-                      // Login Button
                       isLoading
                           ? const CircularProgressIndicator()
                           : SizedBox(
@@ -179,14 +181,18 @@ class _LoginViewState extends State<_LoginView> {
                                 child: const Text(
                                   'Login',
                                   style: TextStyle(
-                                      fontSize: 18, color: Colors.white),
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
                       const SizedBox(height: 30),
 
-                      const Text('or continue with',
-                          style: TextStyle(color: Colors.grey)),
+                      const Text(
+                        'or continue with',
+                        style: TextStyle(color: Colors.grey),
+                      ),
                       const SizedBox(height: 20),
 
                       const Row(
@@ -204,11 +210,13 @@ class _LoginViewState extends State<_LoginView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          const Text("Don't have an account?",
-                              style: TextStyle(color: Colors.grey)),
+                          const Text(
+                            "Don't have an account?",
+                            style: TextStyle(color: Colors.grey),
+                          ),
                           TextButton(
                             onPressed: () {
-                              // navigate to SignUp
+                              /* Navigation to Sign Up screen */
                             },
                             child: const Text(
                               'Sign Up',

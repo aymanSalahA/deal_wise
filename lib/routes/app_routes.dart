@@ -1,3 +1,5 @@
+import 'package:deal_wise/features/home/data/main_layout.dart';
+import 'package:deal_wise/features/home/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import '../features/auth/presentation/screens/login_screen.dart';
 import '../features/auth/presentation/screens/reset_password.dart';
@@ -12,7 +14,9 @@ class AppRoutes {
   static const String login = '/login';
   static const String forgotPassword = '/forgot-password';
   static const String resetPassword = '/reset-password';
+  static const String home = '/home';
   static const String dummy = '/dummy';
+  static const String mainlayout = '/mainlayout';
 
   static Map<String, WidgetBuilder> routes = {
     splash: (context) => SplashScreen(),
@@ -21,5 +25,7 @@ class AppRoutes {
     forgotPassword: (context) => ForgotPasswordScreen(),
     resetPassword: (context) => ResetPasswordScreen(),
     dummy: (context) => const DummyScreen(),
+    // home: (context) => const HomeScreen(),
+    home: (context) => const MainLayout(),
   };
 }

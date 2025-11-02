@@ -24,8 +24,10 @@ class _SplashScreenState extends State<SplashScreen> {
         prefs.getBool('onboarding_complete') ?? false;
 
     if (!onboardingComplete) {
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, AppRoutes.onBoarding);
     } else {
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, AppRoutes.login);
     }
   }
@@ -47,6 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       'assets/log/appstore.png',
                       width: 150,
                       height: 150,
+                      fit: BoxFit.contain,
                     ),
                     const SizedBox(height: 30),
                     Text(
