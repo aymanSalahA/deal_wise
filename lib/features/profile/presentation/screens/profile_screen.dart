@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../auth/data/api_service/logout_service.dart';
+import 'package:deal_wise/routes/app_routes.dart';
 
 import '../widgets/profile_header.dart';
 import '../widgets/profile_option_tile.dart';
@@ -48,7 +51,24 @@ class ProfileScreen extends StatelessWidget {
 
             const ProfileOptionTile(icon: Icons.delete_outline, title: 'Clear Cache'),
             const ProfileOptionTile(icon: Icons.history, title: 'Clear History'),
-            const ProfileOptionTile(icon: Icons.logout, title: 'Log Out'),
+            ProfileOptionTile(
+              icon: Icons.logout,
+              title: 'Log Out',
+              onTap: () async {
+                final prefs = await SharedPreferences.getInstance();
+                final token = prefs.getString('accessToken') ?? '';
+                try {
+                  if (token.isNotEmpty) {
+                    await LogoutService().logout(accessToken: token);
+                  }
+                } catch (_) {}
+                await prefs.remove('accessToken');
+                await prefs.remove('refreshToken');
+                await prefs.remove('expiresAtUtc');
+                // ignore: use_build_context_synchronously
+                Navigator.pushReplacementNamed(context, AppRoutes.login);
+              },
+            ),
 
             const SizedBox(height: 25),
             const Text(

@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 class OtpService {
   final Dio _dio = Dio();
 
-  Future<bool> validateOtp(String email, String otp) async {
+  Future<Map<String, dynamic>> validateOtp(String email, String otp) async {
     const String url = 'https://accessories-eshop.runasp.net/api/auth/validate-otp';
     try {
       final response = await _dio.post(
@@ -15,7 +15,14 @@ class OtpService {
       );
 
       log("Validate OTP response: ${response.data}");
-      return response.statusCode == 200;
+      if (response.statusCode == 200) {
+        if (response.data is Map<String, dynamic>) {
+          return Map<String, dynamic>.from(response.data);
+        }
+        return {'success': true};
+      } else {
+        throw Exception('OTP validation failed with status ${response.statusCode}');
+      }
     } catch (e) {
       log("OTP validation error: $e");
       throw Exception('OTP validation failed');

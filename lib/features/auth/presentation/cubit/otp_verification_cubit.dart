@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:deal_wise/features/auth/data/api_service/otp_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'otp_verification_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OtpVerificationCubit extends Cubit<OtpVerificationState> {
   final String email;
@@ -50,7 +51,17 @@ class OtpVerificationCubit extends Cubit<OtpVerificationState> {
     emit(OtpVerificationLoading(timer: state.timer, canResend: state.canResend));
 
     try {
-      final success = await service.validateOtp(email, enteredOtp);
+      final response = await service.validateOtp(email, enteredOtp);
+
+      // If tokens are returned as part of OTP validation, persist them
+      if (response.containsKey('accessToken')) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('accessToken', response['accessToken']);
+        await prefs.setString('refreshToken', response['refreshToken'] ?? '');
+        await prefs.setString('expiresAtUtc', response['expiresAtUtc'] ?? '');
+      }
+
+      final bool success = response['success'] == true || response.containsKey('accessToken');
       if (success) {
         _timer?.cancel();
         emit(const OtpVerificationSuccess());

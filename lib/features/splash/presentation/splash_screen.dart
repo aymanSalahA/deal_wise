@@ -26,6 +26,13 @@ class _SplashScreenState extends State<SplashScreen> {
     if (!onboardingComplete) {
       // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, AppRoutes.onBoarding);
+      return;
+    }
+
+    final accessToken = prefs.getString('accessToken');
+    if (accessToken != null && accessToken.isNotEmpty) {
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacementNamed(context, AppRoutes.home);
     } else {
       // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, AppRoutes.login);

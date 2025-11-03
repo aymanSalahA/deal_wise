@@ -83,13 +83,6 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
           if (state is OtpVerificationSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Verification successful!'),
-                backgroundColor: Colors.green,
-              ),
-            );
-
             // Navigate to Reset Password when target is 'reset' or when
             // older flow passed email instead of the literal 'reset'.
             final shouldNavigateToReset =
@@ -97,6 +90,7 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
                 cubit.verificationTarget.contains('@');
 
             if (shouldNavigateToReset) {
+              // For password reset flow, directly navigate without showing success message
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (_) => ResetPasswordScreen(
@@ -105,6 +99,15 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
                   ),
                 ),
               );
+            } else {
+              // For other verification flows (like registration), auto-navigate to home
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Verification successful!'),
+                  backgroundColor: Colors.green,
+                ),
+              );
+              Navigator.pushReplacementNamed(context, '/home');
             }
           } else if (state is OtpVerificationFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
