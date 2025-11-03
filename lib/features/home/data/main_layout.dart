@@ -1,8 +1,8 @@
 import 'package:deal_wise/features/cart/presentation/screens/cart_screen.dart';
+import 'package:deal_wise/features/home/presentation/screens/home_screen.dart';
 import 'package:deal_wise/features/home/presentation/widgets/custom_bottom_nav_bar.dart';
 import 'package:deal_wise/features/profile/presentation/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:deal_wise/features/home/presentation/screens/home_screen.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -14,11 +14,7 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    const ProfileScreen(),
-    const CartScreen(),
-  ];
+  final List<Widget> _screens = [const HomeScreen(), const ProfileScreen(), const CartPage()];
 
   @override
   Widget build(BuildContext context) {

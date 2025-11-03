@@ -29,7 +29,7 @@ class AppRoutes {
     forgotPassword: (context) => ForgotPasswordScreen(),
     resetPassword: (context) => ResetPasswordScreen(),
     dummy: (context) => const DummyScreen(),
-    // home: (context) => const HomeScreen(),
+    home: (context) => const HomeScreen(),
     home: (context) => const MainLayout(),
     productDetail: (context) => const ProductDetailsScreen(),
   };
