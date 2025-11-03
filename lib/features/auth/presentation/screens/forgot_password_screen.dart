@@ -102,8 +102,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => OtpVerificationScreen(
                             email: state.email,
-                            otp: "123433", // TODO
-                            verificationTarget: state.email,
+                            otp: "", // user will enter OTP on next screen
+                            verificationTarget: 'reset',
                           ),
                         ),
                       );

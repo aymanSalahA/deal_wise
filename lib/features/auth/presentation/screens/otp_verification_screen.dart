@@ -90,8 +90,14 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
               ),
             );
 
-            if (cubit.verificationTarget == 'reset') {
-              Navigator.of(context).push(
+            // Navigate to Reset Password when target is 'reset' or when
+            // older flow passed email instead of the literal 'reset'.
+            final shouldNavigateToReset =
+                cubit.verificationTarget == 'reset' ||
+                cubit.verificationTarget.contains('@');
+
+            if (shouldNavigateToReset) {
+              Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (_) => ResetPasswordScreen(
                     email: cubit.email,

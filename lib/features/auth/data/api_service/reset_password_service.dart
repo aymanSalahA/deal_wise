@@ -5,7 +5,7 @@ import '../../../../core/utils/api_constants.dart';
 class ResetPasswordService {
   final Dio _dio = Dio();
 
-  Future<void> resetPassword({
+  Future<Map<String, dynamic>> resetPassword({
     required String email,
     required String otp,
     required String newPassword,
@@ -22,5 +22,14 @@ class ResetPasswordService {
 
     log('✅ Response status: ${response.statusCode}');
     log('✅ Response data: ${response.data}');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.data is Map<String, dynamic>) {
+        return Map<String, dynamic>.from(response.data);
+      }
+      return {'success': true};
+    } else {
+      throw Exception('Reset password failed with status ${response.statusCode}');
+    }
   }
 }

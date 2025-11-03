@@ -1,6 +1,7 @@
 // reset_password_cubit.dart
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../data/api_service/reset_password_service.dart';
 
 class ResetPasswordCubit extends Cubit<ResetPasswordState> {
@@ -16,11 +17,20 @@ class ResetPasswordCubit extends Cubit<ResetPasswordState> {
   }) async {
     emit(ResetPasswordLoading());
     try {
-      await _resetPasswordService.resetPassword(
+      final response = await _resetPasswordService.resetPassword(
         email: email,
         otp: otp,
         newPassword: newPassword,
       );
+
+      // If API returned tokens, persist them similar to login
+      if (response is Map<String, dynamic> && response.containsKey('accessToken')) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('accessToken', response['accessToken']);
+        await prefs.setString('refreshToken', response['refreshToken'] ?? '');
+        await prefs.setString('expiresAtUtc', response['expiresAtUtc'] ?? '');
+      }
+
       emit(ResetPasswordSuccess());
     } on DioException catch (e) {
       emit(ResetPasswordError('Network error: ${e.message}'));
