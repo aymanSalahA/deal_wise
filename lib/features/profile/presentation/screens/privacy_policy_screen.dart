@@ -5,23 +5,134 @@ class PrivacyPolicyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color titleColor = Colors.black87;
+    final Color textColor = Colors.black54;
+
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Privacy & Policy'),
         backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
         elevation: 0,
+        foregroundColor: Colors.black,
+        title: const Text('Privacy & Policy'),
+        centerTitle: true,
       ),
-      body: const Center(
-        child: Padding(
-          padding: EdgeInsets.all(24.0),
-          child: Text(
-            'Privacy policy content will be provided later.',
-            textAlign: TextAlign.center,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 8),
+              Text(
+                'Privacy & Policy',
+                style: TextStyle(
+                  color: titleColor,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                'Last updated: October 26, 2023',
+                style: TextStyle(color: textColor, fontSize: 12),
+              ),
+              const SizedBox(height: 12),
+
+              // Sections (accordions)
+              _PolicyTile(
+                title: 'Introduction',
+                content:
+                    'This section details the types of personal and usage data we collect to improve your shopping experience. This includes information you provide during registration, such as your name and email, and data collected automatically, like your browsing history and device information.',
+              ),
+              _PolicyTile(
+                initiallyExpanded: true,
+                title: 'Information We Collect',
+                content:
+                    'We collect information you provide directly to us, such as when you create an account, place an order, or contact customer support. This may include your name, email address, postal address, phone number, and payment information. We also collect information automatically as you navigate the app, including usage details, IP addresses, and information collected through cookies.',
+              ),
+              _PolicyTile(
+                title: 'How We Use Your Information',
+                content:
+                    'Your information is used to fulfill your orders, process payments, communicate with you about your account, personalize your shopping experience, and improve our services. We may also use it for marketing purposes, with your consent where required.',
+              ),
+              _PolicyTile(
+                title: 'Data Sharing & Disclosure',
+                content:
+                    'We do not sell your personal data. We may share information with third-party service providers for functions like payment processing and shipping. We may also disclose information if required by law.',
+              ),
+              _PolicyTile(
+                title: 'Your Rights & Choices',
+                content:
+                    'You have the right to access, update, or delete your personal information. You can manage your preferences for marketing communications within your account settings.',
+              ),
+              _PolicyTile(
+                title: 'Data Security',
+                content:
+                    'We implement a variety of security measures to maintain the safety of your personal information when you place an order or enter, submit, or access your personal information.',
+              ),
+              _PolicyTile(
+                title: 'Contact Information',
+                content:
+                    'If you have any questions about this Privacy Policy, please contact us at support@ecommerce.app.',
+              ),
+              const SizedBox(height: 80),
+            ],
           ),
         ),
       ),
-      backgroundColor: Colors.white,
+      bottomNavigationBar: SafeArea(
+        minimum: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        child: SizedBox(
+          height: 48,
+          child: ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF13A4EC),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              elevation: 0,
+            ),
+            child: const Text(
+              'I Understand & Agree',
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PolicyTile extends StatelessWidget {
+  final String title;
+  final String content;
+  final bool initiallyExpanded;
+
+  const _PolicyTile({
+    required this.title,
+    required this.content,
+    this.initiallyExpanded = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ExpansionTile(
+        initiallyExpanded: initiallyExpanded,
+        tilePadding: const EdgeInsets.symmetric(horizontal: 8.0),
+        childrenPadding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
+        title: Text(
+          title,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
+        children: [
+          Text(
+            content,
+            style: const TextStyle(fontSize: 14, color: Colors.black54, height: 1.5),
+          ),
+        ],
+      ),
     );
   }
 }
