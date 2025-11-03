@@ -21,6 +21,13 @@ class LoginCubit extends Cubit<LoginState> {
         await prefs.setString('accessToken', response['accessToken']);
         await prefs.setString('refreshToken', response['refreshToken'] ?? '');
         await prefs.setString('expiresAtUtc', response['expiresAtUtc'] ?? '');
+        // Save user info if available
+        final String userEmail = (response['email'] ?? email).toString();
+        final String userFirstName = (response['firstName'] ?? '').toString();
+        final String userLastName = (response['lastName'] ?? '').toString();
+        await prefs.setString('userEmail', userEmail);
+        await prefs.setString('userFirstName', userFirstName);
+        await prefs.setString('userLastName', userLastName);
         
         emit(LoginSuccess(email));
       } else {

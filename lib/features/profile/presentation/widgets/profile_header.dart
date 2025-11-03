@@ -1,50 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({super.key});
 
+  Future<Map<String, String>> _loadUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    final firstName = prefs.getString('userFirstName') ?? '';
+    final lastName = prefs.getString('userLastName') ?? '';
+    final email = prefs.getString('userEmail') ?? '';
+    final displayName = (firstName.isNotEmpty || lastName.isNotEmpty)
+        ? [firstName, lastName].where((s) => s.isNotEmpty).join(' ')
+        : email;
+    return {'name': displayName, 'email': email};
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const CircleAvatar(
-          radius: 40,
-          backgroundImage: NetworkImage(
-            'https://tse1.mm.bing.net/th/id/OIP.T7UEeUXD7z52SPc3Yb8SFwHaFB?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3',
-          ),
-        ),
-        const SizedBox(width: 0),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return FutureBuilder<Map<String, String>>(
+      future: _loadUser(),
+      builder: (context, snapshot) {
+        final name = snapshot.data?['name'] ?? 'Your Name';
+        final email = snapshot.data?['email'] ?? '';
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              'Abdallah Elezaby',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            CircleAvatar(
+              radius: 40,
+              backgroundColor: Colors.grey.shade300,
+              child: const Icon(Icons.person, size: 40, color: Colors.white),
             ),
-            const SizedBox(height: 4),
-            const Text(
-              'abdallahelezaby@gmail.com',
-              style: TextStyle(color: Colors.black54, fontSize: 14),
-            ),
-            const SizedBox(height: 8),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
+            const SizedBox(width: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6),
-                ),
-              ),
-              onPressed: () {},
-              child: const Text('Edit Profile'),
+                const SizedBox(height: 4),
+                if (email.isNotEmpty)
+                  Text(
+                    email,
+                    style: const TextStyle(color: Colors.black54, fontSize: 14),
+                  ),
+              ],
             ),
           ],
-        ),
-      ],
+        );
+      },
     );
   }
 }

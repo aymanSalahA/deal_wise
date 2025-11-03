@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -14,7 +15,22 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         padding: const EdgeInsets.only(left: 8.0),
         child: CircleAvatar(backgroundImage: AssetImage('assets/log/appstore.png')),
       ),
-      title: Text('Hello, abdallah', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+      title: FutureBuilder<SharedPreferences>(
+        future: SharedPreferences.getInstance(),
+        builder: (context, snapshot) {
+          String greeting = 'Hello';
+          if (snapshot.hasData) {
+            final prefs = snapshot.data!;
+            final firstName = prefs.getString('userFirstName') ?? '';
+            final lastName = prefs.getString('userLastName') ?? '';
+            final displayName = (firstName.isNotEmpty || lastName.isNotEmpty)
+                ? [firstName, lastName].where((s) => s.isNotEmpty).join(' ')
+                : '';
+            greeting = displayName.isNotEmpty ? 'Hello, $displayName' : 'Hello';
+          }
+          return Text(greeting, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold));
+        },
+      ),
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 10.0),

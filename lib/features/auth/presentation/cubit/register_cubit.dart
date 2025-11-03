@@ -1,6 +1,7 @@
 import 'package:deal_wise/features/auth/data/api_service/api_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class RegisterState {}
 
@@ -46,6 +47,18 @@ class RegisterCubit extends Cubit<RegisterState> {
         await prefs.setString('refreshToken', response['refreshToken'] ?? '');
         await prefs.setString('expiresAtUtc', response['expiresAtUtc'] ?? '');
         hasToken = true;
+        // Save user info (from response if present, else from inputs)
+        await prefs.setString('userEmail', (response['email'] ?? email).toString());
+        await prefs.setString('userFirstName', (response['firstName'] ?? firstName).toString());
+        await prefs.setString('userLastName', (response['lastName'] ?? lastName).toString());
+      }
+
+      // If no token yet, still persist provided registration details for UI personalization
+      if (!hasToken) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('userEmail', email);
+        await prefs.setString('userFirstName', firstName);
+        await prefs.setString('userLastName', lastName);
       }
 
       emit(RegisterSuccess(hasToken: hasToken, email: email));
