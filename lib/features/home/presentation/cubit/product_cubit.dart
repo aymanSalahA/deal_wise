@@ -6,8 +6,12 @@ import 'product_state.dart';
 
 class ProductCubit extends Cubit<ProductState> {
   final Dio dio = Dio();
+  final ProductService productService;
 
-  ProductCubit(ProductService productService) : super(ProductInitial());
+  List<ProductModel> allProducts = [];
+  List<ProductModel> filteredProducts = [];
+
+  ProductCubit(this.productService) : super(ProductInitial());
 
   Future<void> fetchProducts() async {
     emit(ProductLoading());
@@ -16,14 +20,14 @@ class ProductCubit extends Cubit<ProductState> {
 
     try {
       final response = await dio.get(apiUrl);
-      await Future.delayed(const Duration(seconds: 4));
+      await Future.delayed(const Duration(seconds: 3));
 
       if (response.statusCode == 200) {
         final data = response.data;
         final dynamic rawList = data['items'];
 
         if (rawList is List) {
-          List<ProductModel> products = rawList
+          allProducts = rawList
               .map((item) {
                 if (item is Map<String, dynamic>) {
                   return ProductModel.fromJson(item);
@@ -33,7 +37,9 @@ class ProductCubit extends Cubit<ProductState> {
               .whereType<ProductModel>()
               .toList();
 
-          emit(ProductSuccess(products));
+          filteredProducts = List.from(allProducts);
+
+          emit(ProductSuccess(filteredProducts));
         } else {
           emit(
             ProductFailurer(
@@ -55,5 +61,20 @@ class ProductCubit extends Cubit<ProductState> {
     } catch (e) {
       emit(ProductFailurer(e.toString()));
     }
+  }
+
+  void searchProducts(String query) {
+    if (query.isEmpty) {
+      filteredProducts = List.from(allProducts);
+    } else {
+      filteredProducts = allProducts
+          .where(
+            (product) =>
+                product.name.toLowerCase().contains(query.toLowerCase()),
+          )
+          .toList();
+    }
+
+    emit(ProductSuccess(filteredProducts));
   }
 }

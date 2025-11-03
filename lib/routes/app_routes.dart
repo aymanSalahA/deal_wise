@@ -1,5 +1,6 @@
 import 'package:deal_wise/features/auth/presentation/screens/register_screen.dart';
 import 'package:deal_wise/features/home/data/main_layout.dart';
+import 'package:deal_wise/features/home/presentation/screens/product_details_screen.dart';
 import 'package:flutter/material.dart';
 import '../features/auth/presentation/screens/login_screen.dart';
 import '../features/auth/presentation/screens/reset_password.dart';
@@ -18,6 +19,7 @@ class AppRoutes {
   static const String home = '/home';
   static const String dummy = '/dummy';
   static const String mainlayout = '/mainlayout';
+  static const String productDetail = '/product-detail';
 
   static Map<String, WidgetBuilder> routes = {
     splash: (context) => SplashScreen(),
@@ -29,5 +31,7 @@ class AppRoutes {
     dummy: (context) => const DummyScreen(),
     // home: (context) => const HomeScreen(),
     home: (context) => const MainLayout(),
+  productDetail: (context) => const ProductDetailsScreen(),
+
   };
 }
