@@ -8,6 +8,11 @@ import '../features/auth/presentation/screens/dummy_screen.dart';
 import '../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../features/onboarding/screens/onboarding_screen.dart';
 import '../features/splash/presentation/splash_screen.dart';
+import '../features/profile/presentation/screens/privacy_policy_screen.dart';
+import '../features/profile/presentation/screens/about_us_screen.dart';
+import '../features/profile/presentation/screens/contact_us_screen.dart';
+import '../features/profile/presentation/screens/change_password_screen.dart';
+import '../features/profile/presentation/screens/theme_settings_screen.dart';
 
 class AppRoutes {
   static const String splash = '/splash';
@@ -20,6 +25,11 @@ class AppRoutes {
   static const String dummy = '/dummy';
   static const String mainlayout = '/mainlayout';
   static const String productDetail = '/product-detail';
+  static const String privacyPolicy = '/privacy-policy';
+  static const String aboutUs = '/about-us';
+  static const String contactUs = '/contact-us';
+  static const String changePassword = '/change-password';
+  static const String themeSettings = '/theme-settings';
 
   static Map<String, WidgetBuilder> routes = {
     splash: (context) => SplashScreen(),
@@ -32,5 +42,10 @@ class AppRoutes {
     // home: (context) => const HomeScreen(),
     home: (context) => const MainLayout(),
     productDetail: (context) => const ProductDetailsScreen(),
+    privacyPolicy: (context) => const PrivacyPolicyScreen(),
+    aboutUs: (context) => const AboutUsScreen(),
+    contactUs: (context) => const ContactUsScreen(),
+    changePassword: (context) => const ChangePasswordScreen(),
+    themeSettings: (context) => const ThemeSettingsScreen(),
   };
 }

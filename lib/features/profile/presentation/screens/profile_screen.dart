@@ -35,22 +35,35 @@ class ProfileScreen extends StatelessWidget {
             const ProfileHeader(),
             const SizedBox(height: 20),
 
-            const ProfileOptionTile(icon: Icons.favorite_border, title: 'Favourites'),
-            const ProfileOptionTile(icon: Icons.download_outlined, title: 'Downloads'),
+            ProfileOptionTile(
+              icon: Icons.dark_mode_outlined,
+              title: 'Theme',
+              onTap: () => Navigator.pushNamed(context, AppRoutes.themeSettings),
+            ),
+            ProfileOptionTile(
+              icon: Icons.password,
+              title: 'Change Password',
+              onTap: () => Navigator.pushNamed(context, AppRoutes.changePassword),
+            ),
 
             const Divider(thickness: 1, color: Colors.black26),
             const SizedBox(height: 20),
 
-            const ProfileOptionTile(icon: Icons.language, title: 'Languages'),
-            const ProfileOptionTile(icon: Icons.location_on_outlined, title: 'Location'),
-            const ProfileOptionTile(icon: Icons.subscriptions_outlined, title: 'Subscription'),
-            const ProfileOptionTile(icon: Icons.display_settings_outlined, title: 'Display'),
-
-            const Divider(thickness: 1, color: Colors.black26),
-            const SizedBox(height: 20),
-
-            const ProfileOptionTile(icon: Icons.delete_outline, title: 'Clear Cache'),
-            const ProfileOptionTile(icon: Icons.history, title: 'Clear History'),
+            ProfileOptionTile(
+              icon: Icons.policy,
+              title: 'Privacy & Policy',
+              onTap: () => Navigator.pushNamed(context, AppRoutes.privacyPolicy),
+            ),
+            ProfileOptionTile(
+              icon: Icons.info_outline,
+              title: 'About Us',
+              onTap: () => Navigator.pushNamed(context, AppRoutes.aboutUs),
+            ),
+            ProfileOptionTile(
+              icon: Icons.contact_support,
+              title: 'Contact Us',
+              onTap: () => Navigator.pushNamed(context, AppRoutes.contactUs),
+            ),
             ProfileOptionTile(
               icon: Icons.logout,
               title: 'Log Out',
