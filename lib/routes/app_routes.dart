@@ -31,7 +31,6 @@ class AppRoutes {
     dummy: (context) => const DummyScreen(),
     // home: (context) => const HomeScreen(),
     home: (context) => const MainLayout(),
-  productDetail: (context) => const ProductDetailsScreen(),
-
+    productDetail: (context) => const ProductDetailsScreen(),
   };
 }

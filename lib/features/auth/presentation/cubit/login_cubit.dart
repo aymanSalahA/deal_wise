@@ -1,5 +1,6 @@
 import 'package:deal_wise/features/auth/data/api_service/login_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
@@ -13,7 +14,14 @@ class LoginCubit extends Cubit<LoginState> {
     try {
       final response = await service.login(email, password);
 
-      if (response['success'] == true || response['status'] == 'success') {
+      // Check if the response contains accessToken which indicates success
+      if (response.containsKey('accessToken')) {
+        // Save token to shared preferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('accessToken', response['accessToken']);
+        await prefs.setString('refreshToken', response['refreshToken'] ?? '');
+        await prefs.setString('expiresAtUtc', response['expiresAtUtc'] ?? '');
+        
         emit(LoginSuccess(email));
       } else {
         emit(LoginFailure(response['message'] ?? 'Login failed'));
@@ -21,5 +29,5 @@ class LoginCubit extends Cubit<LoginState> {
     } catch (e) {
       emit(LoginFailure('An unexpected error occurred: ${e.toString()}'));
     }
-  }
+  } //FIX
 }

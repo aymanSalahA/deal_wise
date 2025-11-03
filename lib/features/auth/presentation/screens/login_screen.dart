@@ -2,11 +2,11 @@ import 'package:deal_wise/core/utils/validators.dart';
 import 'package:deal_wise/features/auth/data/api_service/login_service.dart';
 import 'package:deal_wise/features/auth/presentation/cubit/login_cubit.dart';
 import 'package:deal_wise/features/auth/presentation/cubit/login_state.dart';
+import 'package:deal_wise/features/home/data/main_layout.dart';
 import 'package:deal_wise/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../widgets/social_button.dart';
-import 'otp_verification_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -58,21 +58,18 @@ class _LoginViewState extends State<_LoginView> {
         if (state is LoginSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Login successful. Verifying OTP...'),
+              content: Text('Login successful!'),
               backgroundColor: Colors.green,
             ),
           );
 
-          Navigator.push(
+          // Navigate to MainLayout instead of OTP verification
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => OtpVerificationScreen(
-                email: state.email,
-                otp: '',
-                verificationTarget: state.email,
-              ),
+              builder: (context) => const MainLayout(),
             ),
-          );
+          ); //FIX
         } else if (state is LoginFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
