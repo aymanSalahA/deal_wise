@@ -19,7 +19,7 @@ class CustomBottomNavBar extends StatelessWidget {
         currentIndex: currentIndex,
         onTap: onTap,
         selectedItemColor: const Color(0xFF5BC2FA),
-        unselectedItemColor: Colors.grey.shade700,
+        unselectedItemColor: Color(0xFF003366),
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         items: [
           SalomonBottomBarItem(
