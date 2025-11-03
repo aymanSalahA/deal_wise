@@ -53,10 +53,33 @@ class ApiService {
           e.type == DioExceptionType.receiveTimeout) {
         message = "⏳ Connection timeout!";
       } else if (e.response != null) {
-        message =
-            e.response?.data['message'] ??
-            e.response?.data['error'] ??
-            "⚠️ Unknown error";
+        final data = e.response?.data;
+        if (data is Map<String, dynamic>) {
+          // Common ASP.NET Core pattern: { title: 'One or more validation errors occurred.', errors: {Field: ['msg']}}
+          if (data['errors'] is Map<String, dynamic>) {
+            final errorsMap = data['errors'] as Map<String, dynamic>;
+            final parts = <String>[];
+            errorsMap.forEach((key, value) {
+              if (value is List && value.isNotEmpty) {
+                parts.add(value.first.toString());
+              } else if (value is String) {
+                parts.add(value);
+              }
+            });
+            if (parts.isNotEmpty) {
+              message = parts.join("\n");
+            }
+          }
+          message = message.isNotEmpty
+              ? message
+              : (data['message'] ?? data['error'] ?? data['title'] ?? "⚠️ Unknown error").toString();
+        } else if (data is String && data.isNotEmpty) {
+          message = data;
+        } else {
+          message = "⚠️ Unknown error";
+        }
+      } else {
+        message = e.message ?? "⚠️ Unknown error";
       }
 
       throw Exception(message);

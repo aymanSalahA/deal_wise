@@ -51,7 +51,10 @@ class OtpVerificationCubit extends Cubit<OtpVerificationState> {
     emit(OtpVerificationLoading(timer: state.timer, canResend: state.canResend));
 
     try {
-      final response = await service.validateOtp(email, enteredOtp);
+      final bool isRegistrationFlow = verificationTarget == 'register';
+      final response = isRegistrationFlow
+          ? await service.verifyEmail(email, enteredOtp)
+          : await service.validateOtp(email, enteredOtp);
 
       // If tokens are returned as part of OTP validation, persist them
       if (response.containsKey('accessToken')) {

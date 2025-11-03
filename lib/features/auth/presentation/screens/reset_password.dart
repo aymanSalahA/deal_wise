@@ -12,11 +12,7 @@ class ResetPasswordScreen extends StatelessWidget {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
-  ResetPasswordScreen({
-    super.key,
-    this.email = 'fake@example.com',
-    this.otp = 'wrong123',
-  });
+  ResetPasswordScreen({super.key, this.email = '', this.otp = ''});
 
   @override
   Widget build(BuildContext context) {

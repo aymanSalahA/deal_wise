@@ -29,6 +29,30 @@ class OtpService {
     }
   }
 
+  Future<Map<String, dynamic>> verifyEmail(String email, String otp) async {
+    const String url = 'https://accessories-eshop.runasp.net/api/auth/verify-email';
+    try {
+      final response = await _dio.post(
+        url,
+        data: jsonEncode({'email': email, 'otp': otp}),
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      log("Verify Email response: ${response.data}");
+      if (response.statusCode == 200) {
+        if (response.data is Map<String, dynamic>) {
+          return Map<String, dynamic>.from(response.data);
+        }
+        return {'success': true};
+      } else {
+        throw Exception('Verify email failed with status ${response.statusCode}');
+      }
+    } catch (e) {
+      log("Verify email error: $e");
+      throw Exception('Email verification failed');
+    }
+  }
+
   Future<bool> resendOtp(String email) async {
     const String url = 'https://accessories-eshop.runasp.net/api/auth/resend-otp';
     try {

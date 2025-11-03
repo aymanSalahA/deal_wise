@@ -1,5 +1,6 @@
 import 'package:deal_wise/features/auth/data/api_service/api_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class RegisterState {}
 
@@ -7,7 +8,11 @@ class RegisterInitial extends RegisterState {}
 
 class RegisterLoading extends RegisterState {}
 
-class RegisterSuccess extends RegisterState {}
+class RegisterSuccess extends RegisterState {
+  final bool hasToken;
+  final String email;
+  RegisterSuccess({required this.hasToken, required this.email});
+}
 
 class RegisterError extends RegisterState {
   final String message;
@@ -27,13 +32,23 @@ class RegisterCubit extends Cubit<RegisterState> {
   }) async {
     emit(RegisterLoading());
     try {
-      await apiService.registerUser(
+      final response = await apiService.registerUser(
         firstName: firstName,
         lastName: lastName,
         email: email,
         password: password,
       );
-      emit(RegisterSuccess());
+
+      bool hasToken = false;
+      if (response is Map<String, dynamic> && response.containsKey('accessToken')) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('accessToken', response['accessToken']);
+        await prefs.setString('refreshToken', response['refreshToken'] ?? '');
+        await prefs.setString('expiresAtUtc', response['expiresAtUtc'] ?? '');
+        hasToken = true;
+      }
+
+      emit(RegisterSuccess(hasToken: hasToken, email: email));
     } catch (e) {
       emit(RegisterError(e.toString().replaceAll('Exception: ', '')));
     }

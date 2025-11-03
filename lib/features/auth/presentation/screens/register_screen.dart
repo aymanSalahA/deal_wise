@@ -1,5 +1,6 @@
 import 'package:deal_wise/features/auth/data/api_service/api_service.dart';
 import 'package:deal_wise/features/auth/presentation/cubit/register_cubit.dart';
+import 'package:deal_wise/features/auth/presentation/screens/otp_verification_screen.dart';
 import 'package:deal_wise/features/home/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,13 +67,26 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
       child: BlocConsumer<RegisterCubit, RegisterState>(
         listener: (context, state) {
           if (state is RegisterSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Registration Successful!')),
-            );
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => const HomeScreen()),
-            );
+            if (state.hasToken) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Registration successful!')),
+              );
+              Navigator.pushReplacementNamed(context, AppRoutes.home);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Registration successful! Please verify your email.')),
+              );
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => OtpVerificationScreen(
+                    email: state.email,
+                    otp: '',
+                    verificationTarget: 'register',
+                  ),
+                ),
+              );
+            }
           } else if (state is RegisterError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
@@ -124,9 +138,16 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
                       label: 'Full Name',
                       hintText: 'John Doe',
                       icon: Icons.person_outline,
-                      validator: (value) => (value == null || value.isEmpty)
-                          ? 'Enter full name'
-                          : null,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Enter full name';
+                        }
+                        final parts = value.trim().split(' ');
+                        if (parts.length < 2 || parts.first.isEmpty || parts.last.isEmpty) {
+                          return 'Enter first and last name';
+                        }
+                        return null;
+                      },
                     ),
                     const SizedBox(height: 20),
 
