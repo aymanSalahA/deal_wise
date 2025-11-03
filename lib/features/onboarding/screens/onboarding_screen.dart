@@ -66,60 +66,88 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             },
           ),
 
-          // Navigation buttons
+          // Top-right Skip
+          if (_currentPage < _pages.length - 1)
+            Positioned(
+              top: 16,
+              right: 16,
+              child: TextButton(
+                onPressed: _completeOnboarding,
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.black.withOpacity(0.7),
+                ),
+                child: const Text('Skip'),
+              ),
+            ),
+
+          // Bottom controls: indicators + CTA
           Positioned(
-            bottom: 50,
-            left: 0,
-            right: 0,
-            // Page indicator
+            left: 16,
+            right: 16,
+            bottom: 24,
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.06),
+                    blurRadius: 16,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
             child: Column(
+                mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
                     _pages.length,
-                    (index) => Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 5),
-                      height: 10,
-                      width: 10,
+                      (index) {
+                        final bool isActive = _currentPage == index;
+                        return AnimatedContainer(
+                          duration: const Duration(milliseconds: 250),
+                          curve: Curves.easeOut,
+                          height: 8,
+                          width: isActive ? 22 : 8,
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
                       decoration: BoxDecoration(
-                        color: _currentPage == index
+                            color: isActive
                             ? Theme.of(context).primaryColor
                             : Colors.grey.shade300,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        );
+                      },
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
-
-                // Next/Get Started button
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 52,
                   child: ElevatedButton(
                     onPressed: _nextPage,
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
+                        backgroundColor: Theme.of(context).primaryColor,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 0,
                     ),
                     child: Text(
-                      _currentPage == _pages.length - 1
-                          ? 'Get Started'
-                          : 'Next',
-                      style: const TextStyle(fontSize: 16),
+                        _currentPage == _pages.length - 1 ? 'Get Started' : 'Next',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
                     ),
                   ),
                 ),
-
-                // Skip button
-                if (_currentPage < _pages.length - 1)
-                  TextButton(
-                    onPressed: _completeOnboarding,
-                    child: const Text('Skip'),
                   ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

@@ -5,7 +5,8 @@ import 'package:deal_wise/features/auth/data/api_service/login_service.dart';
 import 'package:deal_wise/features/auth/data/api_service/otp_service.dart';
 import 'package:deal_wise/features/auth/presentation/cubit/login_cubit.dart';
 import 'package:deal_wise/features/auth/presentation/cubit/otp_verification_cubit.dart';
-// Tag 1 
+
+// Tag 1
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
