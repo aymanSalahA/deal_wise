@@ -37,6 +37,11 @@ class CustomBottomNavBar extends StatelessWidget {
             title: const Text("Cart"),
             selectedColor: const Color(0xFF5BC2FA),
           ),
+          SalomonBottomBarItem(
+            icon: const Icon(Icons.add_circle_outline),
+            title: const Text("Add Product"),
+            selectedColor: const Color(0xFF5BC2FA),
+          ),
         ],
       ),
     );
