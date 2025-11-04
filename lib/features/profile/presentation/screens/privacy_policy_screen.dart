@@ -5,16 +5,25 @@ class PrivacyPolicyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final Color titleColor = Colors.black87;
+    // ignore: unused_local_variable
     final Color textColor = Colors.black54;
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFF72C9F8),
         elevation: 0,
-        foregroundColor: Colors.black,
-        title: const Text('Privacy & Policy'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          onPressed: () => Navigator.pop(context),
+        ),
+
+        title: const Text(
+          'Privacy & Policy',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -23,22 +32,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 8),
-              Text(
-                'Privacy & Policy',
-                style: TextStyle(
-                  color: titleColor,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                'Last updated: October 26, 2023',
-                style: TextStyle(color: textColor, fontSize: 12),
-              ),
               const SizedBox(height: 12),
-
               // Sections (accordions)
               _PolicyTile(
                 title: 'Introduction',
@@ -89,12 +83,17 @@ class PrivacyPolicyScreen extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF13A4EC),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
               elevation: 0,
             ),
             child: const Text(
               'I Understand & Agree',
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ),
@@ -129,12 +128,14 @@ class _PolicyTile extends StatelessWidget {
         children: [
           Text(
             content,
-            style: const TextStyle(fontSize: 14, color: Colors.black54, height: 1.5),
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.black54,
+              height: 1.5,
+            ),
           ),
         ],
       ),
     );
   }
 }
-
-

@@ -49,19 +49,21 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     final newPass = _newController.text;
     final confirm = _confirmController.text;
     if (newPass.isEmpty || confirm.isEmpty || _currentController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please fill all fields')));
       return;
     }
     if (newPass != confirm) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Passwords do not match')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Passwords do not match')));
       return;
     }
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Password updated (demo). No network call made.')),
+      const SnackBar(
+        content: Text('Password updated (demo). No network call made.'),
+      ),
     );
     Navigator.pop(context);
   }
@@ -75,10 +77,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Change Password'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        backgroundColor: const Color(0xFF72C9F8),
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          'Change Password',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -87,11 +95,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 4),
+              const SizedBox(height: 10),
               const Center(
                 child: Text(
                   'Create a new, strong password to keep your account secure.',
-                  style: TextStyle(color: Colors.black54),
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontWeight: FontWeight.bold,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -104,6 +115,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 onToggle: () => setState(() => _showCurrent = !_showCurrent),
               ),
               const SizedBox(height: 12),
+
               _PasswordField(
                 label: 'New Password',
                 controller: _newController,
@@ -111,24 +123,44 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 onChanged: (_) => setState(() {}),
                 onToggle: () => setState(() => _showNew = !_showNew),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 12),
+
+              _PasswordField(
+                label: 'Confirm New Password',
+                controller: _confirmController,
+                obscure: !_showConfirm,
+                onToggle: () => setState(() => _showConfirm = !_showConfirm),
+              ),
+              const SizedBox(height: 16),
 
               // Strength bar
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(label, style: TextStyle(color: barColor, fontWeight: FontWeight.w600)),
+                  Text(
+                    label,
+                    style: TextStyle(
+                      color: barColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 6),
               Container(
                 height: 8,
-                decoration: BoxDecoration(color: const Color(0xFFE5E7EB), borderRadius: BorderRadius.circular(999)),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE5E7EB),
+                  borderRadius: BorderRadius.circular(999),
+                ),
                 child: FractionallySizedBox(
                   alignment: Alignment.centerLeft,
                   widthFactor: strength.clamp(0.0, 1.0),
                   child: Container(
-                    decoration: BoxDecoration(color: barColor, borderRadius: BorderRadius.circular(999)),
+                    decoration: BoxDecoration(
+                      color: barColor,
+                      borderRadius: BorderRadius.circular(999),
+                    ),
                   ),
                 ),
               ),
@@ -146,13 +178,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 ],
               ),
 
-              const SizedBox(height: 16),
-              _PasswordField(
-                label: 'Confirm New Password',
-                controller: _confirmController,
-                obscure: !_showConfirm,
-                onToggle: () => setState(() => _showConfirm = !_showConfirm),
-              ),
               const SizedBox(height: 80),
             ],
           ),
@@ -166,10 +191,18 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             onPressed: _updatePasswordDemo,
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF13A4EC),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
               elevation: 0,
             ),
-            child: const Text('Update Password', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+            child: const Text(
+              'Update Password',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
         ),
       ),
@@ -197,7 +230,10 @@ class _PasswordField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+        ),
         const SizedBox(height: 6),
         Stack(
           alignment: Alignment.centerRight,
@@ -211,15 +247,30 @@ class _PasswordField extends StatelessWidget {
                 prefixIcon: const Icon(Icons.lock_outline),
                 filled: true,
                 fillColor: Colors.white,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFE5E7EB))),
-                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFE5E7EB))),
-                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF13A4EC))),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 14,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: Color(0xFF13A4EC)),
+                ),
               ),
             ),
             IconButton(
               onPressed: onToggle,
-              icon: Icon(obscure ? Icons.visibility_off : Icons.visibility, color: Colors.black45),
+              icon: Icon(
+                obscure ? Icons.visibility_off : Icons.visibility,
+                color: Colors.black45,
+              ),
             ),
           ],
         ),
@@ -239,14 +290,23 @@ class _RequirementChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: met ? const Color(0xFF22C55E).withOpacity(0.12) : const Color(0xFFEF4444).withOpacity(0.12),
+        color: met
+            ? const Color(0xFF22C55E).withOpacity(0.12)
+            : const Color(0xFFEF4444).withOpacity(0.12),
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: (met ? const Color(0xFF22C55E) : const Color(0xFFEF4444)).withOpacity(0.3)),
+        border: Border.all(
+          color: (met ? const Color(0xFF22C55E) : const Color(0xFFEF4444))
+              .withOpacity(0.3),
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(met ? Icons.check_circle : Icons.cancel, size: 16, color: met ? const Color(0xFF22C55E) : const Color(0xFFEF4444)),
+          Icon(
+            met ? Icons.check_circle : Icons.cancel,
+            size: 16,
+            color: met ? const Color(0xFF22C55E) : const Color(0xFFEF4444),
+          ),
           const SizedBox(width: 6),
           Text(text, style: const TextStyle(fontSize: 12)),
         ],
@@ -254,5 +314,3 @@ class _RequirementChip extends StatelessWidget {
     );
   }
 }
-
-

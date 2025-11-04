@@ -14,15 +14,16 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xFF72C9F8),
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () {},
-        ),
+        automaticallyImplyLeading: false,
         title: const Text(
           'My Profile',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.white,
+          ),
         ),
         centerTitle: true,
         actions: [],
@@ -38,12 +39,14 @@ class ProfileScreen extends StatelessWidget {
             ProfileOptionTile(
               icon: Icons.dark_mode_outlined,
               title: 'Theme',
-              onTap: () => Navigator.pushNamed(context, AppRoutes.themeSettings),
+              onTap: () =>
+                  Navigator.pushNamed(context, AppRoutes.themeSettings),
             ),
             ProfileOptionTile(
               icon: Icons.password,
               title: 'Change Password',
-              onTap: () => Navigator.pushNamed(context, AppRoutes.changePassword),
+              onTap: () =>
+                  Navigator.pushNamed(context, AppRoutes.changePassword),
             ),
 
             const Divider(thickness: 1, color: Colors.black26),
@@ -52,7 +55,8 @@ class ProfileScreen extends StatelessWidget {
             ProfileOptionTile(
               icon: Icons.policy,
               title: 'Privacy & Policy',
-              onTap: () => Navigator.pushNamed(context, AppRoutes.privacyPolicy),
+              onTap: () =>
+                  Navigator.pushNamed(context, AppRoutes.privacyPolicy),
             ),
             ProfileOptionTile(
               icon: Icons.info_outline,
@@ -86,7 +90,10 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 25),
             const Text(
               'App Version 2.3',
-              style: TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 12),
+              style: TextStyle(
+                color: Color.fromARGB(255, 255, 255, 255),
+                fontSize: 12,
+              ),
             ),
             const SizedBox(height: 15),
           ],

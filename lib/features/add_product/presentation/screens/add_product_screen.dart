@@ -8,23 +8,24 @@ class AddProductScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 1,
+        backgroundColor: const Color(0xFF72C9F8),
+        elevation: 0,
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Text(
           'Add Product',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 18),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.white,
+          ),
         ),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.add_circle_outline,
-              size: 100,
-              color: Colors.grey[400],
-            ),
+            Icon(Icons.add_circle_outline, size: 100, color: Colors.grey[400]),
             const SizedBox(height: 20),
             Text(
               'Add Product Screen',
@@ -37,10 +38,7 @@ class AddProductScreen extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               'This is a dummy screen for adding products',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[600],
-              ),
+              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
             ),
           ],
         ),
@@ -48,4 +46,3 @@ class AddProductScreen extends StatelessWidget {
     );
   }
 }
-
