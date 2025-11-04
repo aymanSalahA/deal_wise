@@ -14,6 +14,7 @@ class _SearchInputFieldState extends State<SearchInputField> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: TextField(
@@ -23,13 +24,18 @@ class _SearchInputFieldState extends State<SearchInputField> {
           setState(() {});
         },
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.search, color: Colors.white, size: 26),
-          hintText: 'Search of Products...',
-          hintStyle: const TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
+          prefixIcon: Icon(
+            Icons.search,
+            color: theme.iconTheme.color,
+            size: 26,
           ),
+          hintText: 'Search of Products...',
+          hintStyle: theme.inputDecorationTheme.hintStyle ??
+              theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
           suffixIcon: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -40,9 +46,13 @@ class _SearchInputFieldState extends State<SearchInputField> {
                     context.read<ProductCubit>().searchProducts('');
                     setState(() {});
                   },
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Icon(Icons.close, color: Colors.white, size: 26),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Icon(
+                      Icons.close,
+                      color: theme.iconTheme.color,
+                      size: 26,
+                    ),
                   ),
                 ),
               GestureDetector(
@@ -64,9 +74,13 @@ class _SearchInputFieldState extends State<SearchInputField> {
                     },
                   );
                 },
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Icon(Icons.tune, color: Colors.white, size: 26),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Icon(
+                    Icons.tune,
+                    color: theme.iconTheme.color,
+                    size: 26,
+                  ),
                 ),
               ),
             ],
@@ -75,15 +89,15 @@ class _SearchInputFieldState extends State<SearchInputField> {
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(10),
           ),
-          fillColor: const Color(0xFF72C9F8),
+          fillColor: theme.inputDecorationTheme.fillColor ?? theme.cardColor,
           filled: true,
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide.none,
           ),
         ),
-        style: const TextStyle(
-          color: Colors.black,
+        style: theme.textTheme.bodyMedium?.copyWith(
+          color: theme.colorScheme.onSurface,
           fontSize: 16,
           fontWeight: FontWeight.bold,
         ),

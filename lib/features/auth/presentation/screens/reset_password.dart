@@ -16,6 +16,7 @@ class ResetPasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => NewPasswordVisibilityCubit()),
@@ -28,33 +29,34 @@ class ResetPasswordScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is ResetPasswordSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Password reset successfully!'),
-                backgroundColor: Colors.green,
+              SnackBar(
+                content: const Text('Password reset successfully!'),
+                backgroundColor: theme.snackBarTheme.backgroundColor ?? theme.colorScheme.primary,
               ),
             );
             Navigator.pushReplacementNamed(context, AppRoutes.home);
           }
         },
         child: Scaffold(
-          backgroundColor: const Color(0xFFF6F7F8),
+          backgroundColor: theme.scaffoldBackgroundColor,
           appBar: AppBar(
-            backgroundColor: const Color(0xFF72C9F8),
+            backgroundColor: theme.appBarTheme.backgroundColor,
             elevation: 0,
             leading: IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.arrow_back_ios,
-                color: Colors.white,
+                color: theme.appBarTheme.iconTheme?.color ?? theme.iconTheme.color,
                 size: 20,
               ),
               onPressed: () => Navigator.pop(context),
             ),
-            title: const Text(
+            title: Text(
               'Reset Password',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
+              style: theme.appBarTheme.titleTextStyle ??
+                  theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.appBarTheme.foregroundColor ?? theme.colorScheme.onSurface,
+                  ),
             ),
             centerTitle: true,
           ),
@@ -85,12 +87,12 @@ class ResetPasswordScreen extends StatelessWidget {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'New Password',
-                            style: TextStyle(
+                            style: theme.textTheme.bodyMedium?.copyWith(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: Colors.black87,
+                              color: theme.colorScheme.onSurface,
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -99,14 +101,14 @@ class ResetPasswordScreen extends StatelessWidget {
                             obscureText: obscureNewPassword,
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
+                              fillColor: theme.inputDecorationTheme.fillColor ?? theme.cardColor,
                               hintText: 'Enter new password',
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   obscureNewPassword
                                       ? Icons.visibility_off
                                       : Icons.visibility,
-                                  color: Colors.grey,
+                                  color: theme.iconTheme.color ?? theme.colorScheme.onSurface.withOpacity(0.6),
                                 ),
                                 onPressed: () => context
                                     .read<NewPasswordVisibilityCubit>()
@@ -114,7 +116,7 @@ class ResetPasswordScreen extends StatelessWidget {
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide.none,
+                                borderSide: theme.inputDecorationTheme.border?.borderSide ?? BorderSide.none,
                               ),
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 16,
@@ -123,9 +125,12 @@ class ResetPasswordScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          const Text(
+                          Text(
                             'Must be at least 8 characters.',
-                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              fontSize: 12,
+                              color: theme.colorScheme.onSurface.withOpacity(0.6),
+                            ),
                           ),
                         ],
                       );
@@ -137,12 +142,12 @@ class ResetPasswordScreen extends StatelessWidget {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Confirm New Password',
-                            style: TextStyle(
+                            style: theme.textTheme.bodyMedium?.copyWith(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: Colors.black87,
+                              color: theme.colorScheme.onSurface,
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -151,14 +156,14 @@ class ResetPasswordScreen extends StatelessWidget {
                             obscureText: obscureConfirmPassword,
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Colors.white,
+                              fillColor: theme.inputDecorationTheme.fillColor ?? theme.cardColor,
                               hintText: 'Confirm new password',
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   obscureConfirmPassword
                                       ? Icons.visibility_off
                                       : Icons.visibility,
-                                  color: Colors.grey,
+                                  color: theme.iconTheme.color ?? theme.colorScheme.onSurface.withOpacity(0.6),
                                 ),
                                 onPressed: () => context
                                     .read<ConfirmPasswordVisibilityCubit>()
@@ -166,7 +171,7 @@ class ResetPasswordScreen extends StatelessWidget {
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide.none,
+                                borderSide: theme.inputDecorationTheme.border?.borderSide ?? BorderSide.none,
                               ),
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 16,
@@ -186,23 +191,23 @@ class ResetPasswordScreen extends StatelessWidget {
                         return Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Colors.red.shade50,
+                            color: theme.colorScheme.error.withOpacity(0.08),
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.red.shade200),
+                            border: Border.all(color: theme.colorScheme.error.withOpacity(0.3)),
                           ),
                           child: Row(
                             children: [
                               Icon(
                                 Icons.error_outline,
-                                color: Colors.red.shade700,
+                                color: theme.colorScheme.error,
                                 size: 20,
                               ),
                               const SizedBox(width: 8),
                               Expanded(
                                 child: Text(
                                   state.message,
-                                  style: TextStyle(
-                                    color: Colors.red.shade700,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: theme.colorScheme.error,
                                     fontSize: 14,
                                   ),
                                 ),
@@ -215,23 +220,23 @@ class ResetPasswordScreen extends StatelessWidget {
                         return Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Colors.green.shade50,
+                            color: theme.colorScheme.primary.withOpacity(0.08),
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.green.shade200),
+                            border: Border.all(color: theme.colorScheme.primary.withOpacity(0.3)),
                           ),
                           child: Row(
                             children: [
                               Icon(
                                 Icons.check_circle_outline,
-                                color: Colors.green.shade700,
+                                color: theme.colorScheme.primary,
                                 size: 20,
                               ),
                               const SizedBox(width: 8),
                               Expanded(
                                 child: Text(
                                   'Password reset successfully!',
-                                  style: TextStyle(
-                                    color: Colors.green.shade700,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: theme.colorScheme.primary,
                                     fontSize: 14,
                                   ),
                                 ),
@@ -277,22 +282,24 @@ class ResetPasswordScreen extends StatelessWidget {
                                     );
                               },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF13A4EC),
+                          backgroundColor: theme.colorScheme.primary,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: state is ResetPasswordLoading
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
+                            ? CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  theme.colorScheme.onPrimary,
+                                ),
                               )
-                            : const Text(
+                            : Text(
                                 'Reset Password',
-                                style: TextStyle(
+                                style: theme.textTheme.labelLarge?.copyWith(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
-                                  color: Colors.white,
+                                  color: theme.colorScheme.onPrimary,
                                 ),
                               ),
                       );

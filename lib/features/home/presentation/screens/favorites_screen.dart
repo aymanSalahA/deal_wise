@@ -17,23 +17,29 @@ class FavoritesScreen extends StatelessWidget {
     final favoriteList = favorites.isNotEmpty
         ? favorites
         : getFavoritesFromArgs(context);
+    final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FB),
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: theme.appBarTheme.iconTheme?.color ?? theme.iconTheme.color,
+            size: 20,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           'Favorites',
-          style: GoogleFonts.nunito(
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-            color: Colors.white,
-          ),
+          style: theme.appBarTheme.titleTextStyle ??
+              GoogleFonts.nunito(
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+                color: theme.appBarTheme.foregroundColor ?? theme.colorScheme.onSurface,
+              ),
         ),
-        backgroundColor: const Color(0xFF72C9F8),
+        backgroundColor: theme.appBarTheme.backgroundColor,
         centerTitle: true,
         elevation: 0,
       ),
@@ -43,17 +49,17 @@ class FavoritesScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.favorite_border,
                       size: 64,
-                      color: Colors.grey,
+                      color: theme.colorScheme.onSurface.withOpacity(0.6),
                     ),
                     const SizedBox(height: 16),
                     Text(
                       'No favorites yet!',
                       style: GoogleFonts.nunito(
                         fontSize: 22,
-                        color: Colors.black54,
+                        color: theme.colorScheme.onSurface.withOpacity(0.7),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -62,7 +68,7 @@ class FavoritesScreen extends StatelessWidget {
                       'Start adding some products to your favorites',
                       style: GoogleFonts.nunito(
                         fontSize: 16,
-                        color: Colors.grey,
+                        color: theme.colorScheme.onSurface.withOpacity(0.6),
                       ),
                     ),
                   ],

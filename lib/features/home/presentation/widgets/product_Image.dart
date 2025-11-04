@@ -7,18 +7,23 @@ class Productimage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: double.infinity,
       height: 400,
-      color: Colors.grey.shade900,
+      color: theme.cardColor,
       child: Image.network(
         imageUrl,
         fit: BoxFit.cover,
 
         width: double.infinity,
         height: 400,
-        errorBuilder: (context, error, stackTrace) => const Center(
-          child: Icon(Icons.broken_image, color: Colors.grey, size: 50),
+        errorBuilder: (context, error, stackTrace) => Center(
+          child: Icon(
+            Icons.broken_image,
+            color: theme.colorScheme.onSurface.withOpacity(0.6),
+            size: 50,
+          ),
         ),
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
@@ -28,7 +33,7 @@ class Productimage extends StatelessWidget {
                   ? loadingProgress.cumulativeBytesLoaded /
                         loadingProgress.expectedTotalBytes!
                   : null,
-              color: Colors.blue,
+              color: theme.colorScheme.primary,
             ),
           );
         },

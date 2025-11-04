@@ -9,10 +9,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return AppBar(
       elevation: 0,
       scrolledUnderElevation: 0,
-      backgroundColor: Colors.white,
+      backgroundColor: theme.appBarTheme.backgroundColor,
       leading: Padding(
         padding: const EdgeInsets.only(left: 10.0),
         child: ClipOval(
@@ -40,7 +41,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           }
           return Text(
             greeting,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: theme.appBarTheme.titleTextStyle ??
+                theme.textTheme.titleMedium?.copyWith(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: theme.appBarTheme.foregroundColor ?? theme.colorScheme.onSurface,
+                ),
           );
         },
       ),
@@ -48,7 +54,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         Padding(
           padding: const EdgeInsets.only(right: 5.0),
           child: IconButton(
-            icon: const Icon(Icons.favorite_rounded, color: Color(0xFF003366)),
+            icon: Icon(
+              Icons.favorite_rounded,
+              color: theme.appBarTheme.iconTheme?.color ?? theme.colorScheme.primary,
+            ),
             onPressed: () {
               Navigator.pushNamed(context, '/favorites', arguments: favorites);
             },

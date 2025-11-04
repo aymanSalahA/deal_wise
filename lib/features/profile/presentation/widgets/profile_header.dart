@@ -22,13 +22,18 @@ class ProfileHeader extends StatelessWidget {
       builder: (context, snapshot) {
         final name = snapshot.data?['name'] ?? 'Your Name';
         final email = snapshot.data?['email'] ?? '';
+        final theme = Theme.of(context);
         return Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CircleAvatar(
               radius: 40,
-              backgroundColor: Colors.grey.shade300,
-              child: const Icon(Icons.person, size: 40, color: Colors.white),
+              backgroundColor: theme.cardColor,
+              child: Icon(
+                Icons.person,
+                size: 40,
+                color: theme.colorScheme.primary,
+              ),
             ),
             const SizedBox(width: 12),
             Column(
@@ -36,13 +41,19 @@ class ProfileHeader extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 if (email.isNotEmpty)
                   Text(
                     email,
-                    style: const TextStyle(color: Colors.black54, fontSize: 14),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      fontSize: 14,
+                      color: theme.colorScheme.onSurface.withOpacity(0.6),
+                    ),
                   ),
               ],
             ),

@@ -5,18 +5,23 @@ class AboutUsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF72C9F8),
+        backgroundColor: theme.appBarTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: theme.appBarTheme.iconTheme?.color ?? theme.iconTheme.color,
+            size: 20,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'About Us',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: theme.appBarTheme.titleTextStyle,
         ),
         centerTitle: true,
       ),
@@ -27,24 +32,30 @@ class AboutUsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10),
-              const Text(
+              Text(
                 'Our Mission',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 8),
-              const Text(
+              Text(
                 'To empower creators and entrepreneurs by providing high-quality, sustainable products that bring their ideas to life. We believe in building a community driven by innovation, creativity, and unparalleled customer service.',
-                style: TextStyle(
+                style: theme.textTheme.bodyMedium?.copyWith(
                   fontSize: 14,
-                  color: Colors.black54,
+                  color: theme.colorScheme.onSurface.withOpacity(0.7),
                   fontWeight: FontWeight.bold,
                   height: 1.6,
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
+              Text(
                 'Our Values',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 12),
               const _ValueItem(
@@ -79,16 +90,16 @@ class AboutUsScreen extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () => Navigator.pop(context),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF13A4EC),
+              backgroundColor: theme.colorScheme.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
               elevation: 0,
             ),
-            child: const Text(
+            child: Text(
               'Back to Profile',
-              style: TextStyle(
-                color: Colors.white,
+              style: theme.textTheme.labelLarge?.copyWith(
+                color: theme.colorScheme.onPrimary,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -112,6 +123,7 @@ class _ValueItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -119,10 +131,10 @@ class _ValueItem extends StatelessWidget {
           width: 48,
           height: 48,
           decoration: BoxDecoration(
-            color: const Color(0xFF13A4EC).withOpacity(0.15),
+            color: theme.colorScheme.primary.withOpacity(0.15),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: const Icon(Icons.check, color: Color(0xFF13A4EC)),
+          child: Icon(Icons.check, color: theme.colorScheme.primary),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -131,7 +143,7 @@ class _ValueItem extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(
+                style: theme.textTheme.titleSmall?.copyWith(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
@@ -139,9 +151,9 @@ class _ValueItem extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 description,
-                style: const TextStyle(
+                style: theme.textTheme.bodyMedium?.copyWith(
                   fontSize: 14,
-                  color: Colors.black54,
+                  color: theme.colorScheme.onSurface.withOpacity(0.7),
                   height: 1.6,
                 ),
               ),

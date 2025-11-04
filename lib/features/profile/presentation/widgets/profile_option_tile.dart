@@ -14,13 +14,21 @@ class ProfileOptionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ListTile(
-      leading: Icon(icon, color: Colors.black),
-      title: Text(title, style: const TextStyle(fontSize: 16)),
-      trailing: const Icon(
+      leading: Icon(
+        icon,
+        color: theme.colorScheme.primary,
+      ),
+      title: Text(
+        title,
+        style: theme.textTheme.titleMedium?.copyWith(fontSize: 16),
+      ),
+      trailing: Icon(
         Icons.arrow_forward_ios,
         size: 16,
-        color: Colors.black54,
+        color: theme.iconTheme.color?.withOpacity(0.6) ??
+            theme.colorScheme.onSurface.withOpacity(0.6),
       ),
       onTap: onTap ?? () {},
       contentPadding: const EdgeInsets.symmetric(horizontal: 0),

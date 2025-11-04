@@ -5,24 +5,25 @@ class PrivacyPolicyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
-    final Color titleColor = Colors.black87;
-    // ignore: unused_local_variable
-    final Color textColor = Colors.black54;
+    final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF72C9F8),
+        backgroundColor: theme.appBarTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: theme.appBarTheme.iconTheme?.color ?? theme.iconTheme.color,
+            size: 20,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
 
-        title: const Text(
+        title: Text(
           'Privacy & Policy',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: theme.appBarTheme.titleTextStyle,
         ),
         centerTitle: true,
       ),
@@ -82,16 +83,16 @@ class PrivacyPolicyScreen extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () => Navigator.pop(context),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF13A4EC),
+              backgroundColor: theme.colorScheme.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
               elevation: 0,
             ),
-            child: const Text(
+            child: Text(
               'I Understand & Agree',
-              style: TextStyle(
-                color: Colors.white,
+              style: theme.textTheme.labelLarge?.copyWith(
+                color: theme.colorScheme.onPrimary,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -115,22 +116,26 @@ class _PolicyTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Theme(
-      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      data: theme.copyWith(dividerColor: Colors.transparent),
       child: ExpansionTile(
         initiallyExpanded: initiallyExpanded,
         tilePadding: const EdgeInsets.symmetric(horizontal: 8.0),
         childrenPadding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
         title: Text(
           title,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          style: theme.textTheme.titleSmall?.copyWith(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         children: [
           Text(
             content,
-            style: const TextStyle(
+            style: theme.textTheme.bodyMedium?.copyWith(
               fontSize: 14,
-              color: Colors.black54,
+              color: theme.colorScheme.onSurface.withOpacity(0.7),
               height: 1.5,
             ),
           ),

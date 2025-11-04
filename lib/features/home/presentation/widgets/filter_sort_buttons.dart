@@ -8,25 +8,26 @@ class FilterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: const Color(0xffC8E6F5),
+            color: theme.chipTheme.backgroundColor ?? theme.cardColor,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.grey.shade300),
+            border: Border.all(color: theme.dividerColor),
           ),
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.filter_list, size: 20, color: Color(0xFF003366)),
-              SizedBox(width: 8),
+              Icon(Icons.filter_list, size: 20, color: theme.colorScheme.primary),
+              const SizedBox(width: 8),
               Text(
                 'Filter',
-                style: TextStyle(
-                  color: Color(0xFF003366),
+                style: theme.textTheme.labelLarge?.copyWith(
+                  color: theme.colorScheme.primary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -46,25 +47,26 @@ class SortButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: const Color(0xffC8E6F5),
+            color: theme.chipTheme.backgroundColor ?? theme.cardColor,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.grey.shade300),
+            border: Border.all(color: theme.dividerColor),
           ),
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.sort, size: 20, color: Color(0xFF003366)),
-              SizedBox(width: 8),
+              Icon(Icons.sort, size: 20, color: theme.colorScheme.primary),
+              const SizedBox(width: 8),
               Text(
                 'Sort',
-                style: TextStyle(
-                  color: Color(0xFF003366),
+                style: theme.textTheme.labelLarge?.copyWith(
+                  color: theme.colorScheme.primary,
                   fontWeight: FontWeight.bold,
                 ),
               ),

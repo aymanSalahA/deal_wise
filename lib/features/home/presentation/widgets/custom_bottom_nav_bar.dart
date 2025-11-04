@@ -13,34 +13,35 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
-      color: Colors.white,
+      color: theme.bottomNavigationBarTheme.backgroundColor ?? theme.cardColor,
       child: SalomonBottomBar(
         currentIndex: currentIndex,
         onTap: onTap,
-        selectedItemColor: const Color(0xFF5BC2FA),
-        unselectedItemColor: Color(0xFF003366),
+        selectedItemColor: theme.bottomNavigationBarTheme.selectedItemColor ?? theme.colorScheme.primary,
+        unselectedItemColor: theme.bottomNavigationBarTheme.unselectedItemColor ?? theme.colorScheme.onSurface.withOpacity(0.7),
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         items: [
           SalomonBottomBarItem(
             icon: const Icon(Icons.home_outlined),
             title: const Text("Home"),
-            selectedColor: const Color(0xFF5BC2FA),
+            selectedColor: theme.colorScheme.primary,
           ),
           SalomonBottomBarItem(
             icon: const Icon(Icons.person_outline),
             title: const Text("Profile"),
-            selectedColor: const Color(0xFF5BC2FA),
+            selectedColor: theme.colorScheme.primary,
           ),
           SalomonBottomBarItem(
             icon: const Icon(Icons.shopping_bag_outlined),
             title: const Text("Cart"),
-            selectedColor: const Color(0xFF5BC2FA),
+            selectedColor: theme.colorScheme.primary,
           ),
           SalomonBottomBarItem(
             icon: const Icon(Icons.add_circle_outline),
             title: const Text("Add Product"),
-            selectedColor: const Color(0xFF5BC2FA),
+            selectedColor: theme.colorScheme.primary,
           ),
         ],
       ),

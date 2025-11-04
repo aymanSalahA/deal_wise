@@ -61,29 +61,39 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FB),
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: const Color(0xFF72C9F8),
+        backgroundColor: theme.appBarTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          icon: Icon(Icons.arrow_back_ios,
+              color: theme.appBarTheme.iconTheme?.color ?? theme.iconTheme.color),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
+        title: Text(
           'My Cart',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-            color: Colors.white,
-          ),
+          style: theme.appBarTheme.titleTextStyle ??
+              theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+                color: theme.appBarTheme.foregroundColor ?? theme.colorScheme.onSurface,
+              ),
         ),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _cartItems.isEmpty
-          ? const Center(child: Text('Your cart is empty 😔'))
+          ? Center(
+              child: Text(
+                'Your cart is empty 😔',
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: theme.colorScheme.onSurface.withOpacity(0.7),
+                ),
+              ),
+            )
           : Column(
               children: [
                 Expanded(
@@ -95,11 +105,11 @@ class _CartPageState extends State<CartPage> {
                       return Container(
                         margin: const EdgeInsets.only(bottom: 16),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: theme.cardColor,
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(0.15),
+                              color: theme.shadowColor.withOpacity(0.15),
                               blurRadius: 8,
                               offset: const Offset(0, 3),
                             ),
@@ -115,7 +125,7 @@ class _CartPageState extends State<CartPage> {
                                   width: 80,
                                   height: 80,
                                   decoration: BoxDecoration(
-                                    color: Colors.grey[100],
+                                    color: theme.cardColor,
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Image.network(
@@ -125,9 +135,9 @@ class _CartPageState extends State<CartPage> {
                                     fit: BoxFit.cover,
                                     errorBuilder:
                                         (context, error, stackTrace) =>
-                                            const Icon(
+                                            Icon(
                                               Icons.image_not_supported,
-                                              color: Colors.grey,
+                                              color: theme.colorScheme.onSurface.withOpacity(0.6),
                                             ),
                                     loadingBuilder:
                                         (context, child, loadingProgress) {
@@ -145,7 +155,7 @@ class _CartPageState extends State<CartPage> {
                                                             .expectedTotalBytes!
                                                   : null,
                                               strokeWidth: 2,
-                                              color: Colors.grey[400],
+                                              color: theme.colorScheme.primary,
                                             ),
                                           );
                                         },
@@ -161,7 +171,7 @@ class _CartPageState extends State<CartPage> {
                                       item['productName'] ?? item['name'] ?? '',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
+                                      style: theme.textTheme.titleMedium?.copyWith(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -169,18 +179,18 @@ class _CartPageState extends State<CartPage> {
                                     const SizedBox(height: 5),
                                     Text(
                                       item['category'] ?? '',
-                                      style: const TextStyle(
-                                        color: Colors.grey,
+                                      style: theme.textTheme.bodySmall?.copyWith(
+                                        color: theme.colorScheme.onSurface.withOpacity(0.6),
                                         fontSize: 13,
                                       ),
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
                                       '\$${((item['finalPricePerUnit'] ?? item['price'] ?? 0) as num).toStringAsFixed(2)}',
-                                      style: const TextStyle(
+                                      style: theme.textTheme.titleSmall?.copyWith(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15,
-                                        color: Color(0xFF003366),
+                                        color: theme.colorScheme.primary,
                                       ),
                                     ),
                                   ],
@@ -190,9 +200,9 @@ class _CartPageState extends State<CartPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   IconButton(
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.delete_outline,
-                                      color: Colors.redAccent,
+                                      color: theme.colorScheme.error,
                                     ),
                                     onPressed: () => _removeItem(index),
                                   ),
@@ -201,7 +211,8 @@ class _CartPageState extends State<CartPage> {
                                       _qtyButton(
                                         Icons.remove,
                                         () => _decreaseQty(index),
-                                        Colors.grey[200]!,
+                                        theme.colorScheme.surfaceVariant.withOpacity(0.6),
+                                        theme.iconTheme.color ?? theme.colorScheme.onSurface,
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -209,15 +220,17 @@ class _CartPageState extends State<CartPage> {
                                         ),
                                         child: Text(
                                           '${item['quantity'] ?? 1}',
-                                          style: const TextStyle(
+                                          style: theme.textTheme.bodyMedium?.copyWith(
                                             fontWeight: FontWeight.w600,
+                                            color: theme.colorScheme.onSurface,
                                           ),
                                         ),
                                       ),
                                       _qtyButton(
                                         Icons.add,
                                         () => _increaseQty(index),
-                                        Colors.blue[100]!,
+                                        theme.colorScheme.primary.withOpacity(0.15),
+                                        theme.colorScheme.primary,
                                       ),
                                     ],
                                   ),
@@ -237,16 +250,17 @@ class _CartPageState extends State<CartPage> {
   }
 
   Widget _buildBottomSection() {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: theme.cardColor,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black12,
+            color: theme.shadowColor.withOpacity(0.12),
             blurRadius: 8,
-            offset: Offset(0, -2),
+            offset: const Offset(0, -2),
           ),
         ],
       ),
@@ -255,13 +269,16 @@ class _CartPageState extends State<CartPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 "Subtotal",
-                style: TextStyle(color: Colors.grey, fontSize: 15),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                  fontSize: 15,
+                ),
               ),
               Text(
                 "\$${total.toStringAsFixed(2)}",
-                style: const TextStyle(fontSize: 15),
+                style: theme.textTheme.bodyMedium?.copyWith(fontSize: 15),
               ),
             ],
           ),
@@ -269,13 +286,16 @@ class _CartPageState extends State<CartPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 "Total",
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
                 "\$${total.toStringAsFixed(2)}",
-                style: const TextStyle(
+                style: theme.textTheme.titleSmall?.copyWith(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
                 ),
@@ -286,18 +306,18 @@ class _CartPageState extends State<CartPage> {
           ElevatedButton(
             onPressed: _cartItems.isEmpty ? null : () {},
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF003366),
+              backgroundColor: theme.colorScheme.primary,
               minimumSize: const Size(double.infinity, 55),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),
               elevation: 2,
-              shadowColor: const Color(0xFF003366).withOpacity(0.3),
+              shadowColor: theme.colorScheme.primary.withOpacity(0.3),
             ),
             child: Text(
               'Proceed to Checkout',
               style: GoogleFonts.nunito(
-                color: Colors.white,
+                color: theme.colorScheme.onPrimary,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
                 letterSpacing: 0.5,
@@ -309,7 +329,8 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  Widget _qtyButton(IconData icon, VoidCallback onTap, Color bgColor) {
+  Widget _qtyButton(IconData icon, VoidCallback onTap, Color bgColor, Color iconColor) {
+    final theme = Theme.of(context);
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -323,13 +344,13 @@ class _CartPageState extends State<CartPage> {
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: theme.shadowColor.withOpacity(0.1),
                 blurRadius: 2,
                 offset: const Offset(0, 1),
               ),
             ],
           ),
-          child: Icon(icon, size: 16, color: const Color(0xFF003366)),
+          child: Icon(icon, size: 16, color: iconColor),
         ),
       ),
     );

@@ -1,5 +1,4 @@
-import 'package:deal_wise/features/home/data/models/product_cart_animation.dart';
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -12,6 +11,7 @@ class ProductSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocBuilder<ProductCubit, ProductState>(
       builder: (context, state) {
         if (state is ProductLoading) {
@@ -19,7 +19,7 @@ class ProductSection extends StatelessWidget {
             padding: const EdgeInsets.only(top: 200),
             child: Center(
               child: LoadingAnimationWidget.dotsTriangle(
-                color: const Color.fromARGB(255, 4, 112, 219),
+                color: theme.colorScheme.primary,
                 size: 40,
               ),
             ),
@@ -30,7 +30,7 @@ class ProductSection extends StatelessWidget {
           return Center(
             child: Text(
               'Error: ${state.message}',
-              style: const TextStyle(color: Colors.red),
+              style: TextStyle(color: theme.colorScheme.error),
             ),
           );
         }
@@ -39,10 +39,13 @@ class ProductSection extends StatelessWidget {
           if (state.products.isEmpty) {
             return Padding(
               padding: const EdgeInsets.only(top: 150),
-              child: const Center(
+              child: Center(
                 child: Text(
                   'No products found',
-                  style: TextStyle(color: Colors.black, fontSize: 20),
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                    fontSize: 20,
+                  ),
                 ),
               ),
             );
@@ -56,14 +59,14 @@ class ProductSection extends StatelessWidget {
                 child: Text(
                   'Featured Products',
                   style: GoogleFonts.nunito(
-                    shadows: const [
+                    shadows: [
                       Shadow(
-                        color: Colors.grey,
+                        color: theme.shadowColor.withOpacity(0.4),
                         offset: Offset(1, 2),
                         blurRadius: 10,
                       ),
                     ],
-                    color: Color(0xFF003366),
+                    color: theme.colorScheme.primary,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
@@ -80,7 +83,8 @@ class ProductSection extends StatelessWidget {
                     crossAxisCount: 2,
                     crossAxisSpacing: 16.0,
                     mainAxisSpacing: 16.0,
-                    childAspectRatio: 0.7,
+                    // Slightly increased to prevent bottom overflow
+                    mainAxisExtent: 276,
                   ),
                   itemBuilder: (context, index) {
                     final product = state.products[index];

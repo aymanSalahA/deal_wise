@@ -26,6 +26,7 @@ class ProductRatings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -34,10 +35,10 @@ class ProductRatings extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Ratings & Reviews',
-                style: TextStyle(
-                  color: Colors.black,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: theme.colorScheme.onSurface,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -46,8 +47,8 @@ class ProductRatings extends StatelessWidget {
                 onTap: () {},
                 child: Text(
                   'View All',
-                  style: TextStyle(
-                    color: Colors.blue.shade300,
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: theme.colorScheme.primary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -63,19 +64,25 @@ class ProductRatings extends StatelessWidget {
                 children: [
                   Text(
                     rating.toStringAsFixed(1),
-                    style: const TextStyle(
-                      color: Colors.black,
+                    style: theme.textTheme.displaySmall?.copyWith(
+                      color: theme.colorScheme.onSurface,
                       fontSize: 48,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
                     'out of 5',
-                    style: TextStyle(color: Colors.grey.shade400, fontSize: 14),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurface.withOpacity(0.6),
+                      fontSize: 14,
+                    ),
                   ),
                   Text(
                     '$reviewsCount reviews',
-                    style: TextStyle(color: Colors.grey.shade400, fontSize: 14),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurface.withOpacity(0.6),
+                      fontSize: 14,
+                    ),
                   ),
                 ],
               ),
@@ -89,14 +96,16 @@ class ProductRatings extends StatelessWidget {
                         children: [
                           Text(
                             '${entry.key}★',
-                            style: TextStyle(color: Colors.grey.shade400),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurface.withOpacity(0.6),
+                            ),
                           ),
                           const SizedBox(width: 8),
                           Expanded(
                             child: LinearProgressIndicator(
                               value: entry.value,
-                              backgroundColor: Colors.grey.shade800,
-                              color: Colors.amber,
+                              backgroundColor: theme.colorScheme.onSurface.withOpacity(0.12),
+                              color: theme.colorScheme.secondary,
                               minHeight: 8,
                             ),
                           ),

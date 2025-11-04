@@ -59,6 +59,7 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<OtpVerificationCubit>();
+    final theme = Theme.of(context);
 
     String getEnteredOtp() {
       return otpControllers.map((controller) => controller.text).join();
@@ -66,16 +67,23 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF72C9F8),
+        backgroundColor: theme.appBarTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: theme.appBarTheme.iconTheme?.color ?? theme.iconTheme.color,
+            size: 20,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
-
-        title: const Text(
+        title: Text(
           'Verify Your Account',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: theme.appBarTheme.titleTextStyle ??
+              theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: theme.appBarTheme.foregroundColor ?? theme.colorScheme.onSurface,
+              ),
         ),
         centerTitle: true,
       ),
@@ -103,9 +111,9 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
             } else {
               // For other verification flows (like registration), auto-navigate to home
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Verification successful!'),
-                  backgroundColor: Colors.green,
+                SnackBar(
+                  content: const Text('Verification successful!'),
+                  backgroundColor: theme.snackBarTheme.backgroundColor ?? theme.colorScheme.primary,
                 ),
               );
               Navigator.pushReplacementNamed(context, '/home');
@@ -114,7 +122,7 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.errorMessage),
-                backgroundColor: Colors.red,
+                backgroundColor: theme.snackBarTheme.backgroundColor ?? theme.colorScheme.error,
               ),
             );
           }
@@ -133,21 +141,21 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       const SizedBox(height: 40),
-                      const Text(
+                      Text(
                         'Verify Your Account',
-                        style: TextStyle(
+                        style: theme.textTheme.headlineSmall?.copyWith(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: theme.colorScheme.onSurface,
                         ),
                       ),
                       const SizedBox(height: 16),
                       Text(
                         'Enter the 6-digit code we sent to ${cubit.email}.',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
+                        style: theme.textTheme.bodyMedium?.copyWith(
                           fontSize: 16,
-                          color: Colors.grey,
+                          color: theme.colorScheme.onSurface.withOpacity(0.7),
                         ),
                       ),
                       const SizedBox(height: 50),
@@ -168,10 +176,10 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
 
                       Text(
                         timerText,
-                        style: const TextStyle(
+                        style: theme.textTheme.titleLarge?.copyWith(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: theme.colorScheme.onSurface,
                         ),
                       ),
                       const SizedBox(height: 30),
@@ -179,9 +187,11 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          const Text(
+                          Text(
                             "Didn't receive the code?",
-                            style: TextStyle(color: Colors.grey),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurface.withOpacity(0.6),
+                            ),
                           ),
                           isLoading
                               ? const CircularProgressIndicator(strokeWidth: 2)
@@ -191,10 +201,10 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
                                       : null,
                                   child: Text(
                                     'Resend',
-                                    style: TextStyle(
+                                    style: theme.textTheme.labelLarge?.copyWith(
                                       color: state.canResend
-                                          ? Colors.blue
-                                          : Colors.grey,
+                                          ? theme.colorScheme.primary
+                                          : theme.colorScheme.onSurface.withOpacity(0.6),
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -211,7 +221,7 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
                                 onPressed: () =>
                                     cubit.verifyOtp(getEnteredOtp()),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
+                                  backgroundColor: theme.colorScheme.primary,
                                   padding: const EdgeInsets.symmetric(
                                     vertical: 16,
                                   ),
@@ -219,11 +229,11 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                child: const Text(
+                                child: Text(
                                   'Verify',
-                                  style: TextStyle(
+                                  style: theme.textTheme.labelLarge?.copyWith(
                                     fontSize: 18,
-                                    color: Colors.white,
+                                    color: theme.colorScheme.onPrimary,
                                   ),
                                 ),
                               ),

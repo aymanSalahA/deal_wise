@@ -6,15 +6,19 @@ class SocialButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: 50,
       height: 50,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: theme.dividerColor),
         borderRadius: BorderRadius.circular(8),
       ),
       child: IconButton(
-        icon: Icon(icon, color: Colors.black),
+        icon: Icon(
+          icon,
+          color: theme.iconTheme.color ?? theme.colorScheme.onSurface,
+        ),
         onPressed: () {},
       ),
     );

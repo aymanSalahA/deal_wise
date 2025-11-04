@@ -7,6 +7,8 @@ import 'package:deal_wise/features/auth/data/api_service/login_service.dart';
 import 'package:deal_wise/features/auth/data/api_service/otp_service.dart';
 import 'package:deal_wise/features/auth/presentation/cubit/login_cubit.dart';
 import 'package:deal_wise/features/auth/presentation/cubit/otp_verification_cubit.dart';
+import 'package:deal_wise/core/theme/app_theme.dart';
+import 'package:deal_wise/core/theme/app_theme_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +24,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => LoginCubit(service: LoginService())),
+        BlocProvider(create: (_) => ThemeCubit()),
         BlocProvider(
           create: (_) => OtpVerificationCubit(
             email: '',
@@ -31,19 +34,27 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Deal Wise',
-        initialRoute: AppRoutes.splash,
-        routes: AppRoutes.routes,
-        onGenerateRoute: (settings) {
-          if (settings.name == AppRoutes.productDetail) {
-            final product = settings.arguments as ProductModel;
-            return MaterialPageRoute(
-              builder: (context) => ProductDetailsScreen(product: product),
-            );
-          }
-          return null; // أي route تاني يستخدم الـ routes العادية
+      child: BlocBuilder<ThemeCubit, AppThemeState>(
+        builder: (context, themeState) {
+          final themeMode = themeState == AppThemeState.dark ? ThemeMode.dark : ThemeMode.light;
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Deal Wise',
+            theme: AppThemes.lightTheme,
+            darkTheme: AppThemes.darkTheme,
+            themeMode: themeMode,
+            initialRoute: AppRoutes.home,
+            routes: AppRoutes.routes,
+            onGenerateRoute: (settings) {
+              if (settings.name == AppRoutes.productDetail) {
+                final product = settings.arguments as ProductModel;
+                return MaterialPageRoute(
+                  builder: (context) => ProductDetailsScreen(product: product),
+                );
+              }
+              return null; // أي route تاني يستخدم الـ routes العادية
+            },
+          );
         },
       ),
     );

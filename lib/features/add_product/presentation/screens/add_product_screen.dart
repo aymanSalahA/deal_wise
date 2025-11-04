@@ -211,22 +211,24 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F7F8),
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF6F7F8),
+        backgroundColor: theme.appBarTheme.backgroundColor,
         elevation: 0,
         automaticallyImplyLeading: true,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           'Add Product',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-            color: Color(0xFF101C22),
-          ),
+          style: theme.appBarTheme.titleTextStyle ??
+              theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+                color: theme.appBarTheme.foregroundColor ?? theme.colorScheme.onSurface,
+              ),
         ),
-        iconTheme: const IconThemeData(color: Color(0xFF101C22)),
+        iconTheme: theme.appBarTheme.iconTheme,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
@@ -237,10 +239,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
               const SizedBox(height: 8),
               Text(
                 'Product Name',
-                style: TextStyle(
+                style: theme.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w500,
                   fontSize: 16,
-                  color: Color(0xFF374151),
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 6),
@@ -249,7 +251,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 decoration: InputDecoration(
                   hintText: 'Enter product name',
                   filled: true,
-                  fillColor: const Color(0xFFF1F5F9),
+                  fillColor: theme.inputDecorationTheme.fillColor ?? theme.cardColor,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide.none,
@@ -265,10 +267,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
               const SizedBox(height: 16),
               Text(
                 'Category',
-                style: TextStyle(
+                style: theme.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w500,
                   fontSize: 16,
-                  color: Color(0xFF374151),
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 6),
@@ -290,7 +292,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     : (val) => setState(() => _selectedCategoryId = val),
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: const Color(0xFFF1F5F9),
+                  fillColor: theme.inputDecorationTheme.fillColor ?? theme.cardColor,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide.none,
@@ -306,10 +308,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
               const SizedBox(height: 16),
               Text(
                 'Price',
-                style: TextStyle(
+                style: theme.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w500,
                   fontSize: 16,
-                  color: Color(0xFF374151),
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 6),
@@ -322,7 +324,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   prefixText: 'EGP ',
                   hintText: '0.00',
                   filled: true,
-                  fillColor: const Color(0xFFF1F5F9),
+                  fillColor: theme.inputDecorationTheme.fillColor ?? theme.cardColor,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide.none,
@@ -338,10 +340,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
               const SizedBox(height: 16),
               Text(
                 'Description',
-                style: TextStyle(
+                style: theme.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w500,
                   fontSize: 16,
-                  color: Color(0xFF374151),
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 6),
@@ -351,7 +353,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 decoration: InputDecoration(
                   hintText: 'Enter product description...',
                   filled: true,
-                  fillColor: const Color(0xFFF1F5F9),
+                  fillColor: theme.inputDecorationTheme.fillColor ?? theme.cardColor,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide.none,
@@ -370,7 +372,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Text(
                     _errorMessage!,
-                    style: const TextStyle(color: Colors.red),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.error,
+                    ),
                   ),
                 ),
               const SizedBox(height: 56),
@@ -379,14 +383,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
         ),
       ),
       bottomNavigationBar: Container(
-        color: const Color(0xFFF6F7F8),
+        color: theme.cardColor,
         padding: const EdgeInsets.all(16),
         child: SizedBox(
           width: double.infinity,
           height: 48,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF13A4EC),
+              backgroundColor: theme.colorScheme.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(32),
               ),
@@ -407,11 +411,17 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     width: 24,
                     height: 24,
                     child: CircularProgressIndicator(
-                      color: Colors.white,
                       strokeWidth: 2,
                     ),
                   )
-                : const Text('Create Product'),
+                : Text(
+                    'Create Product',
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      color: theme.colorScheme.onPrimary,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
           ),
         ),
       ),

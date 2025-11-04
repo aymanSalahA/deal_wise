@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
         ),
       ],
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar:  CustomAppBar(favorites: favoriteProductsList),
         body: SingleChildScrollView(
           child: Column(

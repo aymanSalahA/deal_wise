@@ -35,22 +35,24 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
       await _cartService.addToCart(widget.product.id, 1);
       print('✅ Product Card NEW: Successfully added to cart');
       if (mounted) {
+        final theme = Theme.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('✅ Added to cart successfully!'),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 2),
+          SnackBar(
+            content: const Text('✅ Added to cart successfully!'),
+            backgroundColor: theme.snackBarTheme.backgroundColor ?? theme.colorScheme.primary,
+            duration: const Duration(seconds: 2),
           ),
         );
       }
     } catch (e) {
       print('❌ Product Card NEW: Error caught - $e');
       if (mounted) {
+        final theme = Theme.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('❌ Error adding to cart: $e'),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 2),
+            backgroundColor: theme.snackBarTheme.backgroundColor ?? theme.colorScheme.error,
+            duration: const Duration(seconds: 2),
           ),
         );
       }
@@ -67,6 +69,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
   Widget build(BuildContext context) {
     final double finalPrice =
         widget.product.price * (1 - widget.product.discountPercentage / 100);
+    final theme = Theme.of(context);
 
     return GestureDetector(
       onTap: () {
@@ -78,11 +81,11 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.cardColor,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: theme.shadowColor.withOpacity(0.05),
               blurRadius: 10,
               offset: const Offset(0, 2),
             ),
@@ -97,16 +100,16 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Container(
-                    height: 140,
+                    height: 120,
                     width: double.infinity,
-                    color: Colors.grey[100],
+                    color: theme.cardColor,
                     child: Image.network(
                       widget.product.coverPictureUrl,
-                      height: 140,
+                      height: 120,
                       width: double.infinity,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) =>
-                          const Icon(Icons.error, color: Colors.red),
+                          Icon(Icons.error, color: theme.colorScheme.error),
                     ),
                   ),
                 ),
@@ -116,11 +119,11 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                   child: Container(
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: theme.cardColor,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
+                          color: theme.shadowColor.withOpacity(0.1),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),
@@ -130,7 +133,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                       onTap: _toggleFavorite,
                       child: Icon(
                         isFavorite ? Icons.favorite : Icons.favorite_border,
-                        color: Colors.red,
+                        color: theme.colorScheme.error,
                         size: 20,
                       ),
                     ),
@@ -138,29 +141,29 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Text(
               widget.product.name,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.inter(
-                color: Colors.black87,
+                color: theme.colorScheme.onSurface,
                 fontWeight: FontWeight.w600,
                 fontSize: 14,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 2),
             Text(
               widget.product.description,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.inter(
                 fontSize: 12,
-                color: Colors.black54,
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
                 height: 1.3,
               ),
             ),
-            const Spacer(),
+            const SizedBox(height: 4),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -171,22 +174,30 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     children: [
                       Row(
                         children: [
-                          Text(
-                            '\$${finalPrice.toStringAsFixed(2)}',
-                            style: GoogleFonts.inter(
-                              color: const Color(0xFF003366),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                          Flexible(
+                            child: Text(
+                              '\$${finalPrice.toStringAsFixed(2)}',
+                              style: GoogleFonts.inter(
+                                color: theme.colorScheme.primary,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           if (widget.product.discountPercentage > 0) ...[
                             const SizedBox(width: 6),
-                            Text(
-                              '\$${widget.product.price.toStringAsFixed(2)}',
-                              style: GoogleFonts.inter(
-                                fontSize: 12,
-                                decoration: TextDecoration.lineThrough,
-                                color: Colors.grey,
+                            Flexible(
+                              child: Text(
+                                '\$${widget.product.price.toStringAsFixed(2)}',
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  decoration: TextDecoration.lineThrough,
+                                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],
@@ -195,21 +206,29 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                       const SizedBox(height: 4),
                       Row(
                         children: [
-                          const Icon(Icons.star, color: Colors.amber, size: 14),
+                          Icon(Icons.star, color: theme.colorScheme.secondary, size: 14),
                           const SizedBox(width: 2),
-                          Text(
-                            widget.product.rating.toString(),
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              color: Colors.grey[700],
-                              fontWeight: FontWeight.w500,
+                          Flexible(
+                            child: Text(
+                              widget.product.rating.toString(),
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                color: theme.colorScheme.onSurface.withOpacity(0.7),
+                                fontWeight: FontWeight.w500,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          Text(
-                            ' (${widget.product.reviewsCount})',
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              color: Colors.grey,
+                          Flexible(
+                            child: Text(
+                              ' (${widget.product.reviewsCount})',
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                color: theme.colorScheme.onSurface.withOpacity(0.6),
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
@@ -219,7 +238,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                    color: const Color(0xFF003366),
+                    color: theme.colorScheme.primary,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Material(
@@ -227,11 +246,11 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     child: InkWell(
                       onTap: _addToCart,
                       borderRadius: BorderRadius.circular(8),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
                         child: Icon(
                           Icons.add_shopping_cart,
-                          color: Colors.white,
+                          color: theme.colorScheme.onPrimary,
                           size: 20,
                         ),
                       ),

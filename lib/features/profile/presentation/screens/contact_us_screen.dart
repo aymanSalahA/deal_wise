@@ -28,18 +28,23 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF72C9F8),
+        backgroundColor: theme.appBarTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: theme.appBarTheme.iconTheme?.color ?? theme.iconTheme.color,
+            size: 20,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'Contact Us',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: theme.appBarTheme.titleTextStyle,
         ),
 
         centerTitle: true,
@@ -111,16 +116,16 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     'Message sent (demo). No network call made.',
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF13A4EC),
+                    backgroundColor: theme.colorScheme.primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                     elevation: 0,
                   ),
-                  child: const Text(
+                  child: Text(
                     'Send Message',
-                    style: TextStyle(
-                      color: Colors.white,
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      color: theme.colorScheme.onPrimary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -160,17 +165,18 @@ class _MethodCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.cardColor,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
+              color: theme.shadowColor.withOpacity(0.04),
               blurRadius: 10,
               offset: const Offset(0, 6),
             ),
@@ -182,10 +188,10 @@ class _MethodCard extends StatelessWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: const Color(0xFF13A4EC).withOpacity(0.12),
+                color: theme.colorScheme.primary.withOpacity(0.12),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.mail_outline, color: Color(0xFF13A4EC)),
+              child: Icon(Icons.mail_outline, color: theme.colorScheme.primary),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -194,7 +200,7 @@ class _MethodCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: theme.textTheme.titleSmall?.copyWith(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -202,15 +208,19 @@ class _MethodCard extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
-                    style: const TextStyle(fontSize: 12, color: Colors.black54),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      fontSize: 12,
+                      color: theme.colorScheme.onSurface.withOpacity(0.6),
+                    ),
                   ),
                 ],
               ),
             ),
-            const Icon(
+            Icon(
               Icons.arrow_forward_ios,
               size: 18,
-              color: Colors.black38,
+              color: theme.iconTheme.color?.withOpacity(0.38) ??
+                  theme.colorScheme.onSurface.withOpacity(0.38),
             ),
           ],
         ),
@@ -234,29 +244,29 @@ class _LabeledTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return TextField(
       controller: controller,
       maxLines: maxLines,
       keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hint,
-        filled: true,
-        fillColor: Colors.white,
+        // rely on theme's InputDecorationTheme for fill and borders
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 14,
           vertical: 12,
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+          borderSide: BorderSide(color: theme.inputDecorationTheme.border?.borderSide.color ?? Colors.transparent),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+          borderSide: BorderSide(color: theme.inputDecorationTheme.enabledBorder?.borderSide.color ?? Colors.transparent),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF13A4EC)),
+          borderSide: BorderSide(color: theme.colorScheme.primary),
         ),
       ),
     );

@@ -59,8 +59,7 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Color(0xFF00B0FF);
-    const Color textColor = Color(0xffffffff);
+    final theme = Theme.of(context);
 
     return BlocProvider(
       create: (_) => RegisterCubit(ApiService()),
@@ -68,9 +67,9 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
         listener: (context, state) {
           if (state is RegisterSuccess) {
             if (state.hasToken) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(const SnackBar(content: Text('Registration successful!')));
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Registration successful!')),
+              );
               Navigator.pushReplacementNamed(context, AppRoutes.home);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -92,28 +91,39 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
               );
             }
           } else if (state is RegisterError) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
         builder: (context, state) {
           final isLoading = state is RegisterLoading;
 
           return Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: theme.scaffoldBackgroundColor,
             appBar: AppBar(
-              backgroundColor: const Color(0xFF72C9F8),
+              backgroundColor: theme.appBarTheme.backgroundColor,
               elevation: 0,
               leading: IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.arrow_back_ios,
-                  color: textColor,
+                  color:
+                      theme.appBarTheme.iconTheme?.color ??
+                      theme.iconTheme.color,
                   size: 20,
                 ),
                 onPressed: () => Navigator.pop(context),
               ),
-              title: const Text(
+              title: Text(
                 'Create Account',
-                style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
+                style:
+                    theme.appBarTheme.titleTextStyle ??
+                    theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color:
+                          theme.appBarTheme.foregroundColor ??
+                          theme.colorScheme.onSurface,
+                    ),
               ),
               centerTitle: true,
             ),
@@ -125,14 +135,21 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     const SizedBox(height: 20),
-                    const Text(
+                    Text(
                       'Register Account',
-                      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: textColor),
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.onSurface,
+                      ),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       'Enter your details to create an account.',
-                      style: TextStyle(fontSize: 14, color: Color(0xFF666666)),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontSize: 14,
+                        color: theme.colorScheme.onSurface.withOpacity(0.7),
+                      ),
                     ),
                     const SizedBox(height: 30),
                     _buildTextField(
@@ -161,7 +178,9 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
                       hintText: 'example@mail.com',
                       icon: Icons.email_outlined,
                       keyboardType: TextInputType.emailAddress,
-                      validator: (value) => (value == null || value.isEmpty) ? 'Enter email' : null,
+                      validator: (value) => (value == null || value.isEmpty)
+                          ? 'Enter email'
+                          : null,
                     ),
                     const SizedBox(height: 20),
 
@@ -205,17 +224,24 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
                             ? null
                             : () => _handleSignUp(context),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryColor,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          backgroundColor: theme.colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                           padding: const EdgeInsets.symmetric(vertical: 16),
                         ),
                         child: isLoading
-                            ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 3)
-                            : const Text(
+                            ? CircularProgressIndicator(
+                                strokeWidth: 3,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  theme.colorScheme.onPrimary,
+                                ),
+                              )
+                            : Text(
                                 'Sign Up',
-                                style: TextStyle(
+                                style: theme.textTheme.labelLarge?.copyWith(
                                   fontSize: 18,
-                                  color: Colors.white,
+                                  color: theme.colorScheme.onPrimary,
                                 ),
                               ),
                       ),
@@ -226,9 +252,12 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
+                        Text(
                           "Already have an account? ",
-                          style: TextStyle(fontSize: 14, color: Colors.black54),
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            fontSize: 14,
+                            color: theme.colorScheme.onSurface.withOpacity(0.7),
+                          ),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -237,11 +266,11 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
                               AppRoutes.login,
                             );
                           },
-                          child: const Text(
+                          child: Text(
                             "Login",
-                            style: TextStyle(
+                            style: theme.textTheme.bodySmall?.copyWith(
                               fontSize: 14,
-                              color: primaryColor,
+                              color: theme.colorScheme.primary,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -273,7 +302,10 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 8),
         TextFormField(
           controller: controller,
@@ -283,14 +315,16 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
             hintText: hintText,
             prefixIcon: Icon(icon, color: Colors.grey),
             filled: true,
-            fillColor: Colors.white,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(color: borderColor),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: focusedBorderColor, width: 2.0),
+              borderSide: const BorderSide(
+                color: focusedBorderColor,
+                width: 2.0,
+              ),
             ),
           ),
         ),
@@ -312,7 +346,10 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 8),
         TextFormField(
           controller: controller,
@@ -322,7 +359,10 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
             hintText: hintText,
             prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
             suffixIcon: IconButton(
-              icon: Icon(isVisible ? Icons.visibility : Icons.visibility_off, color: Colors.grey),
+              icon: Icon(
+                isVisible ? Icons.visibility : Icons.visibility_off,
+                color: Colors.grey,
+              ),
               onPressed: onToggleVisibility,
             ),
             border: OutlineInputBorder(
@@ -331,7 +371,10 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: focusedBorderColor, width: 2.0),
+              borderSide: const BorderSide(
+                color: focusedBorderColor,
+                width: 2.0,
+              ),
             ),
           ),
         ),

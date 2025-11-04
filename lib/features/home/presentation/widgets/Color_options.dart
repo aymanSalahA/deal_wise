@@ -15,15 +15,16 @@ class ColorOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Color',
-            style: TextStyle(
-              color: Colors.black,
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: theme.colorScheme.onSurface,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -42,12 +43,18 @@ class ColorOptions extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: color,
                     border: Border.all(
-                      color: isSelected ? Colors.black : Colors.transparent,
+                      color: isSelected
+                          ? theme.colorScheme.primary
+                          : Colors.transparent,
                       width: isSelected ? 3 : 1,
                     ),
                   ),
                   child: isSelected
-                      ? const Icon(Icons.check, size: 18, color: Colors.black)
+                      ? Icon(
+                          Icons.check,
+                          size: 18,
+                          color: theme.colorScheme.onSurface,
+                        )
                       : null,
                 ),
               );

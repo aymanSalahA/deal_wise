@@ -24,6 +24,7 @@ class _OffersSectionState extends State<OffersSection> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocBuilder<OfferCubit, OfferState>(
       builder: (context, state) {
         if (state is OfferLoading) {
@@ -31,7 +32,7 @@ class _OffersSectionState extends State<OffersSection> {
             padding: const EdgeInsets.only(top: 50.0),
             child: Center(
               child: LoadingAnimationWidget.staggeredDotsWave(
-                color: const Color.fromARGB(255, 4, 112, 219),
+                color: theme.colorScheme.primary,
                 size: 40,
               ),
             ),
@@ -52,16 +53,16 @@ class _OffersSectionState extends State<OffersSection> {
                           offer.coverUrl,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
-                            return const Center(
+                            return Center(
                               child: Icon(
                                 Icons.broken_image,
                                 size: 60,
-                                color: Colors.pink,
+                                color: theme.colorScheme.error,
                               ),
                             );
                           },
                         ),
-                        Container(color: const Color.fromARGB(75, 0, 0, 0)),
+                        Container(color: theme.colorScheme.scrim.withOpacity(0.3)),
                         Positioned(
                           left: 20,
                           bottom: 20,
@@ -69,16 +70,16 @@ class _OffersSectionState extends State<OffersSection> {
                             offer.name,
                             style: GoogleFonts.nunito(
                               shadows: [
-                                const Shadow(
-                                  color: Colors.black54,
-                                  offset: Offset(3, 1),
+                                Shadow(
+                                  color: theme.shadowColor.withOpacity(0.54),
+                                  offset: const Offset(3, 1),
                                   blurRadius: 2,
                                 ),
                               ],
                               textStyle: const TextStyle(),
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: theme.colorScheme.onSurface,
                             ),
                           ),
                         ),
@@ -111,8 +112,8 @@ class _OffersSectionState extends State<OffersSection> {
                     width: isActive ? 20.0 : 8.0,
                     decoration: BoxDecoration(
                       color: isActive
-                          ? const Color(0xFF27AAED)
-                          : Colors.grey[400],
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.onSurface.withOpacity(0.4),
                       borderRadius: BorderRadius.circular(8),
                     ),
                   );

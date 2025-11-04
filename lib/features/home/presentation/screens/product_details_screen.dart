@@ -15,27 +15,34 @@ class ProductDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final double discountedPrice =
         product.price * (1 - product.discountPercentage / 100);
+    final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: theme.appBarTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new,
-            color: Colors.black,
+            color: theme.appBarTheme.iconTheme?.color ?? theme.iconTheme.color,
             size: 20,
           ),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.favorite_border, color: Colors.black),
+            icon: Icon(
+              Icons.favorite_border,
+              color: theme.appBarTheme.iconTheme?.color ?? theme.iconTheme.color,
+            ),
             onPressed: () {},
           ),
           IconButton(
-            icon: const Icon(Icons.share_outlined, color: Colors.black),
+            icon: Icon(
+              Icons.share_outlined,
+              color: theme.appBarTheme.iconTheme?.color ?? theme.iconTheme.color,
+            ),
             onPressed: () {},
           ),
         ],

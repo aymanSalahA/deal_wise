@@ -12,18 +12,14 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF72C9F8),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         automaticallyImplyLeading: false,
-        title: const Text(
+        title: Text(
           'My Profile',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-            color: Colors.white,
-          ),
+          style: Theme.of(context).appBarTheme.titleTextStyle,
         ),
         centerTitle: true,
         actions: [],
@@ -49,7 +45,7 @@ class ProfileScreen extends StatelessWidget {
                   Navigator.pushNamed(context, AppRoutes.changePassword),
             ),
 
-            const Divider(thickness: 1, color: Colors.black26),
+            Divider(thickness: 1, color: Theme.of(context).dividerColor),
             const SizedBox(height: 20),
 
             ProfileOptionTile(
@@ -88,12 +84,14 @@ class ProfileScreen extends StatelessWidget {
             ),
 
             const SizedBox(height: 25),
-            const Text(
+            Text(
               'App Version 2.3',
-              style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
-                fontSize: 12,
-              ),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withOpacity(0.6),
+                  ),
             ),
             const SizedBox(height: 15),
           ],

@@ -51,15 +51,16 @@ class _LoginViewState extends State<_LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
         if (state is LoginSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Login successful!'),
-              backgroundColor: Colors.green,
+            SnackBar(
+              content: const Text('Login successful!'),
+              backgroundColor: theme.snackBarTheme.backgroundColor ?? theme.colorScheme.primary,
             ),
           );
 
@@ -72,12 +73,13 @@ class _LoginViewState extends State<_LoginView> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.errorMessage),
-              backgroundColor: Colors.red,
+              backgroundColor: theme.snackBarTheme.backgroundColor ?? theme.colorScheme.error,
             ),
           );
         }
       },
       child: Scaffold(
+        backgroundColor: theme.scaffoldBackgroundColor,
         body: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24.0),
@@ -90,18 +92,18 @@ class _LoginViewState extends State<_LoginView> {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      const Icon(
+                      Icon(
                         Icons.shopping_bag_outlined,
                         size: 60,
-                        color: Colors.blue,
+                        color: theme.colorScheme.primary,
                       ),
                       const SizedBox(height: 20),
-                      const Text(
+                      Text(
                         'Welcome Back!',
-                        style: TextStyle(
+                        style: theme.textTheme.headlineSmall?.copyWith(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: theme.colorScheme.onSurface,
                         ),
                       ),
                       const SizedBox(height: 40),
@@ -152,9 +154,11 @@ class _LoginViewState extends State<_LoginView> {
                                 },
                           child: Padding(
                             padding: const EdgeInsets.only(left: 16.0),
-                            child: const Text(
+                            child: Text(
                               'Forgot Password?',
-                              style: TextStyle(color: Colors.blue),
+                              style: theme.textTheme.labelLarge?.copyWith(
+                                color: theme.colorScheme.primary,
+                              ),
                             ),
                           ),
                         ),
@@ -168,7 +172,7 @@ class _LoginViewState extends State<_LoginView> {
                               child: ElevatedButton(
                                 onPressed: _handleLogin,
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(0xFF00B0FF),
+                                  backgroundColor: theme.colorScheme.primary,
                                   padding: const EdgeInsets.symmetric(
                                     vertical: 16,
                                   ),
@@ -176,20 +180,22 @@ class _LoginViewState extends State<_LoginView> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                child: const Text(
+                                child: Text(
                                   'Login',
-                                  style: TextStyle(
+                                  style: theme.textTheme.labelLarge?.copyWith(
                                     fontSize: 18,
-                                    color: Colors.white,
+                                    color: theme.colorScheme.onPrimary,
                                   ),
                                 ),
                               ),
                             ),
                       const SizedBox(height: 30),
 
-                      const Text(
+                      Text(
                         'or continue with',
-                        style: TextStyle(color: Colors.grey),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurface.withOpacity(0.6),
+                        ),
                       ),
                       const SizedBox(height: 20),
 
@@ -208,18 +214,20 @@ class _LoginViewState extends State<_LoginView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          const Text(
+                          Text(
                             "Don't have an account?",
-                            style: TextStyle(color: Colors.grey),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurface.withOpacity(0.6),
+                            ),
                           ),
                           TextButton(
                             onPressed: () {
                               Navigator.pushNamed(context, AppRoutes.signup);
                             },
-                            child: const Text(
+                            child: Text(
                               'Sign Up',
-                              style: TextStyle(
-                                color: Colors.blue,
+                              style: theme.textTheme.labelLarge?.copyWith(
+                                color: theme.colorScheme.primary,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

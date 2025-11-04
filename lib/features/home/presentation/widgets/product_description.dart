@@ -15,16 +15,17 @@ class _ProductDescriptionState extends State<ProductDescription> {
     final bool showReadMore =
         widget.description.split('\n').length > maxLines ||
         widget.description.length > 200;
+    final theme = Theme.of(context);
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Description',
-            style: TextStyle(
-              color: Colors.black,
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: theme.colorScheme.onSurface,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -33,7 +34,10 @@ class _ProductDescriptionState extends State<ProductDescription> {
 
           Text(
             widget.description,
-            style: const TextStyle(color: Colors.grey, height: 1.5),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurface.withOpacity(0.7),
+              height: 1.5,
+            ),
             maxLines: _isExpanded ? 20 : maxLines,
             overflow: TextOverflow.ellipsis,
           ),
@@ -47,8 +51,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
               },
               child: Text(
                 _isExpanded ? 'Read Less' : 'Read More',
-                style: TextStyle(
-                  color: Colors.blue.shade300,
+                style: theme.textTheme.labelLarge?.copyWith(
+                  color: theme.colorScheme.primary,
                   fontWeight: FontWeight.bold,
                 ),
               ),

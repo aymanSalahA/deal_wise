@@ -23,6 +23,7 @@ class _CategoriesSectionState extends State<CategoriesSection> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -32,13 +33,13 @@ class _CategoriesSectionState extends State<CategoriesSection> {
             'Categories',
             style: GoogleFonts.nunito(
               shadows: [
-                const Shadow(
-                  color: Color.fromARGB(255, 200, 233, 250),
-                  offset: Offset(1, 2),
+                Shadow(
+                  color: theme.shadowColor.withOpacity(0.25),
+                  offset: const Offset(1, 2),
                   blurRadius: 5,
                 ),
               ],
-              color: const Color(0xFF003366),
+              color: theme.colorScheme.primary,
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
@@ -61,8 +62,8 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                       category.name,
                       style: TextStyle(
                         color: isSelected
-                            ? const Color(0xFF3BB0EE)
-                            : Color(0xff0A2843),
+                            ? Colors.white
+                            : (theme.textTheme.bodyMedium?.color ?? Colors.black),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -70,12 +71,14 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                       category.icon,
                       size: 20,
                       color: isSelected
-                          ? const Color(0xFF3BB0EE)
-                          : Color(0xff0A2843),
+                          ? Colors.white
+                          : (theme.textTheme.bodyMedium?.color ?? Colors.black),
                     ),
                     selected: isSelected,
-                    selectedColor: const Color(0xffC8E6F5),
-                    backgroundColor: const Color(0xffFEEBE7),
+                    selectedColor: theme.chipTheme.selectedColor ??
+                        theme.colorScheme.primary.withOpacity(0.15),
+                    backgroundColor: theme.chipTheme.backgroundColor ??
+                        theme.cardColor,
                     side: BorderSide.none,
                     onSelected: (selected) {
                       setState(() {

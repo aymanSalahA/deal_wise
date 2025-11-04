@@ -36,17 +36,28 @@ class _FilterScreenState extends State<FilterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('Filter Products'),
-        backgroundColor: Colors.white,
+        title: Text(
+          'Filter Products',
+          style: theme.appBarTheme.titleTextStyle,
+        ),
+        backgroundColor: theme.appBarTheme.backgroundColor,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Filter Options', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(
+              'Filter Options',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             const Divider(),
             
           
@@ -75,13 +86,16 @@ class _FilterScreenState extends State<FilterScreen> {
                   Navigator.pop(context, results);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF5BC2FA),
-                  foregroundColor: Colors.white,
+                  backgroundColor: theme.colorScheme.primary,
+                  foregroundColor: theme.colorScheme.onPrimary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const Text('Apply Filters', style: TextStyle(fontSize: 18)),
+                child: Text(
+                  'Apply Filters',
+                  style: theme.textTheme.labelLarge?.copyWith(fontSize: 18),
+                ),
               ),
             ),
           ],

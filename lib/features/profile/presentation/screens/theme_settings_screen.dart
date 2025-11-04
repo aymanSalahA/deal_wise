@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:deal_wise/core/theme/app_theme_cubit.dart';
 
 class ThemeSettingsScreen extends StatelessWidget {
   const ThemeSettingsScreen({super.key});
@@ -7,29 +9,55 @@ class ThemeSettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Theme',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: Theme.of(context).appBarTheme.titleTextStyle,
         ),
-        backgroundColor: const Color(0xFF72C9F8),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Theme.of(context).appBarTheme.iconTheme?.color ??
+                Theme.of(context).iconTheme.color,
+            size: 20,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
       ),
-      body: const Center(
-        child: Padding(
-          padding: EdgeInsets.all(24.0),
-          child: Text(
-            'Theme settings will be provided later.',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            textAlign: TextAlign.center,
-          ),
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: BlocBuilder<ThemeCubit, AppThemeState>(
+          builder: (context, state) {
+            final isDark = state == AppThemeState.dark;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(
+                    'Dark Mode',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  subtitle: Text(
+                    isDark ? 'On' : 'Off',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
+                  ),
+                  secondary: Icon(isDark ? Icons.dark_mode : Icons.light_mode,
+                      color: Theme.of(context).iconTheme.color),
+                  value: isDark,
+                  onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
+                ),
+              ],
+            );
+          },
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     );
   }
 }

@@ -30,10 +30,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     return 'Weak';
   }
 
-  Color _strengthColor(double score) {
-    if (score >= 0.8) return const Color(0xFF22C55E); // green
-    if (score >= 0.5) return const Color(0xFFF59E0B); // amber
-    return const Color(0xFFEF4444); // red
+  Color _strengthColor(BuildContext context, double score) {
+    final theme = Theme.of(context);
+    if (score >= 0.8) return theme.colorScheme.primary;
+    if (score >= 0.5) return theme.colorScheme.secondary;
+    return theme.colorScheme.error;
   }
 
   double _passwordStrength(String value) {
@@ -70,22 +71,27 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final double strength = _passwordStrength(_newController.text);
-    final Color barColor = _strengthColor(strength);
+    final Color barColor = _strengthColor(context, strength);
     final String label = _strengthLabel(strength);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF72C9F8),
+        backgroundColor: theme.appBarTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: theme.appBarTheme.iconTheme?.color ?? theme.iconTheme.color,
+            size: 20,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'Change Password',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: theme.appBarTheme.titleTextStyle,
         ),
         centerTitle: true,
       ),
@@ -96,11 +102,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10),
-              const Center(
+              Center(
                 child: Text(
                   'Create a new, strong password to keep your account secure.',
-                  style: TextStyle(
-                    color: Colors.black54,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface.withOpacity(0.7),
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
@@ -139,7 +145,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 children: [
                   Text(
                     label,
-                    style: TextStyle(
+                    style: theme.textTheme.labelLarge?.copyWith(
                       color: barColor,
                       fontWeight: FontWeight.w600,
                     ),
@@ -150,7 +156,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               Container(
                 height: 8,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE5E7EB),
+                  color: theme.colorScheme.onSurface.withOpacity(0.12),
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: FractionallySizedBox(
@@ -190,16 +196,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           child: ElevatedButton(
             onPressed: _updatePasswordDemo,
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF13A4EC),
+              backgroundColor: theme.colorScheme.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
               elevation: 0,
             ),
-            child: const Text(
+            child: Text(
               'Update Password',
-              style: TextStyle(
-                color: Colors.white,
+              style: theme.textTheme.labelLarge?.copyWith(
+                color: theme.colorScheme.onPrimary,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -227,12 +233,16 @@ class _PasswordField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+          style: theme.textTheme.bodySmall?.copyWith(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         const SizedBox(height: 6),
         Stack(
@@ -244,24 +254,30 @@ class _PasswordField extends StatelessWidget {
               onChanged: onChanged,
               decoration: InputDecoration(
                 hintText: label,
-                prefixIcon: const Icon(Icons.lock_outline),
-                filled: true,
-                fillColor: Colors.white,
+                prefixIcon: Icon(
+                  Icons.lock_outline,
+                  color: theme.iconTheme.color,
+                ),
+                // rely on theme's InputDecorationTheme for fill/borders
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 14,
                   vertical: 14,
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                  borderSide: BorderSide(
+                    color: theme.inputDecorationTheme.border?.borderSide.color ?? Colors.transparent,
+                  ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                  borderSide: BorderSide(
+                    color: theme.inputDecorationTheme.enabledBorder?.borderSide.color ?? Colors.transparent,
+                  ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Color(0xFF13A4EC)),
+                  borderSide: BorderSide(color: theme.colorScheme.primary),
                 ),
               ),
             ),
@@ -269,7 +285,8 @@ class _PasswordField extends StatelessWidget {
               onPressed: onToggle,
               icon: Icon(
                 obscure ? Icons.visibility_off : Icons.visibility,
-                color: Colors.black45,
+                color: theme.iconTheme.color?.withOpacity(0.45) ??
+                    theme.colorScheme.onSurface.withOpacity(0.45),
               ),
             ),
           ],
@@ -287,15 +304,16 @@ class _RequirementChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
         color: met
-            ? const Color(0xFF22C55E).withOpacity(0.12)
-            : const Color(0xFFEF4444).withOpacity(0.12),
+            ? theme.colorScheme.primary.withOpacity(0.12)
+            : theme.colorScheme.error.withOpacity(0.12),
         borderRadius: BorderRadius.circular(999),
         border: Border.all(
-          color: (met ? const Color(0xFF22C55E) : const Color(0xFFEF4444))
+          color: (met ? theme.colorScheme.primary : theme.colorScheme.error)
               .withOpacity(0.3),
         ),
       ),
@@ -305,10 +323,13 @@ class _RequirementChip extends StatelessWidget {
           Icon(
             met ? Icons.check_circle : Icons.cancel,
             size: 16,
-            color: met ? const Color(0xFF22C55E) : const Color(0xFFEF4444),
+            color: met ? theme.colorScheme.primary : theme.colorScheme.error,
           ),
           const SizedBox(width: 6),
-          Text(text, style: const TextStyle(fontSize: 12)),
+          Text(
+            text,
+            style: theme.textTheme.bodySmall?.copyWith(fontSize: 12),
+          ),
         ],
       ),
     );

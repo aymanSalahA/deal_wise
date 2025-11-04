@@ -13,26 +13,30 @@ class ForgotPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final theme = Theme.of(context);
 
     return BlocProvider(
       create: (context) => ForgotPasswordCubit(ForgotPasswordService()),
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: theme.scaffoldBackgroundColor,
         appBar: AppBar(
-          backgroundColor: const Color(0xFF72C9F8),
+          backgroundColor: theme.appBarTheme.backgroundColor,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back_ios,
-              color: Colors.white,
+              color: theme.appBarTheme.iconTheme?.color ?? theme.iconTheme.color,
               size: 20,
             ),
             onPressed: () => Navigator.pop(context),
           ),
-
-          title: const Text(
+          title: Text(
             "Forgot Password",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: theme.appBarTheme.titleTextStyle ??
+                theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: theme.appBarTheme.foregroundColor ?? theme.colorScheme.onSurface,
+                ),
           ),
           centerTitle: true,
         ),
@@ -44,55 +48,58 @@ class ForgotPasswordScreen extends StatelessWidget {
                 SizedBox(height: size.height * 0.05),
                 CircleAvatar(
                   radius: size.width * 0.12,
-                  backgroundColor: const Color(0xFFE0F0FF),
+                  backgroundColor: theme.colorScheme.primary.withOpacity(0.12),
                   child: Icon(
                     Icons.lock_reset_rounded,
-                    color: const Color(0xFF1D9BF0),
+                    color: theme.colorScheme.primary,
                     size: size.width * 0.12,
                   ),
                 ),
                 SizedBox(height: size.height * 0.05),
-                const Text(
+                Text(
                   "Reset your password",
-                  style: TextStyle(
+                  style: theme.textTheme.titleLarge?.copyWith(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
                 SizedBox(height: size.height * 0.015),
-                const Text(
+                Text(
                   "No worries! Enter the email address associated with your account, and we'll send you a link to reset your password.",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 15, color: Colors.black54),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontSize: 15,
+                    color: theme.colorScheme.onSurface.withOpacity(0.7),
+                  ),
                 ),
                 SizedBox(height: size.height * 0.045),
                 TextField(
                   controller: emailController,
                   decoration: InputDecoration(
-                    prefixIcon: const Icon(
+                    prefixIcon: Icon(
                       Icons.email_outlined,
-                      color: Colors.grey,
+                      color: theme.iconTheme.color ?? theme.colorScheme.onSurface.withOpacity(0.6),
                     ),
                     hintText: "Enter your email address",
-                    hintStyle: const TextStyle(
-                      color: Colors.grey,
+                    hintStyle: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurface.withOpacity(0.6),
                       fontSize: 14,
                     ),
                     labelText: "Email Address",
-                    labelStyle: const TextStyle(
-                      color: Colors.black87,
+                    labelStyle: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurface,
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                     ),
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: theme.inputDecorationTheme.fillColor ?? theme.cardColor,
                     enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                      borderSide: BorderSide(color: theme.inputDecorationTheme.enabledBorder?.borderSide.color ?? Colors.transparent),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Color(0xFF1D9BF0)),
+                      borderSide: BorderSide(color: theme.colorScheme.primary),
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
@@ -113,8 +120,9 @@ class ForgotPasswordScreen extends StatelessWidget {
                       );
                     } else if (state is ForgotPasswordFailure) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("Failed to send reset link"),
+                        SnackBar(
+                          content: const Text("Failed to send reset link"),
+                          backgroundColor: theme.snackBarTheme.backgroundColor ?? theme.colorScheme.error,
                         ),
                       );
                     }
@@ -134,28 +142,31 @@ class ForgotPasswordScreen extends StatelessWidget {
                                       .sendResetLink(email);
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Please enter email"),
+                                    SnackBar(
+                                      content: const Text("Please enter email"),
+                                      backgroundColor: theme.snackBarTheme.backgroundColor ?? theme.colorScheme.error,
                                     ),
                                   );
                                 }
                               },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1D9BF0),
+                          backgroundColor: theme.colorScheme.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: state is ForgotPasswordLoading
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
+                            ? CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  theme.colorScheme.onPrimary,
+                                ),
                               )
-                            : const Text(
+                            : Text(
                                 "Send Reset Link",
-                                style: TextStyle(
+                                style: theme.textTheme.labelLarge?.copyWith(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                                  color: theme.colorScheme.onPrimary,
                                 ),
                               ),
                       ),

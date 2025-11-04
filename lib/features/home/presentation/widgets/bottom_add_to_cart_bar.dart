@@ -20,12 +20,13 @@ class _BottomAddToCartBarState extends State<BottomAddToCartBar> {
   bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF282832),
+        color: theme.cardColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.5),
+            color: theme.shadowColor.withOpacity(0.25),
             spreadRadius: 2,
             blurRadius: 10,
           ),
@@ -37,13 +38,13 @@ class _BottomAddToCartBarState extends State<BottomAddToCartBar> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
             decoration: BoxDecoration(
-              color: const Color(0xFF1E1E28),
+              color: theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Row(
               children: [
                 IconButton(
-                  icon: const Icon(Icons.remove, color: Colors.blue),
+                  icon: Icon(Icons.remove, color: theme.colorScheme.primary),
                   onPressed: () {
                     setState(() {
                       if (quantity > 1) {
@@ -54,10 +55,13 @@ class _BottomAddToCartBarState extends State<BottomAddToCartBar> {
                 ),
                 Text(
                   '$quantity',
-                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                    fontSize: 18,
+                  ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.add, color: Colors.blue),
+                  icon: Icon(Icons.add, color: theme.colorScheme.primary),
                   onPressed: () {
                     setState(() {
                       quantity++;
@@ -85,7 +89,7 @@ class _BottomAddToCartBarState extends State<BottomAddToCartBar> {
                         SnackBar(
                           content: Text('✅ $quantity item(s) added to the cart'),
                           duration: const Duration(seconds: 2),
-                          backgroundColor: Colors.green,
+                          backgroundColor: theme.snackBarTheme.backgroundColor ?? theme.colorScheme.primary,
                           behavior: SnackBarBehavior.floating,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
@@ -99,7 +103,7 @@ class _BottomAddToCartBarState extends State<BottomAddToCartBar> {
                         SnackBar(
                           content: Text('❌ Error: $e'),
                           duration: const Duration(seconds: 2),
-                          backgroundColor: Colors.red,
+                          backgroundColor: theme.snackBarTheme.backgroundColor ?? theme.colorScheme.error,
                           behavior: SnackBarBehavior.floating,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
@@ -114,7 +118,7 @@ class _BottomAddToCartBarState extends State<BottomAddToCartBar> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: theme.colorScheme.primary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -123,15 +127,12 @@ class _BottomAddToCartBarState extends State<BottomAddToCartBar> {
                     ? const SizedBox(
                         width: 24,
                         height: 24,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
+                        child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : const Text(
+                    : Text(
                         'Add to Cart',
-                        style: TextStyle(
-                          color: Colors.white,
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          color: theme.colorScheme.onPrimary,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),

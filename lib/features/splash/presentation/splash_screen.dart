@@ -73,8 +73,9 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -100,7 +101,7 @@ class _SplashScreenState extends State<SplashScreen>
                   style: GoogleFonts.montserrat(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xff0A2843),
+                    color: theme.colorScheme.primary,
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -109,10 +110,10 @@ class _SplashScreenState extends State<SplashScreen>
                   child: LinearProgressIndicator(
                     minHeight: 15,
                     value: _progress,
-                    valueColor: const AlwaysStoppedAnimation<Color>(
-                      Color.fromARGB(255, 58, 161, 245),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      theme.colorScheme.primary,
                     ),
-                    backgroundColor: const Color.fromARGB(110, 33, 149, 243),
+                    backgroundColor: theme.colorScheme.onSurface.withOpacity(0.12),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -121,7 +122,7 @@ class _SplashScreenState extends State<SplashScreen>
                   style: GoogleFonts.montaguSlab(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
               ],
