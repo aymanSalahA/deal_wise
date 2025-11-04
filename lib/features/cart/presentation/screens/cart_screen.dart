@@ -1,3 +1,4 @@
+import 'package:deal_wise/features/cart/data/services/cart_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -9,62 +10,51 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-  final Dio _dio = Dio();
+  final CartService _cartService = CartService();
   List<Map<String, dynamic>> _cartItems = [];
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _fetchProducts();
+    _fetchCartItems();
   }
 
-  Future<void> _fetchProducts() async {
+  Future<void> _fetchCartItems() async {
     try {
-      final response = await _dio.get('https://dummyjson.com/products?limit=5');
-      if (response.statusCode == 200) {
-        final products = response.data['products'] as List;
-        setState(() {
-          _cartItems = products
-              .map(
-                (p) => {
-                  'title': p['title'],
-                  'price': (p['price'] as num).toDouble(),
-                  'image': p['thumbnail'],
-                  'quantity': 1,
-                  'category': p['category'],
-                },
-              )
-              .toList();
-          _isLoading = false;
-        });
-      }
+      final items = await _cartService.fetchCart();
+      setState(() {
+        _cartItems = items;
+        _isLoading = false;
+      });
     } catch (e) {
-      debugPrint('❌ Error fetching products: $e');
+      debugPrint('❌ Error loading cart: $e');
       setState(() => _isLoading = false);
     }
   }
 
-  double get total => _cartItems.fold(0, (sum, item) => sum + item['price'] * item['quantity']);
+  double get total =>
+      _cartItems.fold(0, (sum, item) => sum + (item['price'] * (item['quantity'] ?? 1)));
 
-  void _increaseQty(int index) {
-    setState(() {
-      _cartItems[index]['quantity']++;
-    });
+  void _increaseQty(int index) async {
+    final item = _cartItems[index];
+    final newQty = (item['quantity'] ?? 1) + 1;
+    await _cartService.updateQuantity(item['id'], newQty);
+    setState(() => _cartItems[index]['quantity'] = newQty);
   }
 
-  void _decreaseQty(int index) {
-    setState(() {
-      if (_cartItems[index]['quantity'] > 1) {
-        _cartItems[index]['quantity']--;
-      }
-    });
+  void _decreaseQty(int index) async {
+    final item = _cartItems[index];
+    final newQty = (item['quantity'] ?? 1) - 1;
+    if (newQty < 1) return;
+    await _cartService.updateQuantity(item['id'], newQty);
+    setState(() => _cartItems[index]['quantity'] = newQty);
   }
 
-  void _removeItem(int index) {
-    setState(() {
-      _cartItems.removeAt(index);
-    });
+  void _removeItem(int index) async {
+    final item = _cartItems[index];
+    await _cartService.removeFromCart(item['id']);
+    setState(() => _cartItems.removeAt(index));
   }
 
   @override
@@ -83,15 +73,6 @@ class _CartPageState extends State<CartPage> {
           'My Cart',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 18),
         ),
-        actions: [
-          TextButton(
-            onPressed: () {},
-            child: const Text(
-              'Edit',
-              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -125,7 +106,7 @@ class _CartPageState extends State<CartPage> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
                                 child: Image.network(
-                                  item['image'],
+                                  item['imageUrl'] ?? '',
                                   width: 80,
                                   height: 80,
                                   fit: BoxFit.cover,
@@ -137,7 +118,7 @@ class _CartPageState extends State<CartPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      item['title'],
+                                      item['name'] ?? '',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
@@ -147,12 +128,7 @@ class _CartPageState extends State<CartPage> {
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
-                                      item['category'],
-                                      style: const TextStyle(color: Colors.grey, fontSize: 13),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      '\$${item['price'].toStringAsFixed(2)}',
+                                      '\$${item['price']}',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15,
@@ -178,7 +154,7 @@ class _CartPageState extends State<CartPage> {
                                       Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 8),
                                         child: Text(
-                                          '${item['quantity']}',
+                                          '${item['quantity'] ?? 1}',
                                           style: const TextStyle(fontWeight: FontWeight.w600),
                                         ),
                                       ),
@@ -214,14 +190,6 @@ class _CartPageState extends State<CartPage> {
       ),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text("Subtotal", style: TextStyle(color: Colors.grey, fontSize: 15)),
-              Text("\$${total.toStringAsFixed(2)}", style: const TextStyle(fontSize: 15)),
-            ],
-          ),
-          const Divider(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

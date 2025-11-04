@@ -7,8 +7,7 @@ import '../../data/api_service/reset_password_service.dart';
 class ResetPasswordCubit extends Cubit<ResetPasswordState> {
   final ResetPasswordService _resetPasswordService;
 
-  ResetPasswordCubit(this._resetPasswordService)
-    : super(ResetPasswordInitial());
+  ResetPasswordCubit(this._resetPasswordService) : super(ResetPasswordInitial());
 
   Future<void> resetPassword({
     required String email,
@@ -24,7 +23,7 @@ class ResetPasswordCubit extends Cubit<ResetPasswordState> {
       );
 
       // If API returned tokens, persist them similar to login
-      if (response is Map<String, dynamic> && response.containsKey('accessToken')) {
+      if (response.containsKey('accessToken')) {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('accessToken', response['accessToken']);
         await prefs.setString('refreshToken', response['refreshToken'] ?? '');

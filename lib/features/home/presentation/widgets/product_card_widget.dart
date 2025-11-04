@@ -1,16 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:dio/dio.dart';
 import '../../data/models/product_model.dart';
 
 class ProductCardWidget extends StatelessWidget {
   final ProductModel product;
+  final Dio _dio = Dio();
 
-  const ProductCardWidget({super.key, required this.product});
+  ProductCardWidget({super.key, required this.product});
+
+  Future<void> _addToCart(BuildContext context) async {
+    try {
+      final response = await _dio.post(
+        'https://accessories-eshop.runasp.net/api/cart',
+        data: {'productId': product.id, 'quantity': 1},
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('✅ Added to cart successfully!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('⚠️ Failed: ${response.statusMessage}'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('❌ Error adding to cart: $e'), backgroundColor: Colors.red),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final double finalPrice =
-        product.price * (1 - product.discountPercentage / 100);
+    final double finalPrice = product.price * (1 - product.discountPercentage / 100);
+
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, '/product-detail', arguments: product);
@@ -52,11 +83,7 @@ class ProductCardWidget extends StatelessWidget {
                           borderRadius: BorderRadius.circular(15),
                         ),
                         alignment: Alignment.center,
-                        child: const Icon(
-                          Icons.favorite_border,
-                          color: Colors.red,
-                          size: 16,
-                        ),
+                        child: const Icon(Icons.favorite_border, color: Colors.red, size: 16),
                       ),
                     ),
                   ],
@@ -85,9 +112,7 @@ class ProductCardWidget extends StatelessWidget {
                     Row(
                       children: List.generate(5, (index) {
                         return Icon(
-                          index < product.rating
-                              ? Icons.star
-                              : Icons.star_border,
+                          index < product.rating ? Icons.star : Icons.star_border,
                           color: Colors.amber,
                           size: 16,
                         );
@@ -114,7 +139,7 @@ class ProductCardWidget extends StatelessWidget {
                 height: 42,
                 child: FloatingActionButton(
                   heroTag: product.id,
-                  onPressed: () {},
+                  onPressed: () => _addToCart(context),
                   backgroundColor: const Color(0xFF5BC2FA),
                   child: const Icon(Icons.add, color: Colors.white, size: 24),
                 ),

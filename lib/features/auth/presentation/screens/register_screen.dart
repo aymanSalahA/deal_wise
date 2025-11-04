@@ -1,12 +1,10 @@
 import 'package:deal_wise/features/auth/data/api_service/api_service.dart';
 import 'package:deal_wise/features/auth/presentation/cubit/register_cubit.dart';
 import 'package:deal_wise/features/auth/presentation/screens/otp_verification_screen.dart';
-import 'package:deal_wise/features/home/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../routes/app_routes.dart';
 
- 
+import '../../../../routes/app_routes.dart';
 
 class RegisterAccountScreen extends StatefulWidget {
   const RegisterAccountScreen({super.key});
@@ -39,8 +37,9 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     if (_passwordController.text != _confirmPasswordController.text) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Passwords do not match')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Passwords do not match')));
       return;
     }
 
@@ -50,11 +49,11 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
     final lastName = parts.length > 1 ? parts.sublist(1).join(' ') : '';
 
     context.read<RegisterCubit>().register(
-          firstName: firstName,
-          lastName: lastName,
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
-        );
+      firstName: firstName,
+      lastName: lastName,
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+    );
   }
 
   @override
@@ -68,9 +67,9 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
         listener: (context, state) {
           if (state is RegisterSuccess) {
             if (state.hasToken) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Registration successful!')),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('Registration successful!')));
               Navigator.pushReplacementNamed(context, AppRoutes.home);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -88,9 +87,7 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
               );
             }
           } else if (state is RegisterError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
         builder: (context, state) {
@@ -120,11 +117,7 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
                     const SizedBox(height: 20),
                     const Text(
                       'Register Account',
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: textColor,
-                      ),
+                      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: textColor),
                     ),
                     const SizedBox(height: 8),
                     const Text(
@@ -157,8 +150,7 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
                       hintText: 'example@mail.com',
                       icon: Icons.email_outlined,
                       keyboardType: TextInputType.emailAddress,
-                      validator: (value) =>
-                          (value == null || value.isEmpty) ? 'Enter email' : null,
+                      validator: (value) => (value == null || value.isEmpty) ? 'Enter email' : null,
                     ),
                     const SizedBox(height: 20),
 
@@ -195,16 +187,11 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
                         onPressed: isLoading ? null : () => _handleSignUp(context),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           padding: const EdgeInsets.symmetric(vertical: 16),
                         ),
                         child: isLoading
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 3,
-                              )
+                            ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 3)
                             : const Text(
                                 'Sign Up',
                                 style: TextStyle(fontSize: 18, color: Colors.white),
@@ -261,8 +248,7 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         TextFormField(
           controller: controller,
@@ -279,8 +265,7 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide:
-                  const BorderSide(color: focusedBorderColor, width: 2.0),
+              borderSide: const BorderSide(color: focusedBorderColor, width: 2.0),
             ),
           ),
         ),
@@ -302,8 +287,7 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         TextFormField(
           controller: controller,
@@ -313,10 +297,7 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
             hintText: hintText,
             prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
             suffixIcon: IconButton(
-              icon: Icon(
-                isVisible ? Icons.visibility : Icons.visibility_off,
-                color: Colors.grey,
-              ),
+              icon: Icon(isVisible ? Icons.visibility : Icons.visibility_off, color: Colors.grey),
               onPressed: onToggleVisibility,
             ),
             border: OutlineInputBorder(
@@ -325,8 +306,7 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide:
-                  const BorderSide(color: focusedBorderColor, width: 2.0),
+              borderSide: const BorderSide(color: focusedBorderColor, width: 2.0),
             ),
           ),
         ),

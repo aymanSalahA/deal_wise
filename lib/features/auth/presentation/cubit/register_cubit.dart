@@ -1,7 +1,6 @@
 import 'package:deal_wise/features/auth/data/api_service/api_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class RegisterState {}
 
@@ -41,7 +40,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       );
 
       bool hasToken = false;
-      if (response is Map<String, dynamic> && response.containsKey('accessToken')) {
+      if (response.containsKey('accessToken')) {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('accessToken', response['accessToken']);
         await prefs.setString('refreshToken', response['refreshToken'] ?? '');
