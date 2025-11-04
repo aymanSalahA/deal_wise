@@ -23,6 +23,18 @@ class OtpService {
       } else {
         throw Exception('OTP validation failed with status ${response.statusCode}');
       }
+    } on DioException catch (e) {
+      log("OTP validation error: $e");
+      String message = 'OTP validation failed';
+      if (e.response?.data != null) {
+        final data = e.response!.data;
+        if (data is Map<String, dynamic>) {
+          message = data['message'] ?? data['error'] ?? message;
+        } else if (data is String) {
+          message = data;
+        }
+      }
+      throw Exception(message);
     } catch (e) {
       log("OTP validation error: $e");
       throw Exception('OTP validation failed');
@@ -47,6 +59,18 @@ class OtpService {
       } else {
         throw Exception('Verify email failed with status ${response.statusCode}');
       }
+    } on DioException catch (e) {
+      log("Verify email error: $e");
+      String message = 'Email verification failed';
+      if (e.response?.data != null) {
+        final data = e.response!.data;
+        if (data is Map<String, dynamic>) {
+          message = data['message'] ?? data['error'] ?? message;
+        } else if (data is String) {
+          message = data;
+        }
+      }
+      throw Exception(message);
     } catch (e) {
       log("Verify email error: $e");
       throw Exception('Email verification failed');
@@ -64,6 +88,18 @@ class OtpService {
 
       log("Resend OTP response: ${response.data}");
       return response.statusCode == 200;
+    } on DioException catch (e) {
+      log("Resend OTP error: $e");
+      String message = 'Failed to resend OTP';
+      if (e.response?.data != null) {
+        final data = e.response!.data;
+        if (data is Map<String, dynamic>) {
+          message = data['message'] ?? data['error'] ?? message;
+        } else if (data is String) {
+          message = data;
+        }
+      }
+      throw Exception(message);
     } catch (e) {
       log("Resend OTP error: $e");
       throw Exception('Failed to resend OTP');

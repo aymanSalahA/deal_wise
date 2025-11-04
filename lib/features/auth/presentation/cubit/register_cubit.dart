@@ -40,7 +40,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       );
 
       bool hasToken = false;
-      if (response.containsKey('accessToken')) {
+      if (response.containsKey('accessToken') && response['accessToken'] != null) {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('accessToken', response['accessToken']);
         await prefs.setString('refreshToken', response['refreshToken'] ?? '');
@@ -50,10 +50,9 @@ class RegisterCubit extends Cubit<RegisterState> {
         await prefs.setString('userEmail', (response['email'] ?? email).toString());
         await prefs.setString('userFirstName', (response['firstName'] ?? firstName).toString());
         await prefs.setString('userLastName', (response['lastName'] ?? lastName).toString());
-      }
-
-      // If no token yet, still persist provided registration details for UI personalization
-      if (!hasToken) {
+      } else {
+        // Registration successful but requires OTP verification
+        // Save user info for later use
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('userEmail', email);
         await prefs.setString('userFirstName', firstName);

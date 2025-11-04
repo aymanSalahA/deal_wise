@@ -70,9 +70,10 @@ class ApiService {
               message = parts.join("\n");
             }
           }
-          message = message.isNotEmpty
-              ? message
-              : (data['message'] ?? data['error'] ?? data['title'] ?? "⚠️ Unknown error").toString();
+          // Only use fallback if message is still empty
+          if (message.isEmpty) {
+            message = (data['message'] ?? data['error'] ?? data['title'] ?? "⚠️ Unknown error").toString();
+          }
         } else if (data is String && data.isNotEmpty) {
           message = data;
         } else {

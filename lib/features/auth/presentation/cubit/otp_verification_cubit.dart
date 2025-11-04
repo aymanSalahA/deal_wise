@@ -72,7 +72,7 @@ class OtpVerificationCubit extends Cubit<OtpVerificationState> {
         emit(const OtpVerificationFailure('Invalid OTP.'));
       }
     } catch (e) {
-      emit(OtpVerificationFailure(e.toString()));
+      emit(OtpVerificationFailure(e.toString().replaceAll('Exception: ', '')));
     }
   }
 
@@ -89,7 +89,7 @@ class OtpVerificationCubit extends Cubit<OtpVerificationState> {
         emit(const OtpVerificationFailure('Failed to resend code.'));
       }
     } catch (e) {
-      emit(OtpVerificationFailure(e.toString()));
+      emit(OtpVerificationFailure(e.toString().replaceAll('Exception: ', '')));
     }
   }
 
