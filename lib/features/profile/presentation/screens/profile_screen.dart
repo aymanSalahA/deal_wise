@@ -75,9 +75,13 @@ class ProfileScreen extends StatelessWidget {
                     await LogoutService().logout(accessToken: token);
                   }
                 } catch (_) {}
+                // Clear all authentication and user data
                 await prefs.remove('accessToken');
                 await prefs.remove('refreshToken');
                 await prefs.remove('expiresAtUtc');
+                await prefs.remove('userEmail');
+                await prefs.remove('userFirstName');
+                await prefs.remove('userLastName');
                 // ignore: use_build_context_synchronously
                 Navigator.pushReplacementNamed(context, AppRoutes.login);
               },

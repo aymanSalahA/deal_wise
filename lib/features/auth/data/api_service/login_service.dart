@@ -33,7 +33,17 @@ class LoginService {
       log('❌ Status Code: ${e.response?.statusCode}');
       log('❌ Error Data: ${e.response?.data}');
       log('❌ Request Data: ${e.requestOptions.data}');
-      throw Exception('Login failed: ${e.response?.data}');
+      
+      String message = 'Login failed';
+      if (e.response?.data != null) {
+        final data = e.response!.data;
+        if (data is Map<String, dynamic>) {
+          message = data['message'] ?? data['error'] ?? data['title'] ?? message;
+        } else if (data is String) {
+          message = data;
+        }
+      }
+      throw Exception(message);
     } catch (e) {
       log("❌ Unexpected Error: $e");
       throw Exception('Login failed: $e');

@@ -15,19 +15,37 @@ class LoginCubit extends Cubit<LoginState> {
       final response = await service.login(email, password);
 
       // Check if the response contains accessToken which indicates success
-      if (response.containsKey('accessToken')) {
+      if (response.containsKey('accessToken') && response['accessToken'] != null) {
         // Save token to shared preferences
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('accessToken', response['accessToken']);
-        await prefs.setString('refreshToken', response['refreshToken'] ?? '');
-        await prefs.setString('expiresAtUtc', response['expiresAtUtc'] ?? '');
-        // Save user info if available
+        final accessToken = response['accessToken'].toString();
+        await prefs.setString('accessToken', accessToken);
+        await prefs.setString('refreshToken', response['refreshToken']?.toString() ?? '');
+        await prefs.setString('expiresAtUtc', response['expiresAtUtc']?.toString() ?? '');
+        
+        // Save user email
         final String userEmail = (response['email'] ?? email).toString();
-        final String userFirstName = (response['firstName'] ?? '').toString();
-        final String userLastName = (response['lastName'] ?? '').toString();
         await prefs.setString('userEmail', userEmail);
-        await prefs.setString('userFirstName', userFirstName);
-        await prefs.setString('userLastName', userLastName);
+        
+        // Only save firstName and lastName if they exist in response and are not empty
+        if (response.containsKey('firstName') && response['firstName'] != null && response['firstName'].toString().isNotEmpty) {
+          await prefs.setString('userFirstName', response['firstName'].toString());
+          print('✅ Saved firstName: ${response['firstName']}');
+        } else {
+          print('⚠️ firstName not in response or empty');
+        }
+        if (response.containsKey('lastName') && response['lastName'] != null && response['lastName'].toString().isNotEmpty) {
+          await prefs.setString('userLastName', response['lastName'].toString());
+          print('✅ Saved lastName: ${response['lastName']}');
+        } else {
+          print('⚠️ lastName not in response or empty');
+        }
+        
+        // Verify token was saved
+        final savedToken = prefs.getString('accessToken');
+        print('✅ Login successful - Token saved: ${accessToken.substring(0, 20)}...');
+        print('✅ Token verification - Saved token matches: ${savedToken == accessToken}');
+        print('✅ User info saved: $userEmail');
         
         emit(LoginSuccess(email));
       } else {
@@ -36,5 +54,5 @@ class LoginCubit extends Cubit<LoginState> {
     } catch (e) {
       emit(LoginFailure('An unexpected error occurred: ${e.toString()}'));
     }
-  } //FIX
+  }
 }
