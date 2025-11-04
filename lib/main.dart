@@ -36,7 +36,9 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocBuilder<ThemeCubit, AppThemeState>(
         builder: (context, themeState) {
-          final themeMode = themeState == AppThemeState.dark ? ThemeMode.dark : ThemeMode.light;
+          final themeMode = themeState == AppThemeState.dark
+              ? ThemeMode.dark
+              : ThemeMode.light;
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Deal Wise',
