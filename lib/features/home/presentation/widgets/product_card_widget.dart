@@ -28,8 +28,12 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
   }
 
   Future<void> _addToCart() async {
+    print('🛍️ Product Card: Add to cart clicked!');
+    print('📦 Product: ${widget.product.name}');
+    print('🆔 Product ID: ${widget.product.id}');
     try {
       await _cartService.addToCart(widget.product.id, 1);
+      print('✅ Product Card: Successfully added to cart');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -40,6 +44,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
         );
       }
     } catch (e) {
+      print('❌ Product Card: Error caught - $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -187,14 +192,22 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     ),
                   ],
                 ),
-                IconButton(
-                  onPressed: _addToCart,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  icon: const Icon(
-                    Icons.add_shopping_cart,
-                    color: Color(0xFF003366),
-                    size: 20,
+                GestureDetector(
+                  onTap: () {
+                    // Prevent parent GestureDetector from triggering
+                    _addToCart();
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF003366).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Icons.add_shopping_cart,
+                      color: Color(0xFF003366),
+                      size: 20,
+                    ),
                   ),
                 ),
               ],

@@ -38,12 +38,20 @@ class CartService {
         } else if (response.data is Map) {
           // If response is wrapped in an object
           final Map<String, dynamic> responseMap = response.data;
+          // Check for 'cartItems' key (actual API response)
+          if (responseMap.containsKey('cartItems')) {
+            final List data = responseMap['cartItems'] as List;
+            print('✅ Found ${data.length} items in cart');
+            return data.map((e) => Map<String, dynamic>.from(e)).toList();
+          }
+          // Fallback to 'items' key
           if (responseMap.containsKey('items')) {
             final List data = responseMap['items'] as List;
             return data.map((e) => Map<String, dynamic>.from(e)).toList();
           }
         }
       }
+      print('⚠️ No cart items found, returning empty list');
       return [];
     } catch (e) {
       print('❌ Error fetching cart: $e');

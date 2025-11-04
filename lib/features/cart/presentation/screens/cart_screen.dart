@@ -35,13 +35,13 @@ class _CartPageState extends State<CartPage> {
 
   double get total => _cartItems.fold(
     0,
-    (sum, item) => sum + (item['price'] * (item['quantity'] ?? 1)),
+    (sum, item) => sum + ((item['totalPrice'] ?? item['finalPricePerUnit'] ?? 0) as num).toDouble(),
   );
 
   void _increaseQty(int index) async {
     final item = _cartItems[index];
     final newQty = (item['quantity'] ?? 1) + 1;
-    await _cartService.updateQuantity(item['id'], newQty);
+    await _cartService.updateQuantity(item['itemId'] ?? item['id'], newQty);
     setState(() => _cartItems[index]['quantity'] = newQty);
   }
 
@@ -49,13 +49,13 @@ class _CartPageState extends State<CartPage> {
     final item = _cartItems[index];
     final newQty = (item['quantity'] ?? 1) - 1;
     if (newQty < 1) return;
-    await _cartService.updateQuantity(item['id'], newQty);
+    await _cartService.updateQuantity(item['itemId'] ?? item['id'], newQty);
     setState(() => _cartItems[index]['quantity'] = newQty);
   }
 
   void _removeItem(int index) async {
     final item = _cartItems[index];
-    await _cartService.removeFromCart(item['id']);
+    await _cartService.removeFromCart(item['itemId'] ?? item['id']);
     setState(() => _cartItems.removeAt(index));
   }
 
@@ -119,7 +119,7 @@ class _CartPageState extends State<CartPage> {
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Image.network(
-                                    item['imageUrl'] ?? '',
+                                    item['productCoverUrl'] ?? item['imageUrl'] ?? '',
                                     width: 80,
                                     height: 80,
                                     fit: BoxFit.cover,
@@ -158,7 +158,7 @@ class _CartPageState extends State<CartPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      item['name'] ?? '',
+                                      item['productName'] ?? item['name'] ?? '',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
@@ -176,7 +176,7 @@ class _CartPageState extends State<CartPage> {
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
-                                      '\$${(item['price'] as num).toStringAsFixed(2)}',
+                                      '\$${((item['finalPricePerUnit'] ?? item['price'] ?? 0) as num).toStringAsFixed(2)}',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15,

@@ -74,6 +74,9 @@ class _BottomAddToCartBarState extends State<BottomAddToCartBar> {
               height: 50,
               child: ElevatedButton(
                 onPressed: _isLoading ? null : () async {
+                  print('🔘 Add to Cart button pressed!');
+                  print('📦 Product ID: ${widget.product.id}');
+                  print('🔢 Quantity: $quantity');
                   setState(() => _isLoading = true);
                   try {
                     await _cartService.addToCart(widget.product.id, quantity);
