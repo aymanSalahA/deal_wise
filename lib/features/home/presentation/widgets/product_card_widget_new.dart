@@ -39,7 +39,9 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text('✅ Added to cart successfully!'),
-            backgroundColor: theme.snackBarTheme.backgroundColor ?? theme.colorScheme.primary,
+            backgroundColor:
+                theme.snackBarTheme.backgroundColor ??
+                theme.colorScheme.primary,
             duration: const Duration(seconds: 2),
           ),
         );
@@ -51,7 +53,8 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('❌ Error adding to cart: $e'),
-            backgroundColor: theme.snackBarTheme.backgroundColor ?? theme.colorScheme.error,
+            backgroundColor:
+                theme.snackBarTheme.backgroundColor ?? theme.colorScheme.error,
             duration: const Duration(seconds: 2),
           ),
         );
@@ -194,7 +197,8 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                 style: GoogleFonts.inter(
                                   fontSize: 12,
                                   decoration: TextDecoration.lineThrough,
-                                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                                  color: theme.colorScheme.onSurface
+                                      .withOpacity(0.6),
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -206,14 +210,20 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                       const SizedBox(height: 4),
                       Row(
                         children: [
-                          Icon(Icons.star, color: theme.colorScheme.secondary, size: 14),
+                          Icon(
+                            Icons.star,
+                            color: theme.colorScheme.secondary,
+                            size: 14,
+                          ),
                           const SizedBox(width: 2),
                           Flexible(
                             child: Text(
                               widget.product.rating.toString(),
                               style: GoogleFonts.inter(
                                 fontSize: 12,
-                                color: theme.colorScheme.onSurface.withOpacity(0.7),
+                                color: theme.colorScheme.onSurface.withOpacity(
+                                  0.7,
+                                ),
                                 fontWeight: FontWeight.w500,
                               ),
                               maxLines: 1,
@@ -225,7 +235,9 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                               ' (${widget.product.reviewsCount})',
                               style: GoogleFonts.inter(
                                 fontSize: 12,
-                                color: theme.colorScheme.onSurface.withOpacity(0.6),
+                                color: theme.colorScheme.onSurface.withOpacity(
+                                  0.6,
+                                ),
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
