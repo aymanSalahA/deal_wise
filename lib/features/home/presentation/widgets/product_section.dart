@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../cubit/product_cubit.dart';
 import '../cubit/product_state.dart';
-import 'product_card_widget.dart';
+import 'product_card_widget_new.dart';
 
 class ProductSection extends StatelessWidget {
   const ProductSection({super.key});

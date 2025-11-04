@@ -96,7 +96,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
             ),
           ],
         ),
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -104,6 +104,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
               children: [
                 Container(
                   height: 140,
+                  width: double.infinity,
                   clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
                     color: Colors.grey[100],
@@ -120,34 +121,39 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                   top: 8,
                   right: 8,
                   child: Container(
-                    height: 30,
-                    width: 30,
+                    padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
-                    child: IconButton(
-                      padding: EdgeInsets.zero,
-                      icon: Icon(
+                    child: InkWell(
+                      onTap: _toggleFavorite,
+                      child: Icon(
                         isFavorite ? Icons.favorite : Icons.favorite_border,
                         color: Colors.red,
-                        size: 18,
+                        size: 20,
                       ),
-                      onPressed: _toggleFavorite,
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             Text(
               widget.product.name,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.cairo(
+              style: GoogleFonts.inter(
                 color: Colors.black87,
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
               ),
             ),
             const SizedBox(height: 4),
@@ -155,59 +161,88 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
               widget.product.description,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.nunito(fontSize: 12, color: Colors.black54),
+              style: GoogleFonts.inter(
+                fontSize: 12,
+                color: Colors.black54,
+                height: 1.3,
+              ),
             ),
             const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  '\$${finalPrice.toStringAsFixed(2)}',
-                  style: GoogleFonts.caladea(
-                    color: const Color(0xFF003366),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            '\$${finalPrice.toStringAsFixed(2)}',
+                            style: GoogleFonts.inter(
+                              color: const Color(0xFF003366),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          if (widget.product.discountPercentage > 0) ...[
+                            const SizedBox(width: 6),
+                            Text(
+                              '\$${widget.product.price.toStringAsFixed(2)}',
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                decoration: TextDecoration.lineThrough,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          const Icon(Icons.star, color: Colors.amber, size: 14),
+                          const SizedBox(width: 2),
+                          Text(
+                            widget.product.rating.toString(),
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
+                              color: Colors.grey[700],
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            ' (${widget.product.reviewsCount})',
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-                if (widget.product.discountPercentage > 0)
-                  Text(
-                    '\$${widget.product.price.toStringAsFixed(2)}',
-                    style: GoogleFonts.nunito(
-                      fontSize: 12,
-                      decoration: TextDecoration.lineThrough,
-                      color: Colors.grey,
-                    ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF003366),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                const SizedBox(width: 8),
-                Row(
-                  children: [
-                    ...List.generate(5, (index) {
-                      return Icon(
-                        index < widget.product.rating
-                            ? Icons.star
-                            : Icons.star_border,
-                        color: Colors.amber,
-                        size: 16,
-                      );
-                    }),
-                    const SizedBox(width: 4),
-                    Text(
-                      '(${widget.product.reviewsCount})',
-                      style: GoogleFonts.nunito(
-                        fontSize: 12,
-                        color: Colors.grey,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: _addToCart,
+                      borderRadius: BorderRadius.circular(8),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Icon(
+                          Icons.add_shopping_cart,
+                          color: Colors.white,
+                          size: 20,
+                        ),
                       ),
                     ),
-                  ],
-                ),
-                IconButton(
-                  onPressed: _addToCart,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  icon: const Icon(
-                    Icons.add_shopping_cart,
-                    color: Color(0xFF003366),
-                    size: 20,
                   ),
                 ),
               ],
