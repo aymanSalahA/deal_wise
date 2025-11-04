@@ -84,11 +84,10 @@ class ProductSection extends StatelessWidget {
                   ),
                   itemBuilder: (context, index) {
                     final product = state.products[index];
-                    final viewModel = ProductCartAnimation(
+                    return ProductCardWidget(
                       product: product,
-                      isFavorite: false,
+                      initialFavorite: false,
                     );
-                    return ProductCardWidget(viewModel: viewModel, );
                   },
                 ),
               ),

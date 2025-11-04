@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../data/models/product_model.dart';
-import '../../data/models/product_cart_animation.dart';
 import '../widgets/product_card_widget.dart';
 
 class FavoritesScreen extends StatelessWidget {
@@ -20,16 +19,15 @@ class FavoritesScreen extends StatelessWidget {
         : getFavoritesFromArgs(context);
 
     return Scaffold(
+      backgroundColor: const Color(0xFFF8F9FB),
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'Favorites',
-          style: TextStyle(
+          style: GoogleFonts.nunito(
             fontWeight: FontWeight.bold,
             fontSize: 22,
             color: Colors.white,
@@ -37,33 +35,57 @@ class FavoritesScreen extends StatelessWidget {
         ),
         backgroundColor: const Color(0xFF72C9F8),
         centerTitle: true,
+        elevation: 0,
       ),
-      body: favoriteList.isEmpty
-          ? Center(
-              child: Text(
-                'No favorites yet!',
-                style: GoogleFonts.cairo(
-                  fontSize: 22,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: favoriteList.isEmpty
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.favorite_border,
+                      size: 64,
+                      color: Colors.grey,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'No favorites yet!',
+                      style: GoogleFonts.nunito(
+                        fontSize: 22,
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Start adding some products to your favorites',
+                      style: GoogleFonts.nunito(
+                        fontSize: 16,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
                 ),
+              )
+            : GridView.builder(
+                padding: const EdgeInsets.all(16),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.7,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                ),
+                itemCount: favoriteList.length,
+                itemBuilder: (context, index) {
+                  final product = favoriteList[index];
+                  return ProductCardWidget(
+                    product: product,
+                    initialFavorite: true,
+                  );
+                },
               ),
-            )
-          : ListView.builder(
-              padding: const EdgeInsets.all(12),
-              itemCount: favoriteList.length,
-              itemBuilder: (context, index) {
-                final product = favoriteList[index];
-                final viewModel = ProductCartAnimation(
-                  product: product,
-                  isFavorite: true, 
-                );
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6),
-                  child: ProductCardWidget(viewModel: viewModel),
-                );
-              },
-            ),
+      ),
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:deal_wise/features/cart/data/services/cart_service.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -33,12 +33,10 @@ class _CartPageState extends State<CartPage> {
     }
   }
 
-  double get total =>
-<<<<<<< HEAD
-      _cartItems.fold(0, (sum, item) => sum + item['price'] * item['quantity']);
-=======
-      _cartItems.fold(0, (sum, item) => sum + (item['price'] * (item['quantity'] ?? 1)));
->>>>>>> origin/cart-feature
+  double get total => _cartItems.fold(
+    0,
+    (sum, item) => sum + (item['price'] * (item['quantity'] ?? 1)),
+  );
 
   void _increaseQty(int index) async {
     final item = _cartItems[index];
@@ -69,18 +67,17 @@ class _CartPageState extends State<CartPage> {
         centerTitle: true,
         backgroundColor: const Color(0xFF72C9F8),
         elevation: 0,
-        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: const Text(
           'My Cart',
-<<<<<<< HEAD
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 22,
             color: Colors.white,
           ),
-=======
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 18),
->>>>>>> origin/cart-feature
         ),
       ),
       body: _isLoading
@@ -114,11 +111,45 @@ class _CartPageState extends State<CartPage> {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
-                                child: Image.network(
-                                  item['imageUrl'] ?? '',
+                                child: Container(
                                   width: 80,
                                   height: 80,
-                                  fit: BoxFit.cover,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[100],
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Image.network(
+                                    item['imageUrl'] ?? '',
+                                    width: 80,
+                                    height: 80,
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            const Icon(
+                                              Icons.image_not_supported,
+                                              color: Colors.grey,
+                                            ),
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                          if (loadingProgress == null)
+                                            return child;
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              value:
+                                                  loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                            .cumulativeBytesLoaded /
+                                                        loadingProgress
+                                                            .expectedTotalBytes!
+                                                  : null,
+                                              strokeWidth: 2,
+                                              color: Colors.grey[400],
+                                            ),
+                                          );
+                                        },
+                                  ),
                                 ),
                               ),
                               const SizedBox(width: 12),
@@ -137,8 +168,7 @@ class _CartPageState extends State<CartPage> {
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
-<<<<<<< HEAD
-                                      item['category'],
+                                      item['category'] ?? '',
                                       style: const TextStyle(
                                         color: Colors.grey,
                                         fontSize: 13,
@@ -146,13 +176,11 @@ class _CartPageState extends State<CartPage> {
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
-                                      '\$${item['price'].toStringAsFixed(2)}',
-=======
-                                      '\$${item['price']}',
->>>>>>> origin/cart-feature
+                                      '\$${(item['price'] as num).toStringAsFixed(2)}',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15,
+                                        color: Color(0xFF003366),
                                       ),
                                     ),
                                   ],
@@ -180,15 +208,10 @@ class _CartPageState extends State<CartPage> {
                                           horizontal: 8,
                                         ),
                                         child: Text(
-<<<<<<< HEAD
-                                          '${item['quantity']}',
+                                          '${item['quantity'] ?? 1}',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.w600,
                                           ),
-=======
-                                          '${item['quantity'] ?? 1}',
-                                          style: const TextStyle(fontWeight: FontWeight.w600),
->>>>>>> origin/cart-feature
                                         ),
                                       ),
                                       _qtyButton(
@@ -232,7 +255,6 @@ class _CartPageState extends State<CartPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-<<<<<<< HEAD
               const Text(
                 "Subtotal",
                 style: TextStyle(color: Colors.grey, fontSize: 15),
@@ -251,9 +273,6 @@ class _CartPageState extends State<CartPage> {
                 "Total",
                 style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               ),
-=======
-              const Text("Total", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
->>>>>>> origin/cart-feature
               Text(
                 "\$${total.toStringAsFixed(2)}",
                 style: const TextStyle(
@@ -265,20 +284,23 @@ class _CartPageState extends State<CartPage> {
           ),
           const SizedBox(height: 18),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: _cartItems.isEmpty ? null : () {},
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blueAccent,
+              backgroundColor: const Color(0xFF003366),
               minimumSize: const Size(double.infinity, 55),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),
+              elevation: 2,
+              shadowColor: const Color(0xFF003366).withOpacity(0.3),
             ),
-            child: const Text(
+            child: Text(
               'Proceed to Checkout',
-              style: TextStyle(
+              style: GoogleFonts.nunito(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
+                letterSpacing: 0.5,
               ),
             ),
           ),
@@ -288,14 +310,27 @@ class _CartPageState extends State<CartPage> {
   }
 
   Widget _qtyButton(IconData icon, VoidCallback onTap, Color bgColor) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        width: 28,
-        height: 28,
-        decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
-        child: Icon(icon, size: 16, color: Colors.black87),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          width: 28,
+          height: 28,
+          decoration: BoxDecoration(
+            color: bgColor,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 2,
+                offset: const Offset(0, 1),
+              ),
+            ],
+          ),
+          child: Icon(icon, size: 16, color: const Color(0xFF003366)),
+        ),
       ),
     );
   }
