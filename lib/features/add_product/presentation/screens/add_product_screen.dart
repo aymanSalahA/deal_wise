@@ -15,6 +15,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
   List<Map<String, dynamic>> _categories = [];
   String? _selectedCategoryId;
 
+  // Product image URL - using a valid placeholder that actually works
+  String _imageUrl = 'https://picsum.photos/300/300';
+
   @override
   void initState() {
     super.initState();
@@ -138,8 +141,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         'description': _descriptionController.text,
         'nameArabic': _nameArabic,
         'descriptionArabic': _descriptionArabic,
-        'coverPictureUrl':
-            'https://via.placeholder.com/300x300.png?text=Product+Image',
+        'coverPictureUrl': _imageUrl,
         'price': price,
         'stock': 1,
         'weight': _weight,
@@ -162,9 +164,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Product added successfully!')),
+            const SnackBar(
+              content: Text('✅ Product added successfully!'),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 2),
+            ),
           );
-          Navigator.of(context).pop();
+          // Navigate to MainLayout (home) instead of just popping
+          Navigator.of(
+            context,
+          ).pushNamedAndRemoveUntil('/home', (route) => false);
         }
       } else {
         setState(() {
