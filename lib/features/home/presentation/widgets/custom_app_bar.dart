@@ -12,9 +12,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       scrolledUnderElevation: 0,
       backgroundColor: Colors.white,
       leading: Padding(
-        padding: const EdgeInsets.only(left: 8.0),
-        child: CircleAvatar(backgroundImage: AssetImage('assets/log/appstore.png')),
+        padding: const EdgeInsets.only(left: 10.0),
+        child: ClipOval(
+          child: Image.asset(
+            'assets/log/logo.png',
+            width: 50,
+            height: 50,
+            fit: BoxFit.fitWidth,
+          ),
+        ),
       ),
+
       title: FutureBuilder<SharedPreferences>(
         future: SharedPreferences.getInstance(),
         builder: (context, snapshot) {
@@ -28,13 +36,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 : '';
             greeting = displayName.isNotEmpty ? 'Hello, $displayName' : 'Hello';
           }
-          return Text(greeting, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold));
+          return Text(
+            greeting,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          );
         },
       ),
       actions: [
         Padding(
-          padding: const EdgeInsets.only(right: 10.0),
-          child: Icon(Icons.light_mode_outlined, color: Colors.black),
+          padding: const EdgeInsets.only(right: 15.0),
+          child: Icon(Icons.favorite_border_outlined, color: Colors.black),
         ),
       ],
     );
