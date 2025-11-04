@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -10,6 +11,45 @@ class AddProductScreen extends StatefulWidget {
 }
 
 class _AddProductScreenState extends State<AddProductScreen> {
+  Future<void> _fetchCategories() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('accessToken') ?? '';
+      final url = Uri.parse(
+        'https://accessories-eshop.runasp.net/api/categories',
+      );
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      print('Categories response status: \\${response.statusCode}');
+      print('Categories response body: \\${response.body}');
+      if (response.statusCode == 200) {
+        // You can parse and use the categories here
+      } else {
+        setState(() {
+          _errorMessage =
+              'Failed to fetch categories. (Status: \\${response.statusCode})';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Error fetching categories: $e';
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   bool _isLoading = false;
   String? _errorMessage;
 
@@ -38,25 +78,31 @@ class _AddProductScreenState extends State<AddProductScreen> {
     try {
       final price =
           double.tryParse(_priceController.text.replaceAll(',', '.')) ?? 1;
+      final requestBody = {
+        'sellerId': _sellerId,
+        'name': _nameController.text,
+        'description': _descriptionController.text,
+        'nameArabic': _nameArabic,
+        'descriptionArabic': _descriptionArabic,
+        // 'coverPictureUrl': _coverPictureUrl,
+        'coverPictureUrl':
+            'https://via.placeholder.com/300x300.png?text=Product+Image',
+        'price': price,
+        'stock': 1,
+        'weight': _weight,
+        'color': 'Red',
+        'discountPercentage': _discountPercentage,
+        'categoryIds': ['123e4567-e89b-12d3-a456-426614174000'],
+        'productPictureUrls': _productPictureUrls,
+      };
+      print('Sending request: ' + jsonEncode(requestBody));
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'sellerId': _sellerId,
-          'name': _nameController.text,
-          'description': _descriptionController.text,
-          'nameArabic': _nameArabic,
-          'descriptionArabic': _descriptionArabic,
-          'coverPictureUrl': _coverPictureUrl,
-          'price': price,
-          'stock': 1,
-          'weight': _weight,
-          'color': 'Red',
-          'discountPercentage': _discountPercentage,
-          'categoryIds': [_selectedCategory],
-          'productPictureUrls': _productPictureUrls,
-        }),
+        body: jsonEncode(requestBody),
       );
+      print('Response status: \\${response.statusCode}');
+      print('Response body: \\${response.body}');
       if (response.statusCode == 200 || response.statusCode == 201) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -66,10 +112,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
         }
       } else {
         setState(() {
-          _errorMessage = 'Failed to add product. (${response.statusCode})';
+          _errorMessage =
+              'Failed to add product. (Status: \\${response.statusCode})\\nBody: \\${response.body}';
         });
       }
-    } catch (e) {
+    } catch (e, stack) {
+      print('Exception: $e');
+      print('Stacktrace: $stack');
       setState(() {
         _errorMessage = 'Error: $e';
       });
