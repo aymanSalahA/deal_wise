@@ -20,16 +20,24 @@ class _AddProductScreenState extends State<AddProductScreen> {
   static const String _coverPictureUrl = '';
   static const int _weight = 1;
   static const int _discountPercentage = 1;
-  static const List<String> _categoryIds = [''];
+  // Remove static categoryIds, will use selected category
   static const List<String> _productPictureUrls = [''];
 
   Future<void> _addProduct() async {
+    if (_selectedCategory == null) {
+      setState(() {
+        _errorMessage = 'Please select a category.';
+      });
+      return;
+    }
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
     final url = Uri.parse('https://accessories-eshop.runasp.net/api/products');
     try {
+      final price =
+          double.tryParse(_priceController.text.replaceAll(',', '.')) ?? 1;
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
@@ -40,12 +48,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
           'nameArabic': _nameArabic,
           'descriptionArabic': _descriptionArabic,
           'coverPictureUrl': _coverPictureUrl,
-          'price': int.tryParse(_priceController.text) ?? 1,
+          'price': price,
           'stock': 1,
           'weight': _weight,
           'color': 'Red',
           'discountPercentage': _discountPercentage,
-          'categoryIds': _categoryIds,
+          'categoryIds': [_selectedCategory],
           'productPictureUrls': _productPictureUrls,
         }),
       );
@@ -187,9 +195,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
               const SizedBox(height: 6),
               TextFormField(
                 controller: _priceController,
-                keyboardType: TextInputType.number,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 decoration: InputDecoration(
-                  prefixText: '4',
+                  prefixText: 'EGP ',
                   hintText: '0.00',
                   filled: true,
                   fillColor: const Color(0xFFF1F5F9),
