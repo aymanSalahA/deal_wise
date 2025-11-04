@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../data/models/product_model.dart';
+import '../../data/models/product_cart_animation.dart';
 import '../widgets/product_card_widget.dart';
 
 class FavoritesScreen extends StatelessWidget {
   final List<ProductModel> favorites;
+
   const FavoritesScreen({super.key, required this.favorites});
   static List<ProductModel> getFavoritesFromArgs(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments;
@@ -16,6 +18,7 @@ class FavoritesScreen extends StatelessWidget {
     final favoriteList = favorites.isNotEmpty
         ? favorites
         : getFavoritesFromArgs(context);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -24,7 +27,7 @@ class FavoritesScreen extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        title: Text(
+        title: const Text(
           'Favorites',
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -51,9 +54,13 @@ class FavoritesScreen extends StatelessWidget {
               itemCount: favoriteList.length,
               itemBuilder: (context, index) {
                 final product = favoriteList[index];
+                final viewModel = ProductCartAnimation(
+                  product: product,
+                  isFavorite: true, 
+                );
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 6),
-                  child: ProductCardWidget(product: product),
+                  child: ProductCardWidget(viewModel: viewModel),
                 );
               },
             ),

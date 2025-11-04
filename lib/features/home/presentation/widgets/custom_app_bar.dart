@@ -1,8 +1,10 @@
+import 'package:deal_wise/features/home/data/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
+  final List<ProductModel> favorites;
+  const CustomAppBar({super.key, required this.favorites});
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
   @override
@@ -44,8 +46,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         Padding(
-          padding: const EdgeInsets.only(right: 15.0),
-          child: Icon(Icons.favorite_border_outlined, color: Colors.black),
+          padding: const EdgeInsets.only(right: 5.0),
+          child: IconButton(
+            icon: const Icon(Icons.favorite_rounded, color: Color(0xFF003366)),
+            onPressed: () {
+              Navigator.pushNamed(context, '/favorites', arguments: favorites);
+            },
+          ),
         ),
       ],
     );
