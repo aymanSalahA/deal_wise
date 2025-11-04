@@ -221,11 +221,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
         centerTitle: true,
         title: Text(
           'Add Product',
-          style: theme.appBarTheme.titleTextStyle ??
+          style:
+              theme.appBarTheme.titleTextStyle ??
               theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
-                color: theme.appBarTheme.foregroundColor ?? theme.colorScheme.onSurface,
+                color:
+                    theme.appBarTheme.foregroundColor ??
+                    theme.colorScheme.onSurface,
               ),
         ),
         iconTheme: theme.appBarTheme.iconTheme,
@@ -251,7 +254,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 decoration: InputDecoration(
                   hintText: 'Enter product name',
                   filled: true,
-                  fillColor: theme.inputDecorationTheme.fillColor ?? theme.cardColor,
+                  fillColor:
+                      theme.inputDecorationTheme.fillColor ?? theme.cardColor,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide.none,
@@ -292,7 +296,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     : (val) => setState(() => _selectedCategoryId = val),
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: theme.inputDecorationTheme.fillColor ?? theme.cardColor,
+                  fillColor:
+                      theme.inputDecorationTheme.fillColor ?? theme.cardColor,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide.none,
@@ -324,7 +329,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   prefixText: 'EGP ',
                   hintText: '0.00',
                   filled: true,
-                  fillColor: theme.inputDecorationTheme.fillColor ?? theme.cardColor,
+                  fillColor:
+                      theme.inputDecorationTheme.fillColor ?? theme.cardColor,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide.none,
@@ -353,7 +359,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 decoration: InputDecoration(
                   hintText: 'Enter product description...',
                   filled: true,
-                  fillColor: theme.inputDecorationTheme.fillColor ?? theme.cardColor,
+                  fillColor:
+                      theme.inputDecorationTheme.fillColor ?? theme.cardColor,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide.none,
@@ -410,15 +417,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 ? const SizedBox(
                     width: 24,
                     height: 24,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                    ),
+                    child: CircularProgressIndicator(strokeWidth: 2),
                   )
                 : Text(
                     'Create Product',
                     style: theme.textTheme.labelLarge?.copyWith(
                       color: theme.colorScheme.onPrimary,
-                      fontSize: 18,
+                      fontSize: 13,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
