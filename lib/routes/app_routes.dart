@@ -1,5 +1,7 @@
 import 'package:deal_wise/features/auth/presentation/screens/register_screen.dart';
 import 'package:deal_wise/features/home/data/main_layout.dart';
+import 'package:deal_wise/features/home/data/models/product_model.dart';
+import 'package:deal_wise/features/home/presentation/screens/favorites_screen.dart';
 import 'package:deal_wise/features/home/presentation/screens/product_details_screen.dart';
 import 'package:flutter/material.dart';
 import '../features/auth/presentation/screens/login_screen.dart';
@@ -30,6 +32,7 @@ class AppRoutes {
   static const String contactUs = '/contact-us';
   static const String changePassword = '/change-password';
   static const String themeSettings = '/theme-settings';
+  static const favorites = '/favorites';
 
   static Map<String, WidgetBuilder> routes = {
     splash: (context) => SplashScreen(),
@@ -41,11 +44,18 @@ class AppRoutes {
     dummy: (context) => const DummyScreen(),
     // home: (context) => const HomeScreen(),
     home: (context) => const MainLayout(),
-    productDetail: (context) => const ProductDetailsScreen(),
+    productDetail: (context) => ProductDetailsScreen(
+      product: ModalRoute.of(context)?.settings.arguments as ProductModel,
+    ),
     privacyPolicy: (context) => const PrivacyPolicyScreen(),
     aboutUs: (context) => const AboutUsScreen(),
     contactUs: (context) => const ContactUsScreen(),
     changePassword: (context) => const ChangePasswordScreen(),
     themeSettings: (context) => const ThemeSettingsScreen(),
+    '/favorites': (context) {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      final favorites = (args is List<ProductModel>) ? args : <ProductModel>[];
+      return FavoritesScreen(favorites: favorites);
+    },
   };
 }

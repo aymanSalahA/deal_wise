@@ -1,6 +1,7 @@
+import 'package:deal_wise/features/splash/data/service_splach_screen.dart';
 import 'package:deal_wise/routes/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -9,34 +10,65 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  final ServiceSplachScreen _viewModel = ServiceSplachScreen();
+  late final AnimationController _controller;
+  late final Animation<double> _scaleAnimation;
+  late final Animation<double> _fadeAnimation;
+
+  double _progress = 0.0;
+
   @override
   void initState() {
     super.initState();
-    _navigateAfterDelay();
+    _initializeAnimations();
+    _viewModel.startProgress(
+      onUpdate: (p) {
+        if (mounted) setState(() => _progress = p);
+      },
+    );
+    _navigateNext();
   }
 
-  Future<void> _navigateAfterDelay() async {
-    await Future.delayed(const Duration(seconds: 2));
+  void _initializeAnimations() {
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 5),
+    )..forward();
 
-    final prefs = await SharedPreferences.getInstance();
-    final bool onboardingComplete =
-        prefs.getBool('onboarding_complete') ?? false;
+    _scaleAnimation = Tween<double>(
+      begin: 0.85,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
-    if (!onboardingComplete) {
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, AppRoutes.onBoarding);
-      return;
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
+  }
+
+  Future<void> _navigateNext() async {
+    final next = await _viewModel.getNextRoute();
+    if (!mounted) return;
+
+    switch (next) {
+      case 'onboarding':
+        Navigator.pushReplacementNamed(context, AppRoutes.onBoarding);
+        break;
+      case 'home':
+        Navigator.pushReplacementNamed(context, AppRoutes.home);
+        break;
+      default:
+        Navigator.pushReplacementNamed(context, AppRoutes.login);
     }
+  }
 
-    final accessToken = prefs.getString('accessToken');
-    if (accessToken != null && accessToken.isNotEmpty) {
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, AppRoutes.home);
-    } else {
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, AppRoutes.login);
-    }
+  @override
+  void dispose() {
+    _controller.dispose();
+    _viewModel.dispose();
+    super.dispose();
   }
 
   @override
@@ -44,53 +76,57 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Stack(
-          children: <Widget>[
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Image.asset(
-                      'assets/log/appstore.png',
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: ScaleTransition(
+                    scale: _scaleAnimation,
+                    child: Image.asset(
+                      'assets/log/logo.png',
                       width: 150,
                       height: 150,
                       fit: BoxFit.contain,
                     ),
-                    const SizedBox(height: 30),
-                    Text(
-                      'Your Marketplace',
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    const SizedBox(height: 7),
-                    Text(
-                      'Style Delivered',
-                      style: TextStyle(fontSize: 18, color: Colors.grey[600]),
-                    ),
-                    const SizedBox(height: 100),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
-                      child: LinearProgressIndicator(
-                        minHeight: 15,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                        backgroundColor: const Color.fromARGB(
-                          110,
-                          33,
-                          149,
-                          243,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+                const SizedBox(height: 20),
+                Text(
+                  'Your Marketplace',
+                  style: GoogleFonts.montserrat(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xff0A2843),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(3),
+                  child: LinearProgressIndicator(
+                    minHeight: 15,
+                    value: _progress,
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                      Color.fromARGB(255, 58, 161, 245),
+                    ),
+                    backgroundColor: const Color.fromARGB(110, 33, 149, 243),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Loading ${(_progress * 100).toInt()}%',
+                  style: GoogleFonts.montaguSlab(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

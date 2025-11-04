@@ -1,12 +1,9 @@
 import 'package:deal_wise/features/auth/data/api_service/api_service.dart';
 import 'package:deal_wise/features/auth/presentation/cubit/register_cubit.dart';
 import 'package:deal_wise/features/auth/presentation/screens/otp_verification_screen.dart';
-import 'package:deal_wise/features/home/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../routes/app_routes.dart';
-
- 
 
 class RegisterAccountScreen extends StatefulWidget {
   const RegisterAccountScreen({super.key});
@@ -21,7 +18,8 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
@@ -39,8 +37,9 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     if (_passwordController.text != _confirmPasswordController.text) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Passwords do not match')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Passwords do not match')));
       return;
     }
 
@@ -50,17 +49,17 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
     final lastName = parts.length > 1 ? parts.sublist(1).join(' ') : '';
 
     context.read<RegisterCubit>().register(
-          firstName: firstName,
-          lastName: lastName,
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
-        );
+      firstName: firstName,
+      lastName: lastName,
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     const Color primaryColor = Color(0xFF00B0FF);
-    const Color textColor = Color(0xFF333333);
+    const Color textColor = Color(0xffffffff);
 
     return BlocProvider(
       create: (_) => RegisterCubit(ApiService()),
@@ -74,7 +73,11 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
               Navigator.pushReplacementNamed(context, AppRoutes.home);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Registration successful! Please verify your email.')),
+                const SnackBar(
+                  content: Text(
+                    'Registration successful! Please verify your email.',
+                  ),
+                ),
               );
               Navigator.pushReplacement(
                 context,
@@ -88,9 +91,9 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
               );
             }
           } else if (state is RegisterError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
         builder: (context, state) {
@@ -99,16 +102,21 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: const Color(0xFF72C9F8),
               elevation: 0,
               leading: IconButton(
-                icon: const Icon(Icons.arrow_back, color: textColor),
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: textColor,
+                  size: 20,
+                ),
                 onPressed: () => Navigator.pop(context),
               ),
               title: const Text(
                 'Create Account',
                 style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
               ),
+              centerTitle: true,
             ),
             body: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -117,22 +125,7 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Register Account',
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: textColor,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Enter your details to create an account.',
-                      style: TextStyle(fontSize: 14, color: Color(0xFF666666)),
-                    ),
                     const SizedBox(height: 30),
-
                     _buildTextField(
                       controller: _fullNameController,
                       label: 'Full Name',
@@ -143,7 +136,9 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
                           return 'Enter full name';
                         }
                         final parts = value.trim().split(' ');
-                        if (parts.length < 2 || parts.first.isEmpty || parts.last.isEmpty) {
+                        if (parts.length < 2 ||
+                            parts.first.isEmpty ||
+                            parts.last.isEmpty) {
                           return 'Enter first and last name';
                         }
                         return null;
@@ -157,8 +152,9 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
                       hintText: 'example@mail.com',
                       icon: Icons.email_outlined,
                       keyboardType: TextInputType.emailAddress,
-                      validator: (value) =>
-                          (value == null || value.isEmpty) ? 'Enter email' : null,
+                      validator: (value) => (value == null || value.isEmpty)
+                          ? 'Enter email'
+                          : null,
                     ),
                     const SizedBox(height: 20),
 
@@ -168,7 +164,9 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
                       hintText: '********',
                       isVisible: _isPasswordVisible,
                       onToggleVisibility: () {
-                        setState(() => _isPasswordVisible = !_isPasswordVisible);
+                        setState(
+                          () => _isPasswordVisible = !_isPasswordVisible,
+                        );
                       },
                       validator: (value) => (value == null || value.length < 6)
                           ? 'Password must be at least 6 chars'
@@ -182,17 +180,23 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
                       hintText: '********',
                       isVisible: _isConfirmPasswordVisible,
                       onToggleVisibility: () {
-                        setState(() => _isConfirmPasswordVisible = !_isConfirmPasswordVisible);
+                        setState(
+                          () => _isConfirmPasswordVisible =
+                              !_isConfirmPasswordVisible,
+                        );
                       },
-                      validator: (value) =>
-                          (value == null || value.isEmpty) ? 'Confirm password' : null,
+                      validator: (value) => (value == null || value.isEmpty)
+                          ? 'Confirm password'
+                          : null,
                     ),
                     const SizedBox(height: 30),
 
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: isLoading ? null : () => _handleSignUp(context),
+                        onPressed: isLoading
+                            ? null
+                            : () => _handleSignUp(context),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryColor,
                           shape: RoundedRectangleBorder(
@@ -207,7 +211,10 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
                               )
                             : const Text(
                                 'Sign Up',
-                                style: TextStyle(fontSize: 18, color: Colors.white),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
                               ),
                       ),
                     ),
@@ -223,7 +230,10 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushReplacementNamed(context, AppRoutes.login);
+                            Navigator.pushReplacementNamed(
+                              context,
+                              AppRoutes.login,
+                            );
                           },
                           child: const Text(
                             "Login",
@@ -261,8 +271,10 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 8),
         TextFormField(
           controller: controller,
@@ -279,8 +291,10 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide:
-                  const BorderSide(color: focusedBorderColor, width: 2.0),
+              borderSide: const BorderSide(
+                color: focusedBorderColor,
+                width: 2.0,
+              ),
             ),
           ),
         ),
@@ -302,8 +316,10 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 8),
         TextFormField(
           controller: controller,
@@ -325,8 +341,10 @@ class _RegisterAccountScreenState extends State<RegisterAccountScreen> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide:
-                  const BorderSide(color: focusedBorderColor, width: 2.0),
+              borderSide: const BorderSide(
+                color: focusedBorderColor,
+                width: 2.0,
+              ),
             ),
           ),
         ),

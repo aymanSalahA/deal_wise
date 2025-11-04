@@ -45,7 +45,8 @@ class _CartPageState extends State<CartPage> {
     }
   }
 
-  double get total => _cartItems.fold(0, (sum, item) => sum + item['price'] * item['quantity']);
+  double get total =>
+      _cartItems.fold(0, (sum, item) => sum + item['price'] * item['quantity']);
 
   void _increaseQty(int index) {
     setState(() {
@@ -72,26 +73,18 @@ class _CartPageState extends State<CartPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FB),
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 1,
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
+        backgroundColor: const Color(0xFF72C9F8),
+        elevation: 0,
+        automaticallyImplyLeading: false,
         title: const Text(
           'My Cart',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 18),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {},
-            child: const Text(
-              'Edit',
-              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-            ),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.white,
           ),
-        ],
+        ),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -148,7 +141,10 @@ class _CartPageState extends State<CartPage> {
                                     const SizedBox(height: 5),
                                     Text(
                                       item['category'],
-                                      style: const TextStyle(color: Colors.grey, fontSize: 13),
+                                      style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 13,
+                                      ),
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
@@ -165,7 +161,10 @@ class _CartPageState extends State<CartPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
+                                    icon: const Icon(
+                                      Icons.delete_outline,
+                                      color: Colors.redAccent,
+                                    ),
                                     onPressed: () => _removeItem(index),
                                   ),
                                   Row(
@@ -176,10 +175,14 @@ class _CartPageState extends State<CartPage> {
                                         Colors.grey[200]!,
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                        ),
                                         child: Text(
                                           '${item['quantity']}',
-                                          style: const TextStyle(fontWeight: FontWeight.w600),
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
                                       ),
                                       _qtyButton(
@@ -210,25 +213,43 @@ class _CartPageState extends State<CartPage> {
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, -2))],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 8,
+            offset: Offset(0, -2),
+          ),
+        ],
       ),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Subtotal", style: TextStyle(color: Colors.grey, fontSize: 15)),
-              Text("\$${total.toStringAsFixed(2)}", style: const TextStyle(fontSize: 15)),
+              const Text(
+                "Subtotal",
+                style: TextStyle(color: Colors.grey, fontSize: 15),
+              ),
+              Text(
+                "\$${total.toStringAsFixed(2)}",
+                style: const TextStyle(fontSize: 15),
+              ),
             ],
           ),
           const Divider(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Total", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+              const Text(
+                "Total",
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              ),
               Text(
                 "\$${total.toStringAsFixed(2)}",
-                style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -238,11 +259,17 @@ class _CartPageState extends State<CartPage> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blueAccent,
               minimumSize: const Size(double.infinity, 55),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
             ),
             child: const Text(
               'Proceed to Checkout',
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
             ),
           ),
         ],

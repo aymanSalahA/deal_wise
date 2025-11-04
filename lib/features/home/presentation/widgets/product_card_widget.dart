@@ -1,16 +1,52 @@
+import 'package:deal_wise/features/home/data/models/product_cart_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../data/models/product_model.dart';
 
-class ProductCardWidget extends StatelessWidget {
-  final ProductModel product;
+class ProductCardWidget extends StatefulWidget {
+  final ProductCartAnimation viewModel;
 
-  const ProductCardWidget({super.key, required this.product});
+  const ProductCardWidget({super.key, required this.viewModel});
+
+  @override
+  State<ProductCardWidget> createState() => _ProductCardWidgetState();
+}
+
+class _ProductCardWidgetState extends State<ProductCardWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _iconController;
+  late Animation<double> _iconScaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _iconController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 150),
+    );
+
+    _iconScaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.2,
+    ).animate(CurvedAnimation(parent: _iconController, curve: Curves.easeOut));
+  }
+
+  @override
+  void dispose() {
+    _iconController.dispose();
+    super.dispose();
+  }
+
+  void _toggleFavorite() {
+    widget.viewModel.toggleFavorite();
+    _iconController.forward().then((_) => _iconController.reverse());
+  }
 
   @override
   Widget build(BuildContext context) {
+    final product = widget.viewModel.product;
     final double finalPrice =
         product.price * (1 - product.discountPercentage / 100);
+
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, '/product-detail', arguments: product);
@@ -44,18 +80,32 @@ class ProductCardWidget extends StatelessWidget {
                     Positioned(
                       top: 8,
                       right: 8,
-                      child: Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        alignment: Alignment.center,
-                        child: const Icon(
-                          Icons.favorite_border,
-                          color: Colors.red,
-                          size: 16,
+                      child: ScaleTransition(
+                        scale: _iconScaleAnimation,
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          alignment: Alignment.center,
+                          child: AnimatedBuilder(
+                            animation: widget.viewModel,
+                            builder: (context, _) {
+                              return IconButton(
+                                padding: EdgeInsets.zero,
+                                icon: Icon(
+                                  widget.viewModel.isFavorite
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  color: Colors.red,
+                                  size: 18,
+                                ),
+                                onPressed: _toggleFavorite,
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -105,20 +155,6 @@ class ProductCardWidget extends StatelessWidget {
                   ],
                 ),
               ],
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: SizedBox(
-                width: 42,
-                height: 42,
-                child: FloatingActionButton(
-                  heroTag: product.id,
-                  onPressed: () {},
-                  backgroundColor: const Color(0xFF5BC2FA),
-                  child: const Icon(Icons.add, color: Colors.white, size: 24),
-                ),
-              ),
             ),
           ],
         ),

@@ -1,3 +1,4 @@
+import 'package:deal_wise/features/home/data/models/product_cart_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,7 +25,7 @@ class ProductSection extends StatelessWidget {
             ),
           );
         }
-    
+
         if (state is ProductFailurer) {
           return Center(
             child: Text(
@@ -33,17 +34,20 @@ class ProductSection extends StatelessWidget {
             ),
           );
         }
-    
+
         if (state is ProductSuccess) {
           if (state.products.isEmpty) {
-            return const Center(
-              child: Text(
-                'No products found',
-                style: TextStyle(color: Colors.black),
+            return Padding(
+              padding: const EdgeInsets.only(top: 150),
+              child: const Center(
+                child: Text(
+                  'No products found',
+                  style: TextStyle(color: Colors.black, fontSize: 20),
+                ),
               ),
             );
           }
-    
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -52,8 +56,8 @@ class ProductSection extends StatelessWidget {
                 child: Text(
                   'Featured Products',
                   style: GoogleFonts.nunito(
-                    shadows: [
-                      const Shadow(
+                    shadows: const [
+                      Shadow(
                         color: Colors.grey,
                         offset: Offset(1, 2),
                         blurRadius: 10,
@@ -71,18 +75,20 @@ class ProductSection extends StatelessWidget {
                 child: GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-    
                   itemCount: state.products.length,
-                  gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 16.0,
-                        mainAxisSpacing: 16.0,
-                        childAspectRatio: 0.7,
-                      ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16.0,
+                    mainAxisSpacing: 16.0,
+                    childAspectRatio: 0.7,
+                  ),
                   itemBuilder: (context, index) {
                     final product = state.products[index];
-                    return ProductCardWidget(product: product);
+                    final viewModel = ProductCartAnimation(
+                      product: product,
+                      isFavorite: false,
+                    );
+                    return ProductCardWidget(viewModel: viewModel, );
                   },
                 ),
               ),

@@ -1,3 +1,4 @@
+import 'package:deal_wise/features/home/data/models/product_model.dart';
 import 'package:deal_wise/features/home/data/services/offer_service.dart';
 import 'package:deal_wise/features/home/data/services/product_service.dart';
 import 'package:deal_wise/features/home/presentation/cubit/offer_cubit.dart';
@@ -15,6 +16,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<ProductModel> favoriteProductsList = [];
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -26,7 +28,7 @@ class HomeScreen extends StatelessWidget {
       ],
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: const CustomAppBar(),
+        appBar:  CustomAppBar(favorites: favoriteProductsList),
         body: SingleChildScrollView(
           child: Column(
             children: [

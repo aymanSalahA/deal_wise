@@ -66,9 +66,7 @@ class _LoginViewState extends State<_LoginView> {
           // Navigate to MainLayout instead of OTP verification
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
-              builder: (context) => const MainLayout(),
-            ),
+            MaterialPageRoute(builder: (context) => const MainLayout()),
           ); //FIX
         } else if (state is LoginFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -152,9 +150,12 @@ class _LoginViewState extends State<_LoginView> {
                                     AppRoutes.forgotPassword,
                                   );
                                 },
-                          child: const Text(
-                            'Forgot Password?',
-                            style: TextStyle(color: Colors.blue),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 16.0),
+                            child: const Text(
+                              'Forgot Password?',
+                              style: TextStyle(color: Colors.blue),
+                            ),
                           ),
                         ),
                       ),
@@ -167,7 +168,7 @@ class _LoginViewState extends State<_LoginView> {
                               child: ElevatedButton(
                                 onPressed: _handleLogin,
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
+                                  backgroundColor: Color(0xFF00B0FF),
                                   padding: const EdgeInsets.symmetric(
                                     vertical: 16,
                                   ),
@@ -213,10 +214,7 @@ class _LoginViewState extends State<_LoginView> {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.pushNamed(
-                                context,
-                                AppRoutes.signup,
-                              );
+                              Navigator.pushNamed(context, AppRoutes.signup);
                             },
                             child: const Text(
                               'Sign Up',

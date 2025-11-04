@@ -23,9 +23,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   }
 
   void _showDemoSnack(String text) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(text)),
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
   }
 
   @override
@@ -33,10 +31,17 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Contact Us'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        backgroundColor: const Color(0xFF72C9F8),
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          'Contact Us',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+
         centerTitle: true,
       ),
       body: SafeArea(
@@ -45,16 +50,16 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Get in Touch',
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 6),
-              const Text(
-                "We're here to help. Reach out to us through any of the methods below.",
-                style: TextStyle(color: Colors.black54),
-              ),
-              const SizedBox(height: 16),
+              // const Text(
+              //   'Get in Touch',
+              //   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              // ),
+              // const SizedBox(height: 6),
+              // const Text(
+              //   "We're here to help. Reach out to us through any of the methods below.",
+              //   style: TextStyle(color: Colors.black54),
+              // ),
+              const SizedBox(height: 10),
 
               // Contact method cards (dummy)
               _MethodCard(
@@ -81,23 +86,44 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
               // Dummy form (no HTTP)
               _LabeledTextField(controller: _nameController, hint: 'Your Name'),
               const SizedBox(height: 10),
-              _LabeledTextField(controller: _emailController, hint: 'Your Email', keyboardType: TextInputType.emailAddress),
+              _LabeledTextField(
+                controller: _emailController,
+                hint: 'Your Email',
+                keyboardType: TextInputType.emailAddress,
+              ),
               const SizedBox(height: 10),
-              _LabeledTextField(controller: _subjectController, hint: 'Subject'),
+              _LabeledTextField(
+                controller: _subjectController,
+                hint: 'Subject',
+              ),
               const SizedBox(height: 10),
-              _LabeledTextField(controller: _messageController, hint: 'How can we help?', maxLines: 5),
+              _LabeledTextField(
+                controller: _messageController,
+                hint: 'How can we help?',
+                maxLines: 5,
+              ),
               const SizedBox(height: 12),
               SizedBox(
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: () => _showDemoSnack('Message sent (demo). No network call made.'),
+                  onPressed: () => _showDemoSnack(
+                    'Message sent (demo). No network call made.',
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF13A4EC),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     elevation: 0,
                   ),
-                  child: const Text('Send Message', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                  child: const Text(
+                    'Send Message',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ),
 
@@ -106,7 +132,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 child: TextButton.icon(
                   onPressed: () => _showDemoSnack('Open FAQs (demo)'),
                   icon: const Icon(Icons.help_outline),
-                  label: const Text('Have a common question? Check out our FAQs'),
+                  label: const Text(
+                    'Have a common question? Check out our FAQs',
+                  ),
                 ),
               ),
             ],
@@ -123,7 +151,12 @@ class _MethodCard extends StatelessWidget {
   final String subtitle;
   final VoidCallback onTap;
 
-  const _MethodCard({required this.icon, required this.title, required this.subtitle, required this.onTap});
+  const _MethodCard({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +169,11 @@ class _MethodCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 6)),
+            BoxShadow(
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 10,
+              offset: const Offset(0, 6),
+            ),
           ],
         ),
         child: Row(
@@ -155,13 +192,26 @@ class _MethodCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                   const SizedBox(height: 2),
-                  Text(subtitle, style: const TextStyle(fontSize: 12, color: Colors.black54)),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(fontSize: 12, color: Colors.black54),
+                  ),
                 ],
               ),
             ),
-            const Icon(Icons.arrow_forward_ios, size: 18, color: Colors.black38),
+            const Icon(
+              Icons.arrow_forward_ios,
+              size: 18,
+              color: Colors.black38,
+            ),
           ],
         ),
       ),
@@ -175,7 +225,12 @@ class _LabeledTextField extends StatelessWidget {
   final int maxLines;
   final TextInputType? keyboardType;
 
-  const _LabeledTextField({required this.controller, required this.hint, this.maxLines = 1, this.keyboardType});
+  const _LabeledTextField({
+    required this.controller,
+    required this.hint,
+    this.maxLines = 1,
+    this.keyboardType,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -187,13 +242,23 @@ class _LabeledTextField extends StatelessWidget {
         hintText: hint,
         filled: true,
         fillColor: Colors.white,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFE5E7EB))),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFE5E7EB))),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF13A4EC))),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 12,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFF13A4EC)),
+        ),
       ),
     );
   }
 }
-
-

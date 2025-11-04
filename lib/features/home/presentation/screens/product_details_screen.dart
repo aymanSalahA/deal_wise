@@ -1,15 +1,26 @@
 import 'package:deal_wise/features/home/data/models/product_model.dart';
+import 'package:deal_wise/features/home/presentation/widgets/bottom_add_to_cart_bar.dart';
+import 'package:deal_wise/features/home/presentation/widgets/Color_options.dart';
+import 'package:deal_wise/features/home/presentation/widgets/product_description.dart';
+import 'package:deal_wise/features/home/presentation/widgets/product_Image.dart';
+import 'package:deal_wise/features/home/presentation/widgets/product_info.dart';
+import 'package:deal_wise/features/home/presentation/widgets/product_ratings.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
-  const ProductDetailsScreen({super.key});
+  final ProductModel product;
+  const ProductDetailsScreen({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
-    final product = ModalRoute.of(context)!.settings.arguments as ProductModel;
+    final double discountedPrice =
+        product.price * (1 - product.discountPercentage / 100);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new,
@@ -18,10 +29,53 @@ class ProductDetailsScreen extends StatelessWidget {
           ),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(product.name),
-        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.favorite_border, color: Colors.black),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.share_outlined, color: Colors.black),
+            onPressed: () {},
+          ),
+        ],
       ),
-      body: Center(),
+      extendBodyBehindAppBar: true,
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView(
+              children: [
+                Productimage(imageUrl: product.coverPictureUrl),
+                const SizedBox(height: 10),
+                ProductInfo(product: product, discountedPrice: discountedPrice),
+                ColorOptions(
+                  availableColors: const [
+                    '0xFF455A64',
+                    '0xFFFFA000',
+                    '0xFF9E9E9E',
+                    '0xFFFFD600',
+                  ],
+                  selectedColorCode: product.color,
+                ),
+                ProductDescription(description: product.description),
+                ProductRatings(
+                  rating: product.rating.toDouble(),
+                  reviewsCount: product.reviewsCount,
+                  ratingDistribution: {
+                    5: 0.6,
+                    4: 0.25,
+                    3: 0.1,
+                    2: 0.03,
+                    1: 0.02,
+                  },
+                ),
+              ],
+            ),
+          ),
+          const BottomAddToCartBar(),
+        ],
+      ),
     );
   }
 }
