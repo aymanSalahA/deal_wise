@@ -94,19 +94,20 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
           children: [
             Stack(
               children: [
-                Container(
-                  height: 140,
-                  width: double.infinity,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    height: 140,
+                    width: double.infinity,
                     color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Image.network(
-                    widget.product.coverPictureUrl,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) =>
-                        const Icon(Icons.error, color: Colors.red),
+                    child: Image.network(
+                      widget.product.coverPictureUrl,
+                      height: 140,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Icon(Icons.error, color: Colors.red),
+                    ),
                   ),
                 ),
                 Positioned(
