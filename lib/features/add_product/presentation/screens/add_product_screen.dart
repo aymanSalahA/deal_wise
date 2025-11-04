@@ -11,6 +11,16 @@ class AddProductScreen extends StatefulWidget {
 }
 
 class _AddProductScreenState extends State<AddProductScreen> {
+  // Category model to store id and name
+  List<Map<String, dynamic>> _categories = [];
+  String? _selectedCategoryId;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCategories();
+  }
+
   Future<void> _fetchCategories() async {
     setState(() {
       _isLoading = true;
@@ -19,27 +29,65 @@ class _AddProductScreenState extends State<AddProductScreen> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('accessToken') ?? '';
+      print('Token from SharedPreferences: $token');
+
       final url = Uri.parse(
         'https://accessories-eshop.runasp.net/api/categories',
       );
-      final response = await http.get(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      );
+
+      // Build headers - token might not be required for public categories
+      final headers = <String, String>{'Content-Type': 'application/json'};
+      if (token.isNotEmpty) {
+        headers['Authorization'] = 'Bearer $token';
+      }
+
+      final response = await http.get(url, headers: headers);
       print('Categories response status: \\${response.statusCode}');
       print('Categories response body: \\${response.body}');
+
       if (response.statusCode == 200) {
-        // You can parse and use the categories here
+        try {
+          final Map<String, dynamic> responseData = jsonDecode(response.body);
+          print('Response data type: ${responseData.runtimeType}');
+          print(
+            'Categories key exists: ${responseData.containsKey("categories")}',
+          );
+
+          if (responseData.containsKey('categories')) {
+            final List<dynamic> data =
+                responseData['categories'] as List<dynamic>;
+            print('Categories count: ${data.length}');
+
+            setState(() {
+              _categories = data
+                  .map<Map<String, dynamic>>(
+                    (category) => {
+                      'id': category['id'] as String,
+                      'name': category['name'] as String,
+                    },
+                  )
+                  .toList();
+            });
+            print('✅ Successfully loaded ${_categories.length} categories');
+          } else {
+            throw Exception('Response does not contain "categories" key');
+          }
+        } catch (parseError, stackTrace) {
+          print('❌ Parse error: $parseError');
+          print('Stack trace: $stackTrace');
+          setState(() {
+            _errorMessage = 'Error parsing categories: $parseError';
+          });
+        }
       } else {
         setState(() {
           _errorMessage =
               'Failed to fetch categories. (Status: \\${response.statusCode})';
         });
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print('❌ Error fetching categories: $e');
+      print('Stack trace: $stackTrace');
       setState(() {
         _errorMessage = 'Error fetching categories: $e';
       });
@@ -64,7 +112,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   static const List<String> _productPictureUrls = [''];
 
   Future<void> _addProduct() async {
-    if (_selectedCategory == null) {
+    if (_selectedCategoryId == null) {
       setState(() {
         _errorMessage = 'Please select a category.';
       });
@@ -74,8 +122,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
       _isLoading = true;
       _errorMessage = null;
     });
+
     final url = Uri.parse('https://accessories-eshop.runasp.net/api/products');
     try {
+      // Get token from SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('accessToken') ?? '';
+      print('Token for add product: $token');
+
       final price =
           double.tryParse(_priceController.text.replaceAll(',', '.')) ?? 1;
       final requestBody = {
@@ -84,7 +138,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
         'description': _descriptionController.text,
         'nameArabic': _nameArabic,
         'descriptionArabic': _descriptionArabic,
-        // 'coverPictureUrl': _coverPictureUrl,
         'coverPictureUrl':
             'https://via.placeholder.com/300x300.png?text=Product+Image',
         'price': price,
@@ -92,13 +145,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
         'weight': _weight,
         'color': 'Red',
         'discountPercentage': _discountPercentage,
-        'categoryIds': ['123e4567-e89b-12d3-a456-426614174000'],
+        'categoryIds': [_selectedCategoryId],
         'productPictureUrls': _productPictureUrls,
       };
       print('Sending request: ' + jsonEncode(requestBody));
       final response = await http.post(
         url,
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
         body: jsonEncode(requestBody),
       );
       print('Response status: \\${response.statusCode}');
@@ -135,8 +191,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
-  String? _selectedCategory;
-  final List<String> _categories = ['Electronics', 'Apparel', 'Home', 'Books'];
 
   @override
   void dispose() {
@@ -210,13 +264,21 @@ class _AddProductScreenState extends State<AddProductScreen> {
               ),
               const SizedBox(height: 6),
               DropdownButtonFormField<String>(
-                value: _selectedCategory,
+                value: _selectedCategoryId,
+                hint: _categories.isEmpty
+                    ? const Text('Loading categories...')
+                    : const Text('Select a category'),
                 items: _categories
                     .map(
-                      (cat) => DropdownMenuItem(value: cat, child: Text(cat)),
+                      (cat) => DropdownMenuItem(
+                        value: cat['id'] as String,
+                        child: Text(cat['name'] as String),
+                      ),
                     )
                     .toList(),
-                onChanged: (val) => setState(() => _selectedCategory = val),
+                onChanged: _categories.isEmpty
+                    ? null
+                    : (val) => setState(() => _selectedCategoryId = val),
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color(0xFFF1F5F9),
