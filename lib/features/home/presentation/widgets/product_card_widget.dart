@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:dio/dio.dart';
 import '../../data/models/product_model.dart';
+import '../../../cart/data/services/cart_service.dart';
 
 class ProductCardWidget extends StatefulWidget {
   final ProductModel product;
@@ -18,7 +18,7 @@ class ProductCardWidget extends StatefulWidget {
 }
 
 class _ProductCardWidgetState extends State<ProductCardWidget> {
-  final Dio _dio = Dio();
+  final CartService _cartService = CartService();
   late bool isFavorite;
 
   @override
@@ -29,29 +29,15 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
 
   Future<void> _addToCart() async {
     try {
-      final response = await _dio.post(
-        'https://accessories-eshop.runasp.net/api/cart',
-        data: {'productId': widget.product.id, 'quantity': 1},
-      );
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('✅ Added to cart successfully!'),
-              backgroundColor: Colors.green,
-            ),
-          );
-        }
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('⚠️ Failed: ${response.statusMessage}'),
-              backgroundColor: Colors.orange,
-            ),
-          );
-        }
+      await _cartService.addToCart(widget.product.id, 1);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('✅ Added to cart successfully!'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
       }
     } catch (e) {
       if (mounted) {
@@ -59,6 +45,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
           SnackBar(
             content: Text('❌ Error adding to cart: $e'),
             backgroundColor: Colors.red,
+            duration: Duration(seconds: 2),
           ),
         );
       }

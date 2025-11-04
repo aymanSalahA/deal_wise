@@ -41,40 +41,37 @@ class ProductDetailsScreen extends StatelessWidget {
         ],
       ),
       extendBodyBehindAppBar: true,
-      body: Column(
+      body: ListView(
         children: [
-          Expanded(
-            child: ListView(
-              children: [
-                Productimage(imageUrl: product.coverPictureUrl),
-                const SizedBox(height: 10),
-                ProductInfo(product: product, discountedPrice: discountedPrice),
-                ColorOptions(
-                  availableColors: const [
-                    '0xFF455A64',
-                    '0xFFFFA000',
-                    '0xFF9E9E9E',
-                    '0xFFFFD600',
-                  ],
-                  selectedColorCode: product.color,
-                ),
-                ProductDescription(description: product.description),
-                ProductRatings(
-                  rating: product.rating.toDouble(),
-                  reviewsCount: product.reviewsCount,
-                  ratingDistribution: {
-                    5: 0.6,
-                    4: 0.25,
-                    3: 0.1,
-                    2: 0.03,
-                    1: 0.02,
-                  },
-                ),
-              ],
-            ),
+          Productimage(imageUrl: product.coverPictureUrl),
+          const SizedBox(height: 10),
+          ProductInfo(product: product, discountedPrice: discountedPrice),
+          ColorOptions(
+            availableColors: const [
+              '0xFF455A64',
+              '0xFFFFA000',
+              '0xFF9E9E9E',
+              '0xFFFFD600',
+            ],
+            selectedColorCode: product.color,
           ),
-          const BottomAddToCartBar(),
+          ProductDescription(description: product.description),
+          ProductRatings(
+            rating: product.rating.toDouble(),
+            reviewsCount: product.reviewsCount,
+            ratingDistribution: {
+              5: 0.6,
+              4: 0.25,
+              3: 0.1,
+              2: 0.03,
+              1: 0.02,
+            },
+          ),
+          const SizedBox(height: 80), // Add space for bottom bar
         ],
+      ),
+      bottomNavigationBar: SafeArea(
+        child: BottomAddToCartBar(product: product),
       ),
     );
   }
