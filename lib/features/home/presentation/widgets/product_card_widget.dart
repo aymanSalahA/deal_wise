@@ -4,7 +4,6 @@ import '../../data/models/product_model.dart';
 
 class ProductCardWidget extends StatelessWidget {
   final ProductModel product;
-
   const ProductCardWidget({super.key, required this.product});
 
   @override
@@ -13,7 +12,11 @@ class ProductCardWidget extends StatelessWidget {
         product.price * (1 - product.discountPercentage / 100);
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/product-detail', arguments: product);
+        Navigator.pushNamed(
+          context,
+          '/product-detail',
+          arguments: product, // هنا بنمرر الـ product
+        );
       },
       child: Container(
         decoration: BoxDecoration(
@@ -105,20 +108,6 @@ class ProductCardWidget extends StatelessWidget {
                   ],
                 ),
               ],
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: SizedBox(
-                width: 42,
-                height: 42,
-                child: FloatingActionButton(
-                  heroTag: product.id,
-                  onPressed: () {},
-                  backgroundColor: const Color(0xFF5BC2FA),
-                  child: const Icon(Icons.add, color: Colors.white, size: 24),
-                ),
-              ),
             ),
           ],
         ),

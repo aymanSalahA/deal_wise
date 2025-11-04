@@ -1,5 +1,6 @@
 import 'package:deal_wise/features/auth/presentation/screens/register_screen.dart';
 import 'package:deal_wise/features/home/data/main_layout.dart';
+import 'package:deal_wise/features/home/data/models/product_model.dart';
 import 'package:deal_wise/features/home/presentation/screens/product_details_screen.dart';
 import 'package:flutter/material.dart';
 import '../features/auth/presentation/screens/login_screen.dart';
@@ -41,7 +42,7 @@ class AppRoutes {
     dummy: (context) => const DummyScreen(),
     // home: (context) => const HomeScreen(),
     home: (context) => const MainLayout(),
-    productDetail: (context) => const ProductDetailsScreen(),
+  productDetail: (context) => ProductDetailsScreen(product: ModalRoute.of(context)?.settings.arguments as ProductModel),
     privacyPolicy: (context) => const PrivacyPolicyScreen(),
     aboutUs: (context) => const AboutUsScreen(),
     contactUs: (context) => const ContactUsScreen(),

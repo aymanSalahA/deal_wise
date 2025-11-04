@@ -1,3 +1,5 @@
+import 'package:deal_wise/features/home/data/models/product_model.dart';
+import 'package:deal_wise/features/home/presentation/screens/product_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:deal_wise/routes/app_routes.dart';
@@ -34,6 +36,15 @@ class MyApp extends StatelessWidget {
         title: 'Deal Wise',
         initialRoute: AppRoutes.splash,
         routes: AppRoutes.routes,
+        onGenerateRoute: (settings) {
+          if (settings.name == AppRoutes.productDetail) {
+            final product = settings.arguments as ProductModel;
+            return MaterialPageRoute(
+              builder: (context) => ProductDetailsScreen(product: product),
+            );
+          }
+          return null; // أي route تاني يستخدم الـ routes العادية
+        },
       ),
     );
   }
