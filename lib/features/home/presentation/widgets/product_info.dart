@@ -14,9 +14,7 @@ class ProductInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String productName = product.arabicName.isNotEmpty
-        ? product.arabicName
-        : product.name;
+    final String productName = product.name;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),

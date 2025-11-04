@@ -28,7 +28,7 @@ class ColorOptions extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 5),
           Row(
             children: availableColors.map((hexCode) {
               final color = _colorFromHex(hexCode);
@@ -36,8 +36,8 @@ class ColorOptions extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.only(right: 12.0),
                 child: Container(
-                  width: 30,
-                  height: 30,
+                  width: 25,
+                  height: 25,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: color,

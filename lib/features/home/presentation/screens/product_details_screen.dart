@@ -47,7 +47,7 @@ class ProductDetailsScreen extends StatelessWidget {
             child: ListView(
               children: [
                 Productimage(imageUrl: product.coverPictureUrl),
-                const SizedBox(height: 16),
+                const SizedBox(height: 10),
                 ProductInfo(product: product, discountedPrice: discountedPrice),
                 ColorOptions(
                   availableColors: const [
@@ -58,11 +58,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   ],
                   selectedColorCode: product.color,
                 ),
-                ProductDescription(
-                  description: product.arabicDescription.isNotEmpty
-                      ? product.arabicDescription
-                      : product.description,
-                ),
+                ProductDescription(description: product.description),
                 ProductRatings(
                   rating: product.rating.toDouble(),
                   reviewsCount: product.reviewsCount,
@@ -74,8 +70,6 @@ class ProductDetailsScreen extends StatelessWidget {
                     1: 0.02,
                   },
                 ),
-
-                const SizedBox(height: 100),
               ],
             ),
           ),
