@@ -19,16 +19,20 @@ class ForgotPasswordScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: const Color(0xFF72C9F8),
+          elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black87),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+              size: 20,
+            ),
+            onPressed: () => Navigator.pop(context),
           ),
+
           title: const Text(
             "Forgot Password",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),

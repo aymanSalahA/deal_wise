@@ -39,18 +39,21 @@ class ResetPasswordScreen extends StatelessWidget {
         child: Scaffold(
           backgroundColor: const Color(0xFFF6F7F8),
           appBar: AppBar(
-            backgroundColor: const Color(0xFFF6F7F8),
+            backgroundColor: const Color(0xFF72C9F8),
             elevation: 0,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.black),
-              onPressed: () => Navigator.of(context).pop(),
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+                size: 20,
+              ),
+              onPressed: () => Navigator.pop(context),
             ),
             title: const Text(
               'Reset Password',
               style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
               ),
             ),
             centerTitle: true,
@@ -61,20 +64,20 @@ class ResetPasswordScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Create new password',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Your new password must be different from previous passwords.',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
+                  // const SizedBox(height: 20),
+                  // const Text(
+                  //   'Create new password',
+                  //   style: TextStyle(
+                  //     fontSize: 24,
+                  //     fontWeight: FontWeight.bold,
+                  //     color: Colors.black,
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 8),
+                  // const Text(
+                  //   'Your new password must be different from previous passwords.',
+                  //   style: TextStyle(fontSize: 16, color: Colors.grey),
+                  // ),
                   const SizedBox(height: 30),
                   // New Password Field
                   BlocBuilder<NewPasswordVisibilityCubit, bool>(
