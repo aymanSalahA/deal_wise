@@ -13,21 +13,23 @@ class OnboardingModel {
     required this.imagePath,
     Color? backgroundColor,
     Color? accentColor,
-  })  : backgroundColor = backgroundColor ?? const Color(0xFFEAF4FF),
-        accentColor = accentColor ?? const Color(0xFF0EA5E9);
+  }) : backgroundColor = backgroundColor ?? const Color(0xFFEAF4FF),
+       accentColor = accentColor ?? const Color(0xFF0EA5E9);
 
   static List<OnboardingModel> getOnboardingPages() {
     return [
       OnboardingModel(
         title: 'Discover Deals',
-        description: 'Curated offers, daily drops, and exclusive savings just for you.',
-        imagePath: 'assets/images/first.jpg',
+        description:
+            'Curated offers, daily drops, and exclusive savings just for you.',
+        imagePath: 'assets/images/first.png',
         backgroundColor: const Color(0xFFEAF4FF),
         accentColor: const Color(0xFF0EA5E9),
       ),
       OnboardingModel(
         title: 'Shop Smarter',
-        description: 'Compare, wishlist, and checkout seamlessly across categories.',
+        description:
+            'Compare, wishlist, and checkout seamlessly across categories.',
         imagePath: 'assets/images/second.jpg',
         backgroundColor: const Color(0xFFFFF3E6),
         accentColor: const Color(0xFFF59E0B),

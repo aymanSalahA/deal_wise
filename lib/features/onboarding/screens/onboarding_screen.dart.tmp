@@ -52,9 +52,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
+
     return Scaffold(
       body: Stack(
         children: [
+          // PageView with onboarding pages
           PageView.builder(
             controller: _pageController,
             onPageChanged: _onPageChanged,
@@ -116,22 +118,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     // Page indicators
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(_pages.length, (index) {
-                        final bool isActive = _currentPage == index;
-                        return AnimatedContainer(
-                          duration: const Duration(milliseconds: 250),
-                          curve: Curves.easeOut,
-                          height: 8,
-                          width: isActive ? 22 : 8,
-                          margin: const EdgeInsets.symmetric(horizontal: 4),
-                          decoration: BoxDecoration(
-                            color: isActive
-                                ? Theme.of(context).primaryColor
-                                : Colors.grey.shade300,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        );
-                      }),
+                      children: List.generate(
+                        _pages.length,
+                        (index) {
+                          final bool isActive = _currentPage == index;
+                          return AnimatedContainer(
+                            duration: const Duration(milliseconds: 250),
+                            curve: Curves.easeOut,
+                            height: 8,
+                            width: isActive ? 22 : 8,
+                            margin: const EdgeInsets.symmetric(horizontal: 4),
+                            decoration: BoxDecoration(
+                              color: isActive
+                                  ? Theme.of(context).primaryColor
+                                  : Colors.grey.shade300,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                     const SizedBox(height: 16),
                     // Next/Get Started button
