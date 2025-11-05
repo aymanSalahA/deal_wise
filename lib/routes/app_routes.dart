@@ -52,10 +52,6 @@ class AppRoutes {
     contactUs: (context) => const ContactUsScreen(),
     changePassword: (context) => const ChangePasswordScreen(),
     themeSettings: (context) => const ThemeSettingsScreen(),
-    '/favorites': (context) {
-      final args = ModalRoute.of(context)?.settings.arguments;
-      final favorites = (args is List<ProductModel>) ? args : <ProductModel>[];
-      return FavoritesScreen(favorites: favorites);
-    },
+    '/favorites': (context) => const FavoritesScreen(),
   };
 }

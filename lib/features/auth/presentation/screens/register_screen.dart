@@ -3,7 +3,6 @@ import 'package:deal_wise/features/auth/presentation/cubit/register_cubit.dart';
 import 'package:deal_wise/features/auth/presentation/screens/otp_verification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../routes/app_routes.dart';
 
 class RegisterAccountScreen extends StatefulWidget {
