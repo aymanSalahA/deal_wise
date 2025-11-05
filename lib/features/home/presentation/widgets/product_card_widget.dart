@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../data/models/product_model.dart';
 import '../../../cart/data/services/cart_service.dart';
+import '../../data/services/favorites_service.dart';
 
 class ProductCardWidget extends StatefulWidget {
   final ProductModel product;
@@ -19,12 +20,25 @@ class ProductCardWidget extends StatefulWidget {
 
 class _ProductCardWidgetState extends State<ProductCardWidget> {
   final CartService _cartService = CartService();
+  final FavoritesService _favoritesService = FavoritesService();
   late bool isFavorite;
 
   @override
   void initState() {
     super.initState();
     isFavorite = widget.initialFavorite;
+    _initFavorite();
+  }
+
+  Future<void> _initFavorite() async {
+    try {
+      final fav = await _favoritesService.isFavorite(widget.product.id);
+      if (mounted) {
+        setState(() {
+          isFavorite = fav;
+        });
+      }
+    } catch (_) {}
   }
 
   Future<void> _addToCart() async {
@@ -59,10 +73,20 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
     }
   }
 
-  void _toggleFavorite() {
+  void _toggleFavorite() async {
+    final newValue = !isFavorite;
     setState(() {
-      isFavorite = !isFavorite;
+      isFavorite = newValue;
     });
+    try {
+      await _favoritesService.toggle(widget.product.id);
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          isFavorite = !newValue;
+        });
+      }
+    }
   }
 
   @override
@@ -94,11 +118,12 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
         padding: const EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Stack(
               children: [
                 Container(
-                  height: 140,
+                  height: 120,
                   clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
                     color: theme.cardColor,
@@ -155,65 +180,69 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                 color: theme.colorScheme.onSurface.withOpacity(0.6),
               ),
             ),
-            const Spacer(),
+            const SizedBox(height: 8),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  '\$${finalPrice.toStringAsFixed(2)}',
-                  style: GoogleFonts.caladea(
-                    color: theme.colorScheme.primary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                if (widget.product.discountPercentage > 0)
-                  Text(
-                    '\$${widget.product.price.toStringAsFixed(2)}',
-                    style: GoogleFonts.nunito(
-                      fontSize: 12,
-                      decoration: TextDecoration.lineThrough,
-                      color: theme.colorScheme.onSurface.withOpacity(0.6),
-                    ),
-                  ),
-                const SizedBox(width: 8),
-                Row(
-                  children: [
-                    ...List.generate(5, (index) {
-                      return Icon(
-                        index < widget.product.rating
-                            ? Icons.star
-                            : Icons.star_border,
-                        color: theme.colorScheme.secondary,
-                        size: 16,
-                      );
-                    }),
-                    const SizedBox(width: 4),
-                    Text(
-                      '(${widget.product.reviewsCount})',
-                      style: GoogleFonts.nunito(
-                        fontSize: 12,
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          '\$${finalPrice.toStringAsFixed(2)}',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.caladea(
+                            color: theme.colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                      if (widget.product.discountPercentage > 0) ...[
+                        const SizedBox(width: 6),
+                        Flexible(
+                          child: Text(
+                            '\$${widget.product.price.toStringAsFixed(2)}',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.nunito(
+                              fontSize: 12,
+                              decoration: TextDecoration.lineThrough,
+                              color: theme.colorScheme.onSurface.withOpacity(0.6),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    // Prevent parent GestureDetector from triggering
-                    _addToCart();
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.primary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Icon(
-                      Icons.add_shopping_cart,
-                      color: theme.colorScheme.primary,
-                      size: 20,
-                    ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ...List.generate(5, (index) {
+                        return Icon(
+                          index < widget.product.rating
+                              ? Icons.star
+                              : Icons.star_border,
+                          color: theme.colorScheme.secondary,
+                          size: 14,
+                        );
+                      }),
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: Text(
+                          '(${widget.product.reviewsCount})',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.nunito(
+                            fontSize: 12,
+                            color: theme.colorScheme.onSurface.withOpacity(0.6),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

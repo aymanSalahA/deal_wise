@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../data/models/product_model.dart';
 import '../../../cart/data/services/cart_service.dart';
+import '../../data/services/favorites_service.dart';
 
 class ProductCardWidget extends StatefulWidget {
   final ProductModel product;
@@ -19,12 +20,25 @@ class ProductCardWidget extends StatefulWidget {
 
 class _ProductCardWidgetState extends State<ProductCardWidget> {
   final CartService _cartService = CartService();
+  final FavoritesService _favoritesService = FavoritesService();
   late bool isFavorite;
 
   @override
   void initState() {
     super.initState();
     isFavorite = widget.initialFavorite;
+    _initFavorite();
+  }
+
+  Future<void> _initFavorite() async {
+    try {
+      final fav = await _favoritesService.isFavorite(widget.product.id);
+      if (mounted) {
+        setState(() {
+          isFavorite = fav;
+        });
+      }
+    } catch (_) {}
   }
 
   Future<void> _addToCart() async {
@@ -62,10 +76,20 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
     }
   }
 
-  void _toggleFavorite() {
+  void _toggleFavorite() async {
+    final newValue = !isFavorite;
     setState(() {
-      isFavorite = !isFavorite;
+      isFavorite = newValue;
     });
+    try {
+      await _favoritesService.toggle(widget.product.id);
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          isFavorite = !newValue;
+        });
+      }
+    }
   }
 
   @override
